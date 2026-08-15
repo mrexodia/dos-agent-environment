@@ -1,0 +1,8 @@
+{
+  "name": "DOS Agent Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts": [8080]
+}

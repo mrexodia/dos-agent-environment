@@ -1,0 +1,2 @@
+@ECHO OFF
+CTTY COM1

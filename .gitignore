@@ -1,0 +1,11 @@
+# Generated images, payload smoke binary, and run state
+build/
+payload/BIN/HELLO.COM
+
+# Python
+__pycache__/
+.pytest_cache/
+*.py[cod]
+
+# Editor/OS
+.DS_Store

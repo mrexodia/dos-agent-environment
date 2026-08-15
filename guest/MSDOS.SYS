@@ -1,0 +1,11 @@
+[Paths]
+WinDir=C:\
+WinBootDir=C:\
+HostWinBootDrv=C
+
+[Options]
+BootGUI=0
+Logo=0
+AutoScan=0
+BootDelay=0
+Network=0

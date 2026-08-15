@@ -1,0 +1,8 @@
+.git
+build
+__pycache__
+.pytest_cache
+inputs/*
+!inputs/README.md
+!inputs/SHA256SUMS
+payload/BIN/HELLO.COM

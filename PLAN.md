@@ -21,10 +21,9 @@ harness must not contain Links-specific behavior.
   required nor assumed.
 - Compilation happens on Linux with cross-compilers. Compiling inside DOS is
   out of scope for the first version.
-- `inputs/` is human-provided, read-only, gitignored, and never redistributed.
 - The DOS disk is rebuilt from declared inputs, `guest/`, and `payload/`; it is
   not maintained by hand.
-- Start with a 512 MiB FAT16 disk. It is simpler to construct and more than
+- Start with a 504 MiB FAT16 disk (1024 cylinders, 16 heads, 63 sectors). It is simpler to construct and more than
   large enough for the initial projects. FAT32 is a later compatibility test,
   not an MVP requirement.
 - Cold boot is the default. DOS boots quickly, and avoiding snapshots initially
@@ -46,12 +45,12 @@ normalized.
 ├── .devcontainer/
 │   ├── devcontainer.json
 │   └── Dockerfile
-├── inputs/                       # human-provided, read-only, gitignored
+├── inputs/                       # necessary files
 │   ├── Windows98_SE_No_Ramdrive.img
-│   ├── mtcp.zip
+│   ├── mTCP_2025-01-10_upx.zip
 │   ├── pcntpk.com
 │   ├── cwsdpmi.exe
-│   └── links.exe
+│   └── links-2.30.exe
 ├── guest/                        # text files stored with DOS CRLF endings
 │   ├── CONFIG.SYS
 │   ├── AUTOEXEC.BAT
@@ -151,14 +150,13 @@ Maintain a checked-in `inputs/README.md` containing:
 - licensing/distribution note.
 
 The build validates all expected checksums before doing any work and prints a
-clear missing-input error. Generated DOS images remain gitignored and must not
-be published because they contain Microsoft DOS files.
+clear missing-input error.
 
 Initial inspection:
 
 ```bash
 file inputs/*
-unzip -l inputs/mtcp.zip
+unzip -l inputs/mTCP_2025-01-10_upx.zip
 mdir -i inputs/Windows98_SE_No_Ramdrive.img ::
 ```
 
@@ -174,7 +172,7 @@ MBR, not the partition boot sector.
 
 `scripts/build-image.sh` performs these steps:
 
-1. Create a 512 MiB temporary whole-disk image.
+1. Create a 504 MiB temporary whole-disk image (exactly 1024×16×63 sectors).
 2. Create an MBR partition table with one active FAT16 partition starting at
    sector 2048 (1 MiB).
 3. Read the exact start sector and length back from `parted -m ... unit s print`.
@@ -184,7 +182,9 @@ MBR, not the partition boot sector.
 
    ```bash
    mformat -i "$part_img" -h 16 -n 63 -H "$start_sector" -v DOS71 ::
-   ms-sys --fat16 "$part_img"
+   ms-sys --force --fat16 "$part_img"
+   # A standalone image is formatted as drive 0x00; FAT16 C: requires 0x80.
+   printf '\x80' | dd of="$part_img" bs=1 seek=36 conv=notrunc
    ```
 
    If QEMU reports different BIOS geometry during implementation, make the
@@ -199,11 +199,11 @@ MBR, not the partition boot sector.
 9. Copy every existing top-level entry from `payload/` recursively. An empty
    `payload/` is valid and must not pass a literal `payload/*` to `mcopy`.
 10. Copy the completed partition image into the whole-disk image at the parsed
-    start sector using `dd ... conv=notrunc`.
+    start sector using `dd ... conv=notrunc,sparse`.
 11. Write the Windows 95B/98 MBR to the whole-disk image:
 
     ```bash
-    ms-sys --mbr95b "$disk_img"
+    ms-sys --force --mbr95b "$disk_img"
     ```
 
 12. Atomically rename the temporary whole-disk image to `build/dos71.img`.
@@ -291,7 +291,8 @@ qemu-system-i386 \
   -accel tcg \
   -m 64 \
   -boot order=c \
-  -drive file="$run_disk",format=qcow2,if=ide \
+  -drive file="$run_disk",format=qcow2,if=none,id=dosdisk \
+  -device ide-hd,drive=dosdisk,bus=ide.0,unit=0,cyls=1024,heads=16,secs=63 \
   -nic user,model=pcnet \
   -qmp unix:"$run_dir/qmp.sock",server=on,wait=off \
   -serial unix:"$run_dir/serial.sock",server=on,wait=off \
@@ -323,7 +324,7 @@ dosctl exec [--timeout SEC] "DOS command"
 dosctl type "text"
 dosctl key ENTER|ESC|UP|DOWN|PGUP|PGDN|...
 dosctl wait [--timeout SEC] "regular expression"
-dosctl screen [--json]
+dosctl screen [--json|--ascii]
 dosctl screenshot [output.png]
 dosctl collect DOS_PATH [HOST_PATH]
 dosctl stop [--run-id ID|--all]
@@ -379,7 +380,8 @@ plus attributes. Do not blindly assume page zero and 80x25; inspect BIOS data:
 
 The MVP supports color mode `0x03` and reports a clear unsupported-mode error
 for text scraping otherwise. Preserve a cell grid (`character`, foreground,
-background, blink/intensity) internally; `screen` renders plain text while
+background, blink/intensity) internally; `screen` renders decoded CP437 text,
+`--ascii` transliterates it to plain 7-bit text for text-only agents, and
 `--json` exposes dimensions and cells/attributes needed by app drivers.
 
 `wait()` polls screen generations and requires the requested pattern to be
@@ -418,7 +420,7 @@ Screen scraping remains appropriate for full-screen application behavior.
 From a cold disposable overlay:
 
 1. Wait for a newly visible `C:\>` prompt.
-2. `dosctl exec "VER"` contains `4.10.2222` (DOS 7.1 does not print “7.1”).
+2. `dosctl exec "VER"` contains `4.10.1998` for the currently supplied Win98 image (or `4.10.2222` for Win98 SE); both are DOS 7.1 and do not print “7.1”.
 3. Create a file on `C:`, type it back, and collect it to the host.
 4. Obtain a valid non-empty PNG screenshot.
 5. Run a NASM `.COM` deployed through `payload/` and verify its output.
@@ -445,7 +447,7 @@ External ICMP is not required; QEMU slirp may block it.
 Start with the known prebuilt binary:
 
 ```text
-inputs/links.exe -> payload/BIN/LINKS.EXE -> make runtime
+inputs/links-2.30.exe -> payload/BIN/LINKS.EXE -> make runtime
 ```
 
 Run Links without `-g` against `http://10.0.2.2:8080/index.html`. Use
