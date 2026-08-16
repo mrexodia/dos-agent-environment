@@ -43,10 +43,12 @@ QEMU must remain in the same container:
 
 ```bash
 ./dosctl start
-./dosctl exec "VER"
-./dosctl screen
-./dosctl screen --ascii       # plain 7-bit text for text-only agents
-./dosctl screenshot build/screen.png
+./dosctl exec "VER"                 # output is returned and remains on VGA
+./dosctl exec --serial "DIR /S"     # complete capture for long output
+./dosctl screen                         # plain 7-bit ASCII (default)
+./dosctl screen --text                  # decoded CP437 text
+./dosctl screen --json                  # cells and VGA attributes
+./dosctl screen --png build/screen.png  # display screenshot
 ./dosctl type "DIR\r"
 ./dosctl key PGDN
 ./dosctl stop

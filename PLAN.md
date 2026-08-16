@@ -320,12 +320,12 @@ Minimum commands:
 ```text
 dosctl start [--run-id ID]
 dosctl status [--run-id ID]
-dosctl exec [--timeout SEC] "DOS command"
+dosctl exec [--timeout SEC] [--serial] "DOS command"
 dosctl type "text"
 dosctl key ENTER|ESC|UP|DOWN|PGUP|PGDN|...
 dosctl wait [--timeout SEC] "regular expression"
-dosctl screen [--json|--ascii]
-dosctl screenshot [output.png]
+dosctl screen [--text|--json|--png [output.png]]
+dosctl screenshot [output.png]  # backwards-compatible alias
 dosctl collect DOS_PATH [HOST_PATH]
 dosctl stop [--run-id ID|--all]
 ```
@@ -336,11 +336,13 @@ text screen; screenshot paths are included when useful.
 
 ### Command execution
 
-`exec` is for non-interactive DOS shell commands. It must return captured
-stdout and the DOS prompt, not merely type text and hope that an old on-screen
-prompt matches.
+`exec` is for non-interactive DOS shell commands. By default it executes on
+VGA so the command, output, and final prompt remain visible while output is
+also returned to the caller. If output scrolls beyond the text screen, it
+fails with guidance to use `--serial` for complete capture. Completion requires
+the newly active bottom prompt, not an old prompt elsewhere on screen.
 
-The initial implementation may use the serial console safely:
+The serial backend uses the console safely:
 
 1. At a known VGA shell prompt, set a unique temporary prompt token.
 2. Run `CTTY COM1` through keyboard injection.
@@ -349,13 +351,10 @@ The initial implementation may use the serial console safely:
 4. Send `CTTY CON` over serial.
 5. Verify that the prompt returned to VGA and restore the normal prompt.
 
-On any failure, stop the disposable VM rather than leaving console ownership
-ambiguous. Interactive and full-screen programs are launched with `type` and
-`key`, not `exec`.
-
-A VGA-only fallback clears the screen and requires a newly observed prompt and
-cursor transition. A regex already present in an unchanged screen is not
-considered command completion.
+On any serial-backend failure, stop the disposable VM rather than leaving
+console ownership ambiguous. Interactive and full-screen programs are launched
+with `type` and `key`, not `exec`. A regex already present in an unchanged
+screen is not considered command completion.
 
 ### Keyboard input
 
@@ -380,9 +379,9 @@ plus attributes. Do not blindly assume page zero and 80x25; inspect BIOS data:
 
 The MVP supports color mode `0x03` and reports a clear unsupported-mode error
 for text scraping otherwise. Preserve a cell grid (`character`, foreground,
-background, blink/intensity) internally; `screen` renders decoded CP437 text,
-`--ascii` transliterates it to plain 7-bit text for text-only agents, and
-`--json` exposes dimensions and cells/attributes needed by app drivers.
+background, blink/intensity) internally; `screen` emits plain 7-bit ASCII by
+default for text-only agents, `--text` emits decoded CP437, and `--json`
+exposes dimensions and cells/attributes needed by app drivers.
 
 `wait()` polls screen generations and requires the requested pattern to be
 observed according to the caller's freshness requirement. Timeouts always

@@ -305,6 +305,61 @@ class DosVM:
         with self.qmp(timeout=10.0) as qmp:
             return screenshot(qmp, output)
 
+    def exec(self, command: str, timeout: float = 30.0) -> str:
+        """Execute a short shell command on VGA and return its visible output.
+
+        This is the intuitive default: the command and output remain on screen.
+        Use exec_serial() when output may exceed the text-screen height.
+        """
+        if not command or "\r" in command or "\n" in command:
+            raise DosVMError("exec requires one non-empty DOS command line")
+
+        initial_screen = self.wait_for_prompt(timeout=min(timeout, 10.0))
+        initial = initial_screen.text()
+        initial_nonempty = [line.rstrip() for line in initial.splitlines() if line.rstrip()]
+        if len(initial_nonempty) == 1:
+            clean_screen = initial_screen
+        else:
+            self.type("CLS\r")
+            clean_screen = self.wait_for_prompt(
+                timeout=5.0, require_change_from=initial
+            )
+        clean_text = clean_screen.text()
+        clean_lines = [line.rstrip() for line in clean_text.splitlines()]
+        clean_nonempty = [line for line in clean_lines if line]
+        if not clean_nonempty:
+            raise DosVMError("could not identify the DOS prompt after CLS")
+        prompt = clean_nonempty[-1]
+
+        self.type(command + "\r")
+        completed = self.wait_for_prompt(
+            timeout=timeout, require_change_from=clean_text
+        )
+        lines = [line.rstrip() for line in completed.text().splitlines()]
+        nonempty_indexes = [index for index, line in enumerate(lines) if line]
+        if not nonempty_indexes:
+            return ""
+        first = nonempty_indexes[0]
+        last = nonempty_indexes[-1]
+        expected_command = prompt + command
+        if lines[first] != expected_command:
+            # Commands such as CLS intentionally erase their own command line.
+            if len(nonempty_indexes) == 1 and re.fullmatch(
+                r"[A-Z]:\\[^>\r\n]*>", lines[last]
+            ):
+                return ""
+            raise DosVMError(
+                "command output scrolled beyond the VGA screen; rerun with "
+                "'dosctl exec --serial' for complete capture\n"
+                f"--- last screen ---\n{completed.text()}"
+            )
+        output = lines[first + 1 : last]
+        while output and not output[0]:
+            output.pop(0)
+        while output and not output[-1]:
+            output.pop()
+        return "\n".join(output)
+
     def _connect_serial(self, timeout: float = 5.0) -> socket.socket:
         deadline = time.monotonic() + timeout
         last_error: OSError | None = None
@@ -347,8 +402,8 @@ class DosVM:
             f"{bytes(data).decode('cp437', errors='replace')!r}"
         )
 
-    def exec(self, command: str, timeout: float = 30.0) -> str:
-        """Execute a non-interactive COMMAND.COM command and capture serial output."""
+    def exec_serial(self, command: str, timeout: float = 30.0) -> str:
+        """Execute a non-interactive command with unbounded serial capture."""
         if not command or "\r" in command or "\n" in command:
             raise DosVMError("exec requires one non-empty DOS command line")
         first_word = command.lstrip().split(maxsplit=1)[0].upper()
@@ -385,7 +440,13 @@ class DosVM:
 
         token_screen = self.screen_text()
         self.type("PROMPT $P$G\r")
-        self.wait_for_prompt(timeout=5.0, require_change_from=token_screen)
+        restored = self.wait_for_prompt(
+            timeout=5.0, require_change_from=token_screen
+        ).text()
+        # `exec` returns its output over serial, so its temporary PROMPT/CTTY
+        # plumbing is implementation detail rather than useful VGA history.
+        self.type("CLS\r")
+        self.wait_for_prompt(timeout=5.0, require_change_from=restored)
 
         normalized = captured.replace("\r\n", "\n").replace("\r", "\n")
         lines = normalized.splitlines()

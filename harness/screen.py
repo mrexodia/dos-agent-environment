@@ -55,6 +55,8 @@ class TextScreen:
         if trim_blank_rows:
             while lines and not lines[-1]:
                 lines.pop()
+            while lines and not lines[0]:
+                lines.pop(0)
         return "\n".join(lines)
 
     def ascii(self, trim_blank_rows: bool = False) -> str:

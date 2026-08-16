@@ -32,6 +32,11 @@ def build_parser() -> argparse.ArgumentParser:
     execute.add_argument("command")
     execute.add_argument("--run-id")
     execute.add_argument("--timeout", type=float, default=30.0)
+    execute.add_argument(
+        "--serial",
+        action="store_true",
+        help="capture long output over serial instead of leaving it on VGA",
+    )
 
     type_parser = sub.add_parser("type", help="type text through the VGA keyboard")
     type_parser.add_argument("text")
@@ -48,14 +53,25 @@ def build_parser() -> argparse.ArgumentParser:
     wait.add_argument("--run-id")
     wait.add_argument("--timeout", type=float, default=10.0)
 
-    screen = sub.add_parser("screen", help="print the current text screen")
+    screen = sub.add_parser(
+        "screen",
+        help="read the display as ASCII (default), CP437 text, JSON, or PNG",
+    )
     screen.add_argument("--run-id")
     screen_format = screen.add_mutually_exclusive_group()
-    screen_format.add_argument("--json", action="store_true")
     screen_format.add_argument(
         "--ascii",
         action="store_true",
-        help="transliterate CP437 and box drawing to plain 7-bit ASCII",
+        help="emit 7-bit ASCII (the default; retained for compatibility)",
+    )
+    screen_format.add_argument("--text", action="store_true", help="emit decoded CP437 text")
+    screen_format.add_argument("--json", action="store_true", help="emit cells and attributes")
+    screen_format.add_argument(
+        "--png",
+        nargs="?",
+        const="",
+        metavar="OUTPUT",
+        help="save a PNG, optionally to OUTPUT",
     )
 
     shot = sub.add_parser("screenshot", help="save a PNG display screenshot")
@@ -92,7 +108,13 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 print(json.dumps(_vm(args).status(), indent=2))
         elif args.action == "exec":
-            print(_vm(args).exec(args.command, timeout=args.timeout))
+            vm = _vm(args)
+            output = (
+                vm.exec_serial(args.command, timeout=args.timeout)
+                if args.serial
+                else vm.exec(args.command, timeout=args.timeout)
+            )
+            print(output)
         elif args.action == "type":
             _vm(args).type(args.text, delay=args.delay)
         elif args.action == "key":
@@ -100,13 +122,18 @@ def main(argv: list[str] | None = None) -> int:
         elif args.action == "wait":
             print(_vm(args).wait_for(args.pattern, timeout=args.timeout).text())
         elif args.action == "screen":
-            current = _vm(args).screen()
-            if args.json:
-                print(json.dumps(current.as_dict(), ensure_ascii=False))
-            elif args.ascii:
-                print(current.ascii())
+            vm = _vm(args)
+            if args.png is not None:
+                output = Path(args.png) if args.png else None
+                print(vm.screenshot(output))
             else:
-                print(current.text())
+                current = vm.screen()
+                if args.json:
+                    print(json.dumps(current.as_dict(), ensure_ascii=False))
+                elif args.text:
+                    print(current.text(trim_blank_rows=True))
+                else:
+                    print(current.ascii(trim_blank_rows=True))
         elif args.action == "screenshot":
             output = Path(args.output) if args.output else None
             print(_vm(args).screenshot(output))
