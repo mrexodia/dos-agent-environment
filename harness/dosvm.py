@@ -184,7 +184,11 @@ class DosVM:
             except (OSError, QMPError, TimeoutError) as exc:
                 last_error = exc
                 time.sleep(0.05)
-        raise DosTimeout(f"QMP did not become ready for run {self.run_id}: {last_error}")
+        raise self.timeout_error(
+            "wait for QMP greeting and capabilities handshake",
+            timeout,
+            detail=str(last_error) if last_error else None,
+        )
 
     def qmp(self, timeout: float = 5.0) -> QMPClient:
         return QMPClient(self.qmp_path, timeout=timeout)
@@ -212,11 +216,38 @@ class DosVM:
         }
         if result["alive"] and self.qmp_path.exists():
             try:
-                with self.qmp() as qmp:
-                    result["qemu"] = qmp.execute("query-status")
+                with self.qmp(timeout=1.0) as qmp:
+                    result["qemu"] = qmp.execute("query-status", timeout=1.0)
             except Exception as exc:
                 result["qmp_error"] = str(exc)
         return result
+
+    def timeout_error(
+        self,
+        operation: str,
+        timeout: float,
+        last_screen: str = "",
+        detail: str | None = None,
+    ) -> DosTimeout:
+        """Build the mandatory diagnostic-rich timeout used by public operations."""
+        status = self.status()
+        screenshot_path: Path | None = None
+        if status.get("alive"):
+            try:
+                screenshot_path = self.screenshot(self.run_dir / "timeout.png")
+            except Exception:
+                pass
+        sections = [
+            f"timed out after {timeout:.1f}s in run {self.run_id}",
+            f"operation: {operation}",
+            f"QEMU status: {json.dumps(status, sort_keys=True)}",
+        ]
+        if detail:
+            sections.append(f"detail: {detail}")
+        if screenshot_path:
+            sections.append(f"screenshot: {screenshot_path}")
+        sections.append(f"--- last screen ---\n{last_screen}")
+        return DosTimeout("\n".join(sections))
 
     def screen(self) -> TextScreen:
         if not self.is_alive():
@@ -252,9 +283,53 @@ class DosVM:
                 last_error = exc
             time.sleep(interval)
         detail = f"; last screen error: {last_error}" if last_error else ""
-        raise DosTimeout(
-            f"timed out after {timeout:.1f}s waiting for {regex.pattern!r} "
-            f"in run {self.run_id}{detail}\n--- last screen ---\n{last_text}"
+        raise self.timeout_error(
+            f"wait for screen regex {regex.pattern!r}",
+            timeout,
+            last_text,
+            detail.lstrip("; ") or None,
+        )
+
+    def poll_for_screen_change(
+        self,
+        previous: str | TextScreen,
+        timeout: float = 2.0,
+        interval: float = 0.05,
+    ) -> TextScreen | None:
+        """Return a new character/attribute generation, or None if still stable."""
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if not self.is_alive():
+                raise DosVMError("QEMU stopped while observing the screen")
+            try:
+                current = self.screen()
+                current_text = current.text()
+                changed = current != previous if isinstance(previous, TextScreen) else current_text != previous
+                if changed:
+                    return current
+            except (UnsupportedVideoMode, QMPError, OSError, TimeoutError):
+                pass
+            time.sleep(interval)
+        return None
+
+    def wait_for_screen_change(
+        self,
+        previous: str | TextScreen,
+        timeout: float = 2.0,
+        interval: float = 0.05,
+    ) -> TextScreen:
+        """Wait for new characters or attributes instead of sleeping blindly."""
+        current = self.poll_for_screen_change(previous, timeout, interval)
+        if current is not None:
+            return current
+        try:
+            last_text = self.screen_text()
+        except Exception:
+            last_text = previous.text() if isinstance(previous, TextScreen) else previous
+        raise self.timeout_error(
+            "wait for a new screen generation",
+            timeout,
+            last_text,
         )
 
     def wait_for_prompt(
@@ -285,9 +360,11 @@ class DosVM:
                 last_error = exc
             time.sleep(0.1)
         detail = f"; last screen error: {last_error}" if last_error else ""
-        raise DosTimeout(
-            f"timed out after {timeout:.1f}s waiting for the active DOS prompt "
-            f"in run {self.run_id}{detail}\n--- last screen ---\n{last_text}"
+        raise self.timeout_error(
+            "wait for the newly active bottom DOS prompt",
+            timeout,
+            last_text,
+            detail.lstrip("; ") or None,
         )
 
     def type(self, text: str, delay: float = 0.04) -> None:
@@ -374,10 +451,19 @@ class DosVM:
                 last_error = exc
                 sock.close()
                 time.sleep(0.05)
-        raise DosTimeout(f"could not connect to serial console: {last_error}")
+        try:
+            last_screen = self.screen_text()
+        except Exception:
+            last_screen = ""
+        raise self.timeout_error(
+            "connect to the per-run serial console",
+            timeout,
+            last_screen,
+            str(last_error) if last_error else None,
+        )
 
-    @staticmethod
     def _receive_until(
+        self,
         sock: socket.socket,
         regex: Pattern[bytes],
         timeout: float,
@@ -397,9 +483,16 @@ class DosVM:
             match = regex.search(data)
             if match:
                 return bytes(data), match
-        raise DosTimeout(
-            f"serial timeout waiting for {regex.pattern!r}; received "
-            f"{bytes(data).decode('cp437', errors='replace')!r}"
+        received = bytes(data).decode("cp437", errors="replace")
+        try:
+            last_screen = self.screen_text()
+        except Exception:
+            last_screen = ""
+        raise self.timeout_error(
+            f"serial receive waiting for {regex.pattern!r}",
+            timeout,
+            last_screen,
+            f"serial data received: {received!r}",
         )
 
     def exec_serial(self, command: str, timeout: float = 30.0) -> str:
@@ -431,9 +524,19 @@ class DosVM:
             serial.sendall(b"CTTY CON\r")
             self.wait_for_prompt(timeout=5.0, token=token, require_change_from=before_ctty)
         except Exception as exc:
+            # CTTY ownership cannot be established after any failure. The run is
+            # disposable, so enforce the contract rather than asking callers to
+            # remember to clean up an ambiguous console.
+            serial.close()
+            try:
+                self.stop(force=True)
+            except Exception as stop_exc:
+                raise DosVMError(
+                    f"serial exec failed in run {self.run_id}, and forced cleanup "
+                    f"also failed: {stop_exc}; original error: {exc}"
+                ) from exc
             raise DosVMError(
-                f"exec failed and console ownership may be ambiguous; discard run "
-                f"{self.run_id}: {exc}"
+                f"serial exec failed; ambiguous run {self.run_id} was stopped: {exc}"
             ) from exc
         finally:
             serial.close()
@@ -459,6 +562,7 @@ class DosVM:
         return "\n".join(lines)
 
     def stop(self, force: bool = False, timeout: float = 5.0) -> None:
+        """Quit, terminate, then kill with bounded waits and PID verification."""
         pid = self.pid()
         if pid is None or not self.is_alive():
             self._clear_current()
@@ -467,12 +571,11 @@ class DosVM:
             with self.qmp(timeout=1.0) as qmp:
                 qmp.execute("quit", timeout=1.0)
         except Exception:
-            if not force:
-                force = True
-        deadline = time.monotonic() + timeout
+            pass
+        deadline = time.monotonic() + (0.25 if force else timeout)
         while _pid_alive(pid) and time.monotonic() < deadline:
             time.sleep(0.05)
-        if _pid_alive(pid) and force:
+        if _pid_alive(pid):
             command = _process_command(pid)
             if "qemu-system" not in command or str(self.disk_path) not in command:
                 raise DosVMError(
@@ -484,6 +587,11 @@ class DosVM:
                 time.sleep(0.05)
             if _pid_alive(pid):
                 os.killpg(pid, signal.SIGKILL)
+                deadline = time.monotonic() + 2.0
+                while _pid_alive(pid) and time.monotonic() < deadline:
+                    time.sleep(0.05)
+                if _pid_alive(pid):
+                    raise DosVMError(f"QEMU pid {pid} survived SIGKILL")
         self._clear_current()
 
     def _clear_current(self) -> None:

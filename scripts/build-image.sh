@@ -7,21 +7,26 @@ GUEST="$ROOT/guest"
 PAYLOAD="$ROOT/payload"
 BUILD="$ROOT/build"
 OUT="$BUILD/dos71.img"
-# 1024 cylinders * 16 heads * 63 sectors * 512 bytes = 504 MiB.
+# 1024 cylinders * 16 heads * 63 sectors * 512 bytes = exactly 504 MiB.
 # The matching geometry is declared explicitly to QEMU in harness/dosvm.py.
-DISK_SIZE_MIB=${DOS_DISK_SIZE_MIB:-504}
+DISK_SIZE_MIB=504
 
-required=(Windows98_SE_No_Ramdrive.img pcntpk.com cwsdpmi.exe)
+required=(Windows98_SE_No_Ramdrive.img pcntpk.com cwsdpmi.exe \
+          mTCP_2025-01-10_upx.zip links-2.30.exe)
 for name in "${required[@]}"; do
     if [[ ! -f "$INPUTS/$name" ]]; then
-        echo "missing required input: inputs/$name" >&2
+        echo "missing required input: inputs/$name (see inputs/README.md)" >&2
+        exit 2
+    fi
+    if ! grep -Eq "^[0-9a-fA-F]{64}[[:space:]]+[* ]?$name$" "$INPUTS/SHA256SUMS"; then
+        echo "missing approved checksum for inputs/$name in inputs/SHA256SUMS" >&2
         exit 2
     fi
 done
 
 (
     cd "$INPUTS"
-    sha256sum --check --ignore-missing SHA256SUMS
+    sha256sum --check SHA256SUMS
 )
 
 for file in "$GUEST/MSDOS.SYS" "$GUEST/CONFIG.SYS" \
@@ -102,16 +107,14 @@ for name in HIMEM.SYS MEM.EXE EDIT.COM EDIT.HLP ATTRIB.EXE CHKDSK.EXE \
     fi
 done
 
-# mTCP is optional for the boot milestone. If supplied, deploy its executables.
+# Deploy the pinned mTCP executables required by networking and collection.
 mtcp_archive="$INPUTS/mTCP_2025-01-10_upx.zip"
-if [[ -f "$mtcp_archive" ]]; then
-    mkdir -p "$work/mtcp"
-    unzip -q "$mtcp_archive" -d "$work/mtcp"
-    while IFS= read -r -d '' file; do
-        base=$(basename "$file" | tr '[:lower:]' '[:upper:]')
-        mcopy -o -i "$part" "$file" "::/MTCP/$base"
-    done < <(find "$work/mtcp" -type f \( -iname '*.exe' -o -iname '*.com' \) -print0)
-fi
+mkdir -p "$work/mtcp"
+unzip -q "$mtcp_archive" -d "$work/mtcp"
+while IFS= read -r -d '' file; do
+    base=$(basename "$file" | tr '[:lower:]' '[:upper:]')
+    mcopy -o -i "$part" "$file" "::/MTCP/$base"
+done < <(find "$work/mtcp" -type f \( -iname '*.exe' -o -iname '*.com' \) -print0)
 
 # Copy each payload top-level entry; an empty payload directory is valid.
 shopt -s nullglob dotglob
@@ -126,6 +129,6 @@ mdir -a -i "$part" ::
 dd if="$part" of="$disk" bs=512 seek="$start" conv=notrunc,sparse status=none
 ms-sys --force --mbr95b "$disk"
 
-mv -f "$disk" "$OUT.tmp"
-mv -f "$OUT.tmp" "$OUT"
+# work/ is under build/, so this rename is atomic on the same filesystem.
+mv -f "$disk" "$OUT"
 echo "built $OUT (${DISK_SIZE_MIB} MiB, partition starts at sector $start)"

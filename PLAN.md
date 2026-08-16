@@ -1,5 +1,20 @@
 # DOS Agent Environment — Implementation Plan
 
+## Implementation status
+
+Milestones A through D are implemented. `make smoke` verifies cold boot, VGA
+and serial execution, CP437/attribute scraping, PNG capture, DHCP, host ping,
+HTGET, binary and empty-file collection, post-mortem extraction, immutable base
+images, and recovery from a killed QEMU process. `make integration` additionally
+verifies the complete Links load/link/form/scroll/screenshot/crash-recovery
+vertical slice. Fast protocol and decoding unit tests run under `make unit`; `make test` runs everything.
+The Dev Container CLI workflow is documented in `README.md`.
+
+Milestone E remains intentionally deferred: this plan says optional compilers
+are added only in response to a real project and must not block the core agent
+tool. Links itself exercises the supplied CWSDPMI protected-mode runtime, but a
+cross-compiled DJGPP hello-world awaits an approved, pinned optional toolchain.
+
 ## Goal
 
 Build a small, scriptable DOS 7.1 environment that an agent can use to deploy,

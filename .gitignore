@@ -1,6 +1,7 @@
 # Generated images, payload smoke binary, and run state
 build/
 payload/BIN/HELLO.COM
+payload/BIN/MAKEBIN.COM
 
 # Python
 __pycache__/

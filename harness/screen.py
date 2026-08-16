@@ -37,7 +37,9 @@ class Cell:
             "character": self.character,
             "attribute": self.attribute,
             "foreground": self.attribute & 0x0F,
+            "foreground_intense": bool(self.attribute & 0x08),
             "background": (self.attribute >> 4) & 0x07,
+            "blink_or_background_intense": bool(self.attribute & 0x80),
             "blink": bool(self.attribute & 0x80),
         }
 

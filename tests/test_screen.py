@@ -48,5 +48,7 @@ def test_text_screen_uses_bios_dimensions_and_cp437():
     assert (screen.columns, screen.rows) == (80, 25)
     assert screen.cells[0][0].character == "A"
     assert screen.cells[0][0].attribute == 0x1E
+    assert screen.cells[0][0].as_dict()["foreground_intense"] is True
+    assert screen.cells[0][0].as_dict()["background"] == 1
     assert screen.cells[0][1].character == "█"
     assert screen.ascii().splitlines()[0].startswith("A#+")

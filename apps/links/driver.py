@@ -1,10 +1,8 @@
-"""Small text-mode Links driver built only on the generic DosVM API."""
+"""Text-mode Links driver built only on the public, generic DosVM API."""
 
 from __future__ import annotations
 
-import time
-
-from harness.dosvm import DosVM
+from harness.dosvm import DosVM, DosVMError
 
 
 class LinksDriver:
@@ -23,24 +21,66 @@ class LinksDriver:
                 self.vm.wait_for(marker, timeout=timeout, require_change_from=dialog)
 
     def goto(self, url: str, marker: str | None = None, timeout: float = 20.0) -> None:
+        before = self.vm.screen_text()
         self.vm.key("g")
         self.vm.type(url)
         self.vm.key("ENTER")
         if marker:
-            self.vm.wait_for(marker, timeout=timeout)
+            self.vm.wait_for(marker, timeout=timeout, require_change_from=before)
 
-    def read_full_page(self, max_pages: int = 100) -> str:
+    def navigate(self, *keys: str) -> None:
+        """Send Links navigation keys (UP, DOWN, TAB, PGDN, and so on)."""
+        self.vm.key(*keys)
+
+    def enter(self) -> None:
+        self.vm.key("ENTER")
+
+    def follow_selected(self, marker: str | None = None, timeout: float = 20.0) -> None:
+        before = self.vm.screen_text()
+        self.enter()
+        if marker:
+            self.vm.wait_for(marker, timeout=timeout, require_change_from=before)
+        else:
+            self.vm.wait_for_screen_change(before, timeout=timeout)
+
+    def fill_selected(self, text: str, clear: bool = False) -> None:
+        """Fill the currently selected form control without assuming VGA colors."""
+        if clear:
+            self.vm.key("HOME", "SHIFT_END", "BACKSPACE")
+        self.vm.type(text)
+
+    def fill_and_submit(
+        self,
+        text: str,
+        steps_to_field: int = 1,
+        steps_to_submit: int = 1,
+        marker: str | None = None,
+        timeout: float = 20.0,
+    ) -> None:
+        """Move to a text field, enter text, move to submit, and activate it."""
+        before = self.vm.screen_text()
+        for _ in range(steps_to_field):
+            self.vm.key("DOWN")
+        self.fill_selected(text)
+        for _ in range(steps_to_submit):
+            self.vm.key("DOWN")
+        self.vm.key("ENTER")
+        if marker:
+            self.vm.wait_for(marker, timeout=timeout, require_change_from=before)
+
+    def read_full_page(self, max_pages: int = 100, change_timeout: float = 0.75) -> str:
+        """Page until Links no longer produces a new screen generation."""
         pages: list[str] = []
-        previous = None
+        current = self.vm.screen_text()
         for _ in range(max_pages):
-            current = self.vm.screen_text()
-            if current == previous:
-                break
-            pages.append(current)
-            previous = current
+            if not pages or current != pages[-1]:
+                pages.append(current)
             self.vm.key("PGDN")
-            time.sleep(0.05)
-        return "\n\f\n".join(pages)
+            changed = self.vm.poll_for_screen_change(current, timeout=change_timeout)
+            if changed is None:
+                return "\n\f\n".join(pages)
+            current = changed.text()
+        raise DosVMError(f"Links page did not stabilize within {max_pages} pages")
 
     def quit(self, timeout: float = 5.0) -> None:
         before = self.vm.screen_text()
