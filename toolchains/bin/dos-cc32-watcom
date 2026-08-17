@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+export WATCOM=${WATCOM:-/opt/watcom}
+export EDPATH=${EDPATH:-$WATCOM/eddat}
+export INCLUDE=${INCLUDE:-$WATCOM/h}
+exec "$WATCOM/binl64/wcl386" -q -bt=dos -l=dos4g "$@"

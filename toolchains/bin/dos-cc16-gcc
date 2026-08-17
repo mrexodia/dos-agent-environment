@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+model=${DOS_MEMORY_MODEL:-medium}
+link=true
+for arg in "$@"; do
+    case "$arg" in -c|-S|-E) link=false ;; esac
+done
+if $link; then
+    exec /opt/ia16/bin/ia16-elf-gcc "-mcmodel=$model" "$@" -li86
+else
+    exec /opt/ia16/bin/ia16-elf-gcc "-mcmodel=$model" "$@"
+fi

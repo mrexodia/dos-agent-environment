@@ -1,7 +1,8 @@
 # Optional, deliberately separate DOS cross-toolchain image.
 # Build the core image first; these stages are large and independently cached.
-ARG FPC_BOOTSTRAP_IMAGE=ghcr.io/mrexodia/dos-agent-environment-toolchains@sha256:3876eba991955cc9b8f14088f46dad26899c63e5b8d1db69c9a9555553e3196d
+ARG FPC_BOOTSTRAP_IMAGE=ghcr.io/mrexodia/dos-agent-environment/toolchains@sha256:4c72ba6c19d1ed3a17105731e1181921ec094a568567b049dcc314901585dad8
 ARG FPC_BOOTSTRAP_PLATFORM=linux/amd64
+ARG TOOLCHAINS_V1_IMAGE=ghcr.io/mrexodia/dos-agent-environment-toolchains@sha256:98fda1e54976ba3cdeaed3977932dfa7bdfeb956a94b3404a9c44c631bfddca8
 FROM debian:bookworm AS core
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -165,47 +166,92 @@ RUN set -eux; \
     for tool in as ld ar objcopy strip; do \
       ln -s "/opt/djgpp/bin/i586-pc-msdosdjgpp-$tool" "/usr/local/bin/i386-go32v2-$tool"; \
     done; \
+    ln -s /usr/bin/nasm /usr/local/bin/msdos-nasm; \
     git init /tmp/fpcsrc; git -C /tmp/fpcsrc remote add origin https://gitlab.com/freepascal.org/fpc/source.git; \
     git -C /tmp/fpcsrc fetch --depth 1 origin "$FPC_REF"; \
     git -C /tmp/fpcsrc checkout --detach FETCH_HEAD; \
     cd /tmp/fpcsrc; \
     make -j4 crossall OS_TARGET=go32v2 CPU_TARGET=i386; \
     make crossinstall OS_TARGET=go32v2 CPU_TARGET=i386 INSTALL_PREFIX=/opt/fpc; \
-    compiler="$(find /opt/fpc -type f -name ppcross386 | head -n 1)"; \
-    test -n "$compiler"; mkdir -p /opt/fpc/bin; ln -s "$compiler" /opt/fpc/bin/ppcross386
+    make -j4 crossall OS_TARGET=msdos CPU_TARGET=i8086 CROSSOPT='-WmLarge -CX'; \
+    make crossinstall OS_TARGET=msdos CPU_TARGET=i8086 CROSSOPT='-WmLarge -CX' INSTALL_PREFIX=/opt/fpc; \
+    mkdir -p /opt/fpc/bin; \
+    for name in ppcross386 ppcross8086; do \
+      compiler="$(find /opt/fpc -type f -name "$name" | head -n 1)"; \
+      test -n "$compiler"; ln -s "$compiler" "/opt/fpc/bin/$name"; \
+    done
 
-# FPC 3.2.2 cannot build an i386 compiler on hosts without an 80-bit extended
-# floating-point type.  Reuse the immutable, source-built amd64 compiler on
-# arm64 under qemu-user; its GO32v2 assembler and linker remain host-native.
+FROM core AS watcom-build
+ARG WATCOM_BUILD=2026-08-01-Build
+ARG WATCOM_SHA256=e1bc4e88fa47191118f29e53731e7f4542803c7f4c503e15d72f1f571ac0832f
+RUN curl -LfsS -o /tmp/open-watcom \
+      "https://github.com/open-watcom/open-watcom-v2/releases/download/${WATCOM_BUILD}/open-watcom-2_0-c-linux-x64" \
+    && echo "${WATCOM_SHA256}  /tmp/open-watcom" | sha256sum -c - \
+    && mkdir -p /opt/watcom \
+    && unzip -q /tmp/open-watcom -d /opt/watcom \
+    && rm /tmp/open-watcom \
+    && find /opt/watcom/binl /opt/watcom/binl64 -type f -exec chmod a+x {} + \
+    && test -x /opt/watcom/binl64/wcc \
+    && test -f /opt/watcom/binw/dos4gw.exe
+
+FROM core AS fasm-build
+ARG FASM_VERSION=1.73.35
+ARG FASM_SHA256=a34dec7d0bc2dc79faabb68bd8bc2f62b6cfb31d69c01449367ce4cd8098934e
+RUN curl -LfsS -o /tmp/fasm.tgz \
+      "https://flatassembler.net/fasm-${FASM_VERSION}.tgz" \
+    && echo "${FASM_SHA256}  /tmp/fasm.tgz" | sha256sum -c - \
+    && tar -xzf /tmp/fasm.tgz -C /tmp \
+    && install -D -m 0755 /tmp/fasm/fasm.x64 /usr/local/libexec/fasm.amd64 \
+    && rm -rf /tmp/fasm /tmp/fasm.tgz
+
+# FPC 3.2.2 cannot build i386 or i8086 compilers on hosts without an 80-bit
+# extended floating-point type. Reuse immutable, source-built amd64 compilers
+# on arm64 under qemu-user; their target assembler/linker tools remain native.
 # The fpc-build target above remains available to reproduce this bootstrap.
 FROM --platform=${FPC_BOOTSTRAP_PLATFORM} ${FPC_BOOTSTRAP_IMAGE} AS fpc-prebuilt
 
-FROM core AS toolchains
+# Extend the already verified v1 payload instead of rebuilding its large source
+# stages for every release. All v1 source stages remain available above.
+FROM ${TOOLCHAINS_V1_IMAGE} AS toolchains
 LABEL org.opencontainers.image.source="https://github.com/mrexodia/dos-agent-environment" \
       org.opencontainers.image.description="Pinned DOS cross-toolchains and TCG test harness" \
       org.opencontainers.image.licenses="MIT"
-RUN set -eux; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-      bcc=0.16.17-3.4 bin86=0.16.17-3.4 elks-libc=0.16.17-3.4; \
-    if [ "$(dpkg --print-architecture)" = arm64 ]; then \
-      apt-get install -y --no-install-recommends qemu-user-static; \
-    fi; \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=djgpp-build /opt/djgpp /opt/djgpp
-COPY --from=ia16-final /opt/ia16 /opt/ia16
-COPY --from=jwasm-build /usr/local/bin/jwasm /usr/local/bin/jwasm
-COPY --from=upx-build /usr/local/bin/upx /usr/local/bin/upx
 COPY --from=fpc-prebuilt /opt/fpc /opt/fpc
+COPY --from=watcom-build /opt/watcom /opt/watcom
+COPY --from=fasm-build /usr/local/libexec/fasm.amd64 /usr/local/libexec/fasm.amd64
+COPY toolchains/bin/ /usr/local/bin/
 RUN set -eux; \
+    chmod +x /usr/local/bin/dos-*; \
     ln -sf /opt/djgpp/bin/i586-pc-msdosdjgpp-as /opt/fpc/bin/i386-go32v2-as; \
     ln -sf /opt/djgpp/bin/i586-pc-msdosdjgpp-ld /opt/fpc/bin/i386-go32v2-ld; \
+    ln -sf /usr/bin/nasm /opt/fpc/bin/msdos-nasm; \
     if [ "$(dpkg --print-architecture)" = arm64 ]; then \
-      compiler="$(readlink -f /opt/fpc/bin/ppcross386)"; \
-      mv "$compiler" "$compiler.amd64"; \
+      for name in ppcross386 ppcross8086; do \
+        compiler="$(readlink -f "/opt/fpc/bin/$name")"; \
+        mv "$compiler" "$compiler.amd64"; \
+        printf '%s\n' '#!/bin/sh' \
+          "exec /usr/bin/qemu-x86_64-static $compiler.amd64 \"\$@\"" > "$compiler"; \
+        chmod +x "$compiler"; \
+      done; \
+      mv /opt/watcom/binl64 /opt/watcom/binl64.amd64; \
+      mkdir /opt/watcom/binl64; \
+      for source in /opt/watcom/binl64.amd64/*; do \
+        name="$(basename "$source")"; destination="/opt/watcom/binl64/$name"; \
+        if [ "$(od -An -tx1 -N4 "$source" 2>/dev/null | tr -d ' \n')" = 7f454c46 ]; then \
+          printf '%s\n' '#!/bin/sh' \
+            "exec /usr/bin/qemu-x86_64-static $source \"\$@\"" > "$destination"; \
+          chmod +x "$destination"; \
+        else \
+          ln -s "$source" "$destination"; \
+        fi; \
+      done; \
       printf '%s\n' '#!/bin/sh' \
-        "exec /usr/bin/qemu-x86_64-static $compiler.amd64 \"\$@\"" > "$compiler"; \
-      chmod +x "$compiler"; \
+        'exec /usr/bin/qemu-x86_64-static /usr/local/libexec/fasm.amd64 "$@"' \
+        > /usr/local/bin/fasm; \
+      chmod +x /usr/local/bin/fasm; \
+    else \
+      ln -s /usr/local/libexec/fasm.amd64 /usr/local/bin/fasm; \
     fi
-ENV PATH="/opt/djgpp/bin:/opt/ia16/bin:/opt/fpc/bin:/usr/local/bin:${PATH}"
+ENV WATCOM="/opt/watcom" EDPATH="/opt/watcom/eddat"
+ENV PATH="/opt/djgpp/bin:/opt/ia16/bin:/opt/fpc/bin:/opt/watcom/binl64:/usr/local/bin:${PATH}"
 WORKDIR /workspace

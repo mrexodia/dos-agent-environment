@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+units=/opt/fpc/lib/fpc/3.2.2/units/msdos/rtl
+exec /opt/fpc/bin/ppcross8086 -n -Tmsdos -Pi8086 -WmLarge -CX -XX -Fu"$units" "$@"

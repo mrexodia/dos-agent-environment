@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+units=/opt/fpc/lib/fpc/3.2.2/units/go32v2/rtl
+exec /opt/fpc/bin/ppcross386 -n -Tgo32v2 -Pi386 -Fu"$units" "$@"

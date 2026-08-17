@@ -5,13 +5,14 @@ ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 OUT="$ROOT/build/toolchains"
 PAYLOAD="$ROOT/payload/BIN"
 mkdir -p "$OUT" "$PAYLOAD"
-rm -f "$OUT"/TC*.COM "$OUT"/TC*.EXE "$OUT"/TC*.exe "$OUT"/djgpp-output.exe
+rm -f "$OUT"/TC*.COM "$OUT"/TC*.EXE "$OUT"/TC*.exe \
+    "$OUT"/*.o "$OUT"/*.a "$OUT"/djgpp-output.exe
 
-DJGPP_GCC=${DJGPP_GCC:-/opt/djgpp/bin/i586-pc-msdosdjgpp-gcc}
-IA16_GCC=${IA16_GCC:-/opt/ia16/bin/ia16-elf-gcc}
-FPC=${FPC:-/opt/fpc/bin/ppcross386}
-
-for tool in "$DJGPP_GCC" "$IA16_GCC" "$FPC" jwasm bcc upx; do
+required=(
+    dos-cc32-djgpp dos-cc16-gcc dos-cc16-watcom dos-cc32-watcom
+    dos-pas16 dos-pas32 dos-asm-nasm dos-asm-masm dos-asm-fasm bcc upx
+)
+for tool in "${required[@]}"; do
     if ! command -v "$tool" >/dev/null 2>&1; then
         echo "missing optional toolchain command: $tool" >&2
         echo "use .devcontainer-toolchains/devcontainer.json" >&2
@@ -19,25 +20,34 @@ for tool in "$DJGPP_GCC" "$IA16_GCC" "$FPC" jwasm bcc upx; do
     fi
 done
 
-"$DJGPP_GCC" -Os -s -o "$OUT/djgpp-output.exe" "$ROOT/toolchains/hello/djgpp.c"
+dos-cc32-djgpp -Os -s -o "$OUT/djgpp-output.exe" \
+    "$ROOT/toolchains/hello/djgpp.c"
 mv "$OUT/djgpp-output.exe" "$OUT/TCDJGPP.EXE"
-"$IA16_GCC" -Os -s -mcmodel=medium -o "$OUT/TCIA16.EXE" \
-    "$ROOT/toolchains/hello/ia16.c" -li86
-jwasm -q -bin -Fo"$OUT/TCJWASM.COM" "$ROOT/toolchains/hello/jwasm.asm"
+dos-cc16-gcc -Os -s -o "$OUT/TCIA16.EXE" \
+    "$ROOT/toolchains/hello/ia16.c"
+dos-asm-masm -q -bin -Fo"$OUT/TCJWASM.COM" \
+    "$ROOT/toolchains/hello/jwasm.asm"
+dos-asm-nasm -f bin -o "$OUT/TCNASM.COM" \
+    "$ROOT/toolchains/hello/nasm.asm"
 bcc -Md -ansi -O -o "$OUT/TCBCC.COM" "$ROOT/toolchains/hello/bcc.c"
+dos-pas32 -FE"$OUT" -oTCFPC.EXE "$ROOT/toolchains/hello/fpc.pas"
 
-fpc_units=$(find /opt/fpc -type d -path '*/units/go32v2/rtl' | head -n 1)
-if [[ -z "$fpc_units" ]]; then
-    echo "Free Pascal GO32v2 RTL units were not installed" >&2
-    exit 2
-fi
-"$FPC" -n -Tgo32v2 -Fu"$fpc_units" -FE"$OUT" -oTCFPC.EXE \
-    "$ROOT/toolchains/hello/fpc.pas"
+dos-cc16-watcom -fo="$OUT/TCW16.o" -fe="$OUT/TCW16.EXE" \
+    "$ROOT/toolchains/hello/watcom16.c"
+dos-cc16-watcom -bcl=com -fo="$OUT/TCWCOM.o" -fe="$OUT/TCWCOM.COM" \
+    "$ROOT/toolchains/hello/watcomcom.c"
+dos-cc16-watcom -fo="$OUT/TCWCPP.o" -fe="$OUT/TCWCPP.EXE" \
+    "$ROOT/toolchains/hello/watcom.cpp"
+dos-cc32-watcom -fo="$OUT/TCW32.o" -fe="$OUT/TCW32.EXE" \
+    "$ROOT/toolchains/hello/watcom32.c"
+dos-pas16 -FE"$OUT" -oTCFPC16.EXE "$ROOT/toolchains/hello/fpc16.pas"
+dos-asm-fasm "$ROOT/toolchains/hello/fasm.asm" "$OUT/TCFASM.COM"
 
 cp "$OUT/TCDJGPP.EXE" "$OUT/TCUPX.EXE"
 upx --best --quiet "$OUT/TCUPX.EXE"
 
 cp "$OUT"/TC*.EXE "$OUT"/TC*.COM "$PAYLOAD"/
+cp /opt/watcom/binw/dos4gw.exe "$PAYLOAD/DOS4GW.EXE"
 "$ROOT/scripts/build-runtime.sh"
 
 PYTHONPATH="$ROOT" python3 - <<'PY'
@@ -47,8 +57,15 @@ expected = {
     "TCDJGPP.EXE": "DOS_AGENT_DJGPP",
     "TCIA16.EXE": "DOS_AGENT_IA16",
     "TCJWASM.COM": "DOS_AGENT_JWASM",
+    "TCNASM.COM": "DOS_AGENT_NASM",
     "TCBCC.COM": "DOS_AGENT_BCC",
     "TCFPC.EXE": "DOS_AGENT_FPC",
+    "TCFPC16.EXE": "DOS_AGENT_FPC16",
+    "TCFASM.COM": "DOS_AGENT_FASM",
+    "TCW16.EXE": "DOS_AGENT_WATCOM16",
+    "TCWCOM.COM": "DOS_AGENT_WATCOM_COM",
+    "TCWCPP.EXE": "DOS_AGENT_WATCOM_CPP",
+    "TCW32.EXE": "DOS_AGENT_WATCOM32",
     "TCUPX.EXE": "DOS_AGENT_DJGPP",
 }
 vm = DosVM.start(timeout=30.0)

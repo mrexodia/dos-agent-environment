@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+model=${DOS_MEMORY_MODEL:-s}
+export WATCOM=${WATCOM:-/opt/watcom}
+export EDPATH=${EDPATH:-$WATCOM/eddat}
+export INCLUDE=${INCLUDE:-$WATCOM/h}
+exec "$WATCOM/binl64/wcl" -q -bt=dos "-m$model" "$@"

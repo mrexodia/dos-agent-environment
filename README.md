@@ -16,8 +16,8 @@ See [`PLAN.md`](PLAN.md) for architecture and milestones.
   a private serial socket;
 - a stable `python3 -m harness.dosctl` command-line interface;
 - NASM `.COM` payload smoke test;
-- a separate, pinned optional image for DJGPP, IA-16 GCC, JWasm, bcc/bin86,
-  Free Pascal GO32v2, and UPX.
+- a separate, pinned optional image for DJGPP, IA-16 GCC, Open Watcom V2,
+  JWasm, FASM, NASM, bcc/bin86, 16/32-bit Free Pascal, and UPX.
 
 The pinned mTCP release provides DHCP, ping, HTGET, and binary file collection.
 The pinned Links 2.30 binary and local fixtures provide the full-screen browser

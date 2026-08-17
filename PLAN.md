@@ -11,8 +11,9 @@ vertical slice. Fast protocol and decoding unit tests run under `make unit`; `ma
 The Dev Container CLI workflow is documented in `README.md`.
 
 Milestone E is implemented in a separate optional multi-architecture GHCR
-image. DJGPP, IA-16 GCC, JWasm, bcc/bin86, Free Pascal GO32v2, and UPX are
-pinned independently from the core harness and each output is compile-and-run
+image. DJGPP, IA-16 GCC, Open Watcom V2, JWasm, FASM, bcc/bin86, both Free
+Pascal DOS targets, and UPX are pinned independently from the core harness;
+each output is compile-and-run
 tested in DOS on amd64 and arm64. See `toolchains/README.md` for the prebuilt
 and source-build Dev Container CLI workflows.
 
@@ -522,7 +523,8 @@ port.
 ### Milestone E — optional toolchains
 
 - [x] Add DJGPP and prove a protected-mode binary in the guest.
-- [x] Add IA-16 GCC, JWasm, bcc/bin86, Free Pascal GO32v2, and UPX.
+- [x] Add IA-16 GCC, Open Watcom V2, JWasm, FASM, bcc/bin86, both Free
+  Pascal DOS targets, and UPX.
 - [x] Compile and execute a real DOS hello-world output from every tool.
 
 ## Troubleshooting guide
