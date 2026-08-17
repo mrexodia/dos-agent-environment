@@ -1,0 +1,9 @@
+{
+  "name": "DOS Agent Environment — Optional Toolchains (source build)",
+  "build": {
+    "dockerfile": "../.devcontainer/Dockerfile.toolchains",
+    "context": "..",
+    "target": "toolchains"
+  },
+  "forwardPorts": [8080]
+}

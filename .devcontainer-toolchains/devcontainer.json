@@ -1,0 +1,5 @@
+{
+  "name": "DOS Agent Environment — Optional Toolchains",
+  "image": "ghcr.io/mrexodia/dos-agent-environment-toolchains@sha256:98fda1e54976ba3cdeaed3977932dfa7bdfeb956a94b3404a9c44c631bfddca8",
+  "forwardPorts": [8080]
+}

@@ -15,7 +15,9 @@ See [`PLAN.md`](PLAN.md) for architecture and milestones.
 - reliable non-interactive DOS command capture by temporarily switching CTTY to
   a private serial socket;
 - a stable `python3 -m harness.dosctl` command-line interface;
-- NASM `.COM` payload smoke test.
+- NASM `.COM` payload smoke test;
+- a separate, pinned optional image for DJGPP, IA-16 GCC, JWasm, bcc/bin86,
+  Free Pascal GO32v2, and UPX.
 
 The pinned mTCP release provides DHCP, ping, HTGET, and binary file collection.
 The pinned Links 2.30 binary and local fixtures provide the full-screen browser
@@ -105,6 +107,23 @@ make runtime
 ```
 
 Stop all active runs before rebuilding the canonical image.
+
+## Optional DOS cross-toolchains
+
+The large compiler image is deliberately separate from the core harness. The
+optional Dev Container pulls a pinned amd64/arm64 image from GHCR, then
+compile/runs every hello-world output in DOS with:
+
+```bash
+devcontainer up --workspace-folder . \
+  --config .devcontainer-toolchains/devcontainer.json
+devcontainer exec --workspace-folder . \
+  --config .devcontainer-toolchains/devcontainer.json \
+  make toolchain-smoke
+```
+
+See [`toolchains/README.md`](toolchains/README.md) for pins, outputs, and
+multi-architecture build commands.
 
 ## Tests
 

@@ -1,0 +1,211 @@
+# Optional, deliberately separate DOS cross-toolchain image.
+# Build the core image first; these stages are large and independently cached.
+ARG FPC_BOOTSTRAP_IMAGE=ghcr.io/mrexodia/dos-agent-environment-toolchains@sha256:3876eba991955cc9b8f14088f46dad26899c63e5b8d1db69c9a9555553e3196d
+ARG FPC_BOOTSTRAP_PLATFORM=linux/amd64
+FROM debian:bookworm AS core
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    qemu-system-x86 qemu-utils \
+    mtools parted dosfstools \
+    build-essential ca-certificates gettext curl unzip git nasm \
+    python3 python3-pexpect python3-pytest python3-pil \
+    netcat-openbsd socat \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG MS_SYS_REF=318df77ec01fbdc4084263fa9a828f662ce3c685
+RUN git clone https://github.com/pbatard/ms-sys /tmp/ms-sys \
+    && cd /tmp/ms-sys && git checkout "$MS_SYS_REF" \
+    && make && make install && rm -rf /tmp/ms-sys
+
+FROM core AS djgpp-build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bison flex texinfo zlib1g-dev xz-utils bzip2 file \
+    && rm -rf /var/lib/apt/lists/*
+ARG BUILD_DJGPP_REF=0dc28365825f853c3cc6ad0d8f10f8570bed5828
+# Upstream accidentally passes "j=4" as a make variable, leaving the expensive
+# GCC build serial. Parallelize that invocation only; global MAKEFLAGS races
+# DJGPP's later host-tool generation.
+RUN git init /tmp/build-djgpp \
+    && git -C /tmp/build-djgpp fetch --depth 1 https://github.com/andrewwutw/build-djgpp "$BUILD_DJGPP_REF" \
+    && git -C /tmp/build-djgpp checkout --detach FETCH_HEAD \
+    && cd /tmp/build-djgpp \
+    && sed -i 's/^\${MAKE} j=4 /\${MAKE} -j4 /' script/12.2.0 \
+    && grep -F '${MAKE} -j4 "PATH=' script/12.2.0 \
+    && DJGPP_PREFIX=/opt/djgpp ENABLE_LANGUAGES=c,c++ ./build-djgpp.sh 12.2.0 \
+    && /opt/djgpp/bin/i586-pc-msdosdjgpp-gcc --version
+
+FROM core AS ia16-build
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bison flex texinfo wget xz-utils bzip2 autoconf automake libtool \
+    libelf-dev libncurses-dev ncurses-bin util-linux \
+    && rm -rf /var/lib/apt/lists/*
+ARG BUILD_IA16_REF=00a8c6a3edf6c773f2d61c14aff2eb250df9e1c8
+ARG GCC_IA16_REF=9a5539544a9095ad35c4f57a23f2b79461032cb2
+ARG NEWLIB_IA16_REF=8aa8f6eb7080eb94713c5b3bee4df44de1df109b
+ARG BINUTILS_IA16_REF=904e46a417122e7f2077ba6f8427b4b219b80c04
+ARG REENIGNE_REF=69adf7f1e3c852070b38ce5a4de9224a87f00a98
+ARG ELKS_REF=39a40a328835e40ae56d38297ab7747d4ea51510
+ARG CAUSEWAY_REF=0f4f1f06ee02795749885c09693e3da89e72192c
+ARG LIBI86_REF=521a43f42a3daf00b85b62c44390821f532def8f
+RUN git init /tmp/build-ia16 \
+    && git -C /tmp/build-ia16 fetch --depth 1 https://gitlab.com/tkchia/build-ia16 "$BUILD_IA16_REF" \
+    && git -C /tmp/build-ia16 checkout --detach FETCH_HEAD
+RUN set -eux; cd /tmp/build-ia16; \
+    fetch_git() { name="$1"; url="$2"; ref="$3"; \
+      git init "$name"; git -C "$name" remote add origin "$url"; \
+      git -C "$name" fetch --depth 1 origin "$ref"; \
+      git -C "$name" checkout --detach FETCH_HEAD; \
+      git -C "$name" submodule update --init --recursive --depth 1; }; \
+    fetch_git gcc-ia16 https://gitlab.com/tkchia/gcc-ia16.git "$GCC_IA16_REF"; \
+    fetch_git newlib-ia16 https://gitlab.com/tkchia/newlib-ia16.git "$NEWLIB_IA16_REF"; \
+    fetch_git binutils-ia16 https://gitlab.com/tkchia/binutils-ia16.git "$BINUTILS_IA16_REF"; \
+    fetch_git reenigne https://gitlab.com/tkchia/reenigne.git "$REENIGNE_REF"; \
+    fetch_git elks https://gitlab.com/tkchia/elks.git "$ELKS_REF"; \
+    fetch_git causeway https://gitlab.com/tkchia/causeway.git "$CAUSEWAY_REF"; \
+    fetch_git libi86 https://gitlab.com/tkchia/libi86.git "$LIBI86_REF"; \
+    ln -s reenigne/8088/86sim 86sim; \
+    curl -LfsS -o gmp-6.1.2.tar.bz2 https://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.bz2; \
+    echo '5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2  gmp-6.1.2.tar.bz2' | sha256sum -c -; \
+    tar -xjf gmp-6.1.2.tar.bz2; \
+    curl -LfsS -o mpfr-3.1.5.tar.bz2 https://ftp.gnu.org/gnu/mpfr/mpfr-3.1.5.tar.bz2; \
+    echo 'ca498c1c7a74dd37a576f353312d1e68d490978de4395fa28f1cbd46a364e658  mpfr-3.1.5.tar.bz2' | sha256sum -c -; \
+    tar -xjf mpfr-3.1.5.tar.bz2; \
+    curl -LfsS -o mpc-1.0.3.tar.gz https://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz; \
+    echo '617decc6ea09889fb08ede330917a00b16809b8db88c29c31bfbb49cbf88ecc3  mpc-1.0.3.tar.gz' | sha256sum -c -; \
+    tar -xzf mpc-1.0.3.tar.gz; \
+    curl -LfsS -o isl-0.16.1.tar.bz2 https://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2; \
+    echo '412538bb65c799ac98e17e8cfcdacbb257a57362acfaaff254b0fcae970126d2  isl-0.16.1.tar.bz2' | sha256sum -c -; \
+    tar -xjf isl-0.16.1.tar.bz2
+FROM ia16-build AS ia16-gcc1
+RUN cd /tmp/build-ia16 && ./build.sh clean binutils prereqs gcc1
+
+FROM ia16-gcc1 AS ia16-newlib
+RUN cd /tmp/build-ia16 && MAKEFLAGS=-s ./build.sh newlib
+
+FROM ia16-newlib AS ia16-causeway
+# CauseWay's build helpers are x86-host-specific.  The real-mode compiler does
+# not depend on them, so retain the documented stage on amd64 and skip it when
+# producing the otherwise identical arm64-hosted cross-toolchain.
+RUN set -eux; \
+    if [ "$(dpkg --print-architecture)" = amd64 ]; then \
+      apt-get update; \
+      apt-get install -y --no-install-recommends gcc-multilib g++-multilib dosbox; \
+      rm -rf /var/lib/apt/lists/*; \
+      cd /tmp/build-ia16; ./build.sh causeway; \
+    fi
+
+FROM ia16-causeway AS ia16-elks
+# ELKS' host-side emulator uses Linux x86 LDT interfaces.  libi86 only enables
+# its optional ELKS multilibs when the ELKS checkout is present, so omit that
+# checkout on arm64 while retaining all DOS real-mode libraries.
+RUN set -eux; \
+    if [ "$(dpkg --print-architecture)" = amd64 ]; then \
+      cd /tmp/build-ia16; ./build.sh elks-libc elf2elks; \
+    else \
+      apt-get update; \
+      apt-get install -y --no-install-recommends bc; \
+      rm -rf /var/lib/apt/lists/* /tmp/build-ia16/elks; \
+    fi
+
+FROM ia16-elks AS ia16-libi86
+RUN set -eux; cd /tmp/build-ia16; \
+    if [ "$(dpkg --print-architecture)" = arm64 ]; then \
+      sed -i '/^  dir=.*sed/a\  case "${dir}" in dosx|dosx/*|elkslibc|elkslibc/*) continue ;; esac' \
+        libi86/config-ml.in; \
+      sed -i '/PROGRAMS.*dpmii86/d' libi86/examples/Makefile.in; \
+      mv prefix/bin/ia16-elf-gcc prefix/bin/ia16-elf-gcc.real; \
+      printf '%s\n' '#!/bin/sh' \
+        'case " $* " in' \
+        '  *" -print-multi-lib "*) /tmp/build-ia16/prefix/bin/ia16-elf-gcc.real "$@" | grep -Ev "^(dosx|elkslibc)" ;;' \
+        '  *) exec /tmp/build-ia16/prefix/bin/ia16-elf-gcc.real "$@" ;;' \
+        'esac' > prefix/bin/ia16-elf-gcc; \
+      chmod +x prefix/bin/ia16-elf-gcc; \
+    fi; \
+    ./build.sh libi86; \
+    if [ -e prefix/bin/ia16-elf-gcc.real ]; then \
+      rm prefix/bin/ia16-elf-gcc; \
+      mv prefix/bin/ia16-elf-gcc.real prefix/bin/ia16-elf-gcc; \
+    fi
+
+FROM ia16-libi86 AS ia16-final
+RUN set -eux; cd /tmp/build-ia16; \
+    if [ "$(dpkg --print-architecture)" = amd64 ]; then \
+      MAKEFLAGS=-s ./build.sh gcc2; \
+    fi; \
+    mv prefix /opt/ia16; \
+    /opt/ia16/bin/ia16-elf-gcc --version
+
+FROM core AS jwasm-build
+ARG JWASM_REF=a5c4ea03cc0545a15d81a354251b5f534bef7a1b
+RUN git init /tmp/JWasm \
+    && git -C /tmp/JWasm fetch --depth 1 https://github.com/JWasm/JWasm "$JWASM_REF" \
+    && git -C /tmp/JWasm checkout --detach FETCH_HEAD \
+    && make -C /tmp/JWasm -f GccUnix.mak \
+    && install -m 0755 /tmp/JWasm/GccUnixR/jwasm /usr/local/bin/jwasm \
+    && test -x /usr/local/bin/jwasm
+
+FROM core AS upx-build
+RUN apt-get update && apt-get install -y --no-install-recommends cmake xz-utils \
+    && rm -rf /var/lib/apt/lists/*
+ARG UPX_REF=7685c5fb7eaee8584717fc434c20877968c82b7d
+RUN git init /tmp/upx \
+    && git -C /tmp/upx fetch --depth 1 https://github.com/upx/upx "$UPX_REF" \
+    && git -C /tmp/upx checkout --detach FETCH_HEAD \
+    && git -C /tmp/upx submodule update --init --recursive \
+    && cmake -S /tmp/upx -B /tmp/upx-build -DUPX_CONFIG_DISABLE_GITREV=ON \
+    && cmake --build /tmp/upx-build --parallel 4 \
+    && install -m 0755 /tmp/upx-build/upx /usr/local/bin/upx \
+    && upx --version
+
+FROM djgpp-build AS fpc-build
+RUN apt-get update && apt-get install -y --no-install-recommends fp-compiler \
+    && rm -rf /var/lib/apt/lists/*
+ARG FPC_REF=0d122c49534b480be9284c21bd60b53d99904346
+RUN set -eux; \
+    for tool in as ld ar objcopy strip; do \
+      ln -s "/opt/djgpp/bin/i586-pc-msdosdjgpp-$tool" "/usr/local/bin/i386-go32v2-$tool"; \
+    done; \
+    git init /tmp/fpcsrc; git -C /tmp/fpcsrc remote add origin https://gitlab.com/freepascal.org/fpc/source.git; \
+    git -C /tmp/fpcsrc fetch --depth 1 origin "$FPC_REF"; \
+    git -C /tmp/fpcsrc checkout --detach FETCH_HEAD; \
+    cd /tmp/fpcsrc; \
+    make -j4 crossall OS_TARGET=go32v2 CPU_TARGET=i386; \
+    make crossinstall OS_TARGET=go32v2 CPU_TARGET=i386 INSTALL_PREFIX=/opt/fpc; \
+    compiler="$(find /opt/fpc -type f -name ppcross386 | head -n 1)"; \
+    test -n "$compiler"; mkdir -p /opt/fpc/bin; ln -s "$compiler" /opt/fpc/bin/ppcross386
+
+# FPC 3.2.2 cannot build an i386 compiler on hosts without an 80-bit extended
+# floating-point type.  Reuse the immutable, source-built amd64 compiler on
+# arm64 under qemu-user; its GO32v2 assembler and linker remain host-native.
+# The fpc-build target above remains available to reproduce this bootstrap.
+FROM --platform=${FPC_BOOTSTRAP_PLATFORM} ${FPC_BOOTSTRAP_IMAGE} AS fpc-prebuilt
+
+FROM core AS toolchains
+LABEL org.opencontainers.image.source="https://github.com/mrexodia/dos-agent-environment" \
+      org.opencontainers.image.description="Pinned DOS cross-toolchains and TCG test harness" \
+      org.opencontainers.image.licenses="MIT"
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      bcc=0.16.17-3.4 bin86=0.16.17-3.4 elks-libc=0.16.17-3.4; \
+    if [ "$(dpkg --print-architecture)" = arm64 ]; then \
+      apt-get install -y --no-install-recommends qemu-user-static; \
+    fi; \
+    rm -rf /var/lib/apt/lists/*
+COPY --from=djgpp-build /opt/djgpp /opt/djgpp
+COPY --from=ia16-final /opt/ia16 /opt/ia16
+COPY --from=jwasm-build /usr/local/bin/jwasm /usr/local/bin/jwasm
+COPY --from=upx-build /usr/local/bin/upx /usr/local/bin/upx
+COPY --from=fpc-prebuilt /opt/fpc /opt/fpc
+RUN set -eux; \
+    ln -sf /opt/djgpp/bin/i586-pc-msdosdjgpp-as /opt/fpc/bin/i386-go32v2-as; \
+    ln -sf /opt/djgpp/bin/i586-pc-msdosdjgpp-ld /opt/fpc/bin/i386-go32v2-ld; \
+    if [ "$(dpkg --print-architecture)" = arm64 ]; then \
+      compiler="$(readlink -f /opt/fpc/bin/ppcross386)"; \
+      mv "$compiler" "$compiler.amd64"; \
+      printf '%s\n' '#!/bin/sh' \
+        "exec /usr/bin/qemu-x86_64-static $compiler.amd64 \"\$@\"" > "$compiler"; \
+      chmod +x "$compiler"; \
+    fi
+ENV PATH="/opt/djgpp/bin:/opt/ia16/bin:/opt/fpc/bin:/usr/local/bin:${PATH}"
+WORKDIR /workspace

@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: payload image runtime start stop smoke unit integration test clean
+.PHONY: payload image runtime start stop smoke unit integration test toolchain-smoke clean
 
 payload: payload/BIN/HELLO.COM payload/BIN/MAKEBIN.COM payload/BIN/LINKS.EXE
 
@@ -38,6 +38,9 @@ integration: smoke
 	DOS_LINKS_INTEGRATION=1 $(PYTHON) -m pytest -q
 
 test: integration
+
+toolchain-smoke:
+	./scripts/toolchain-smoke.sh
 
 clean:
 	./dosctl stop --all 2>/dev/null || true

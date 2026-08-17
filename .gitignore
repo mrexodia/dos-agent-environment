@@ -2,6 +2,8 @@
 build/
 payload/BIN/HELLO.COM
 payload/BIN/MAKEBIN.COM
+payload/BIN/TC*.COM
+payload/BIN/TC*.EXE
 
 # Python
 __pycache__/

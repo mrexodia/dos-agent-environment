@@ -10,10 +10,11 @@ verifies the complete Links load/link/form/scroll/screenshot/crash-recovery
 vertical slice. Fast protocol and decoding unit tests run under `make unit`; `make test` runs everything.
 The Dev Container CLI workflow is documented in `README.md`.
 
-Milestone E remains intentionally deferred: this plan says optional compilers
-are added only in response to a real project and must not block the core agent
-tool. Links itself exercises the supplied CWSDPMI protected-mode runtime, but a
-cross-compiled DJGPP hello-world awaits an approved, pinned optional toolchain.
+Milestone E is implemented in a separate optional multi-architecture GHCR
+image. DJGPP, IA-16 GCC, JWasm, bcc/bin86, Free Pascal GO32v2, and UPX are
+pinned independently from the core harness and each output is compile-and-run
+tested in DOS on amd64 and arm64. See `toolchains/README.md` for the prebuilt
+and source-build Dev Container CLI workflows.
 
 ## Goal
 
@@ -442,9 +443,9 @@ From a cold disposable overlay:
 
 ### Protected-mode test
 
-After the optional DJGPP toolchain is available, cross-compile a hello-world
-program, deploy it through `payload/BIN`, and execute it. This proves CWSDPMI,
-HIMEM, and the deployment path.
+The optional toolchain smoke test cross-compiles DJGPP and Free Pascal GO32v2
+hello-world programs, deploys them through `payload/BIN`, and executes them.
+This proves CWSDPMI, HIMEM, and the deployment path.
 
 ### Network test
 
@@ -520,8 +521,9 @@ port.
 
 ### Milestone E — optional toolchains
 
-- Add DJGPP first and prove a protected-mode binary in the guest.
-- Add IA-16, JWasm, Pascal, and other tools only in response to real projects.
+- [x] Add DJGPP and prove a protected-mode binary in the guest.
+- [x] Add IA-16 GCC, JWasm, bcc/bin86, Free Pascal GO32v2, and UPX.
+- [x] Compile and execute a real DOS hello-world output from every tool.
 
 ## Troubleshooting guide
 
