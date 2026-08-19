@@ -1,6 +1,20 @@
 PYTHON ?= python3
 
-.PHONY: payload image runtime start stop smoke unit integration test toolchain-smoke clean
+BASE_SOURCES := \
+	scripts/build-base.sh \
+	inputs/SHA256SUMS \
+	inputs/Windows98_SE_No_Ramdrive.img \
+	inputs/pcntpk.com \
+	inputs/cwsdpmi.exe \
+	inputs/mTCP_2025-01-10_upx.zip \
+	inputs/links-2.30.exe \
+	guest/MSDOS.SYS \
+	guest/CONFIG.SYS \
+	guest/AUTOEXEC.BAT \
+	guest/BIN/SERIAL.BAT \
+	guest/MTCP/TCP.CFG
+
+.PHONY: payload base image runtime full-rebuild start stop smoke unit integration test toolchain-smoke clean
 
 payload: payload/BIN/HELLO.COM payload/BIN/MAKEBIN.COM payload/BIN/LINKS.EXE
 
@@ -16,11 +30,21 @@ payload/BIN/LINKS.EXE: inputs/links-2.30.exe
 	mkdir -p payload/BIN
 	cp $< $@
 
-image: payload
+base: build/dos71-base.img
+
+build/dos71-base.img: $(BASE_SOURCES)
+	./scripts/build-base.sh
+
+image: payload base
 	./scripts/build-image.sh
 
-runtime: payload
+runtime: payload base
 	./scripts/build-runtime.sh
+
+full-rebuild:
+	./dosctl stop --all 2>/dev/null || true
+	rm -f build/dos71-base.img build/dos71.img build/dos71.qcow2
+	$(MAKE) runtime
 
 start:
 	./dosctl start

@@ -49,17 +49,31 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _structured(execute)
 
+    launch = sub.add_parser("launch", help="start an interactive foreground program")
+    launch.add_argument("command")
+    launch.add_argument("--run-id")
+    launch.add_argument("--timeout", type=float, default=10.0)
+
     type_parser = sub.add_parser("type", help="type text through the VGA keyboard")
     type_parser.add_argument("text")
     type_parser.add_argument("--run-id")
     type_parser.add_argument("--delay", type=float, default=0.04)
     _structured(type_parser)
 
-    key = sub.add_parser("key", help="send one or more named keys")
+    key = sub.add_parser("key", help="tap one or more named keys")
     key.add_argument("keys", nargs="+")
     key.add_argument("--run-id")
     key.add_argument("--delay", type=float, default=0.04)
+    key.add_argument("--hold-ms", type=int, default=20)
     _structured(key)
+
+    keydown = sub.add_parser("keydown", help="hold named keys until keyup")
+    keydown.add_argument("keys", nargs="+")
+    keydown.add_argument("--run-id")
+
+    keyup = sub.add_parser("keyup", help="release keys held by keydown")
+    keyup.add_argument("keys", nargs="+")
+    keyup.add_argument("--run-id")
 
     wait = sub.add_parser("wait", help="wait for a regex on the text screen")
     wait.add_argument("pattern")
@@ -67,16 +81,20 @@ def build_parser() -> argparse.ArgumentParser:
     wait.add_argument("--timeout", type=float, default=10.0)
     _structured(wait)
 
+    display = sub.add_parser("display", help="print the current display mode")
+    display.add_argument("--run-id")
+
     screen = sub.add_parser(
         "screen",
-        help="read the display as ASCII (default), CP437 text, JSON, or PNG",
+        help="print text, or save a PNG and print its path in graphics mode",
     )
     screen.add_argument("--run-id")
+    screen.add_argument("--output", metavar="PATH", help="write the result to a file")
     screen_format = screen.add_mutually_exclusive_group()
     screen_format.add_argument(
         "--ascii",
         action="store_true",
-        help="emit 7-bit ASCII (the default; retained for compatibility)",
+        help="emit 7-bit ASCII (the default in text modes)",
     )
     screen_format.add_argument("--text", action="store_true", help="emit decoded CP437 text")
     screen_format.add_argument("--json", action="store_true", help="emit cells and attributes")
@@ -147,31 +165,56 @@ def main(argv: list[str] | None = None) -> int:
                 output,
                 {"run_id": vm.run_id, "command": args.command, "backend": "serial" if args.serial else "vga", "output": output},
             )
+        elif args.action == "launch":
+            vm = _vm(args)
+            result = vm.launch(args.command, timeout=args.timeout)
+            if result.video.kind == "graphics":
+                image = vm.screenshot(vm.run_dir / "launch.png")
+                print(f"{result.video.summary()} screenshot={image}")
+            else:
+                state = "returned-to-prompt" if result.prompt_returned else "foreground"
+                print(f"{result.video.summary()} state={state}")
         elif args.action == "type":
             vm = _vm(args)
             vm.type(args.text, delay=args.delay)
             _emit(args, "", {"run_id": vm.run_id, "typed": args.text})
         elif args.action == "key":
             vm = _vm(args)
-            vm.key(*args.keys, delay=args.delay)
+            vm.key(*args.keys, delay=args.delay, hold_ms=args.hold_ms)
             _emit(args, "", {"run_id": vm.run_id, "keys": args.keys})
+        elif args.action == "keydown":
+            _vm(args).key_down(*args.keys)
+        elif args.action == "keyup":
+            _vm(args).key_up(*args.keys)
         elif args.action == "wait":
             vm = _vm(args)
             text = vm.wait_for(args.pattern, timeout=args.timeout).text()
             _emit(args, text, {"run_id": vm.run_id, "pattern": args.pattern, "text": text})
+        elif args.action == "display":
+            print(_vm(args).video_info().summary())
         elif args.action == "screen":
             vm = _vm(args)
             if args.png is not None:
-                output = Path(args.png) if args.png else None
+                output = Path(args.png) if args.png else (Path(args.output) if args.output else None)
+                print(vm.screenshot(output))
+            elif not (args.ascii or args.text or args.json) and vm.video_info().kind == "graphics":
+                output = Path(args.output) if args.output else None
                 print(vm.screenshot(output))
             else:
                 current = vm.screen()
                 if args.json:
-                    print(json.dumps(current.as_dict(), ensure_ascii=False))
+                    rendered = json.dumps(current.as_dict(), ensure_ascii=False)
                 elif args.text:
-                    print(current.text(trim_blank_rows=True))
+                    rendered = current.text(trim_blank_rows=True)
                 else:
-                    print(current.ascii(trim_blank_rows=True))
+                    rendered = current.ascii(trim_blank_rows=True)
+                if args.output:
+                    destination = Path(args.output)
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    destination.write_text(rendered + "\n", encoding="utf-8")
+                    print(destination.resolve())
+                else:
+                    print(rendered)
         elif args.action == "screenshot":
             output = Path(args.output) if args.output else None
             vm = _vm(args)

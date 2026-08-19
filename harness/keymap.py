@@ -97,8 +97,28 @@ def chord_for_character(character: str) -> list[str]:
 
 
 def send_chord(qmp: QMPClient, qcodes: Iterable[str], hold_ms: int = 20) -> None:
+    if hold_ms <= 0:
+        raise KeyMappingError("key hold time must be positive")
     keys = [{"type": "qcode", "data": qcode} for qcode in qcodes]
     qmp.execute("send-key", {"keys": keys, "hold-time": hold_ms})
+
+
+def send_key_state(qmp: QMPClient, qcodes: Iterable[str], down: bool) -> None:
+    ordered = list(qcodes)
+    if not down:
+        ordered.reverse()
+    events = [
+        {
+            "type": "key",
+            "data": {
+                "down": down,
+                "key": {"type": "qcode", "data": qcode},
+            },
+        }
+        for qcode in ordered
+    ]
+    if events:
+        qmp.execute("input-send-event", {"events": events})
 
 
 def chord_for_named_key(name: str) -> list[str]:
@@ -114,6 +134,9 @@ def chord_for_named_key(name: str) -> list[str]:
                 qcode = tail.lower()
             if qcode is not None:
                 return [*modifiers, qcode]
+    modifier = MODIFIER_KEYS.get(normalized)
+    if modifier is not None:
+        return [modifier]
     qcode = NAMED_KEYS.get(normalized)
     if qcode is not None:
         return [qcode]
@@ -122,8 +145,13 @@ def chord_for_named_key(name: str) -> list[str]:
     raise KeyMappingError(f"unknown named key: {name}")
 
 
-def send_named_key(qmp: QMPClient, name: str, delay: float = 0.04) -> None:
-    send_chord(qmp, chord_for_named_key(name))
+def send_named_key(
+    qmp: QMPClient,
+    name: str,
+    delay: float = 0.04,
+    hold_ms: int = 20,
+) -> None:
+    send_chord(qmp, chord_for_named_key(name), hold_ms=hold_ms)
     if delay:
         time.sleep(delay)
 

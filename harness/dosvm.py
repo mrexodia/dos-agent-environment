@@ -10,12 +10,20 @@ import signal
 import socket
 import subprocess
 import time
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Pattern
 
-from .keymap import send_named_key, type_text
+from .keymap import chord_for_named_key, send_key_state, send_named_key, type_text
 from .qmp import QMPClient, QMPError
-from .screen import TextScreen, UnsupportedVideoMode, read_text_screen, screenshot
+from .screen import (
+    TextScreen,
+    UnsupportedVideoMode,
+    VideoInfo,
+    read_text_screen,
+    read_video_info,
+    screenshot,
+)
 
 
 class DosVMError(RuntimeError):
@@ -24,6 +32,13 @@ class DosVMError(RuntimeError):
 
 class DosTimeout(DosVMError):
     pass
+
+
+@dataclass(frozen=True)
+class LaunchResult:
+    video: VideoInfo
+    prompt_returned: bool
+    screen: TextScreen | None = None
 
 
 def project_root() -> Path:
@@ -71,11 +86,13 @@ class DosVM:
         self.pid_path = self.run_dir / "qemu.pid"
         self.log_path = self.run_dir / "qemu.log"
         self.disk_path = self.run_dir / "disk.qcow2"
+        self.held_keys_path = self.run_dir / "held-keys"
 
     @classmethod
     def current(cls, run_id: str | None = None) -> "DosVM":
         root = project_root()
         runs = root / "build" / "runs"
+        run_id = run_id or os.environ.get("DOSCTL_RUN_ID")
         if run_id:
             run_dir = runs / run_id
         else:
@@ -101,6 +118,8 @@ class DosVM:
         base = root / "build" / "dos71.qcow2"
         if not base.exists():
             raise DosVMError("build/dos71.qcow2 is missing; run make runtime")
+        if run_id is None:
+            run_id = os.environ.get("DOSCTL_RUN_ID")
         if run_id is None:
             run_id = time.strftime("%Y%m%d-%H%M%S") + f"-{os.getpid()}-{secrets.token_hex(2)}"
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", run_id):
@@ -249,6 +268,12 @@ class DosVM:
         sections.append(f"--- last screen ---\n{last_screen}")
         return DosTimeout("\n".join(sections))
 
+    def video_info(self) -> VideoInfo:
+        if not self.is_alive():
+            raise DosVMError(f"DOS VM {self.run_id} is not running")
+        with self.qmp(timeout=10.0) as qmp:
+            return read_video_info(qmp)
+
     def screen(self) -> TextScreen:
         if not self.is_alive():
             raise DosVMError(f"DOS VM {self.run_id} is not running")
@@ -265,7 +290,10 @@ class DosVM:
         require_change_from: str | None = None,
         interval: float = 0.1,
     ) -> TextScreen:
-        regex = re.compile(pattern) if isinstance(pattern, str) else pattern
+        try:
+            regex = re.compile(pattern) if isinstance(pattern, str) else pattern
+        except re.error as exc:
+            raise DosVMError(f"invalid screen regular expression: {exc}") from exc
         deadline = time.monotonic() + timeout
         last_text = ""
         last_error: Exception | None = None
@@ -371,10 +399,96 @@ class DosVM:
         with self.qmp(timeout=max(5.0, len(text) * (delay + 0.1))) as qmp:
             type_text(qmp, text, delay=delay)
 
-    def key(self, *names: str, delay: float = 0.04) -> None:
+    def key(
+        self,
+        *names: str,
+        delay: float = 0.04,
+        hold_ms: int = 20,
+    ) -> None:
         with self.qmp(timeout=max(5.0, len(names) * 0.2)) as qmp:
             for name in names:
-                send_named_key(qmp, name, delay=delay)
+                send_named_key(qmp, name, delay=delay, hold_ms=hold_ms)
+
+    @staticmethod
+    def _qcodes_for_names(names: tuple[str, ...]) -> list[str]:
+        qcodes: list[str] = []
+        for name in names:
+            for qcode in chord_for_named_key(name):
+                if qcode not in qcodes:
+                    qcodes.append(qcode)
+        return qcodes
+
+    def _held_keys(self) -> list[str]:
+        try:
+            return [line for line in self.held_keys_path.read_text().splitlines() if line]
+        except OSError:
+            return []
+
+    def _write_held_keys(self, qcodes: list[str]) -> None:
+        if qcodes:
+            self.held_keys_path.write_text("".join(f"{qcode}\n" for qcode in qcodes))
+        else:
+            self.held_keys_path.unlink(missing_ok=True)
+
+    def key_down(self, *names: str) -> None:
+        qcodes = self._qcodes_for_names(names)
+        with self.qmp(timeout=5.0) as qmp:
+            send_key_state(qmp, qcodes, down=True)
+        held = self._held_keys()
+        self._write_held_keys(held + [qcode for qcode in qcodes if qcode not in held])
+
+    def key_up(self, *names: str) -> None:
+        qcodes = self._qcodes_for_names(names)
+        with self.qmp(timeout=5.0) as qmp:
+            send_key_state(qmp, qcodes, down=False)
+        released = set(qcodes)
+        self._write_held_keys([qcode for qcode in self._held_keys() if qcode not in released])
+
+    def release_all_keys(self) -> None:
+        held = self._held_keys()
+        if not held:
+            return
+        with self.qmp(timeout=5.0) as qmp:
+            send_key_state(qmp, held, down=False)
+        self._write_held_keys([])
+
+    def launch(self, command: str, timeout: float = 10.0) -> LaunchResult:
+        """Start a foreground program and return once its display state is known."""
+        if not command or "\r" in command or "\n" in command:
+            raise DosVMError("launch requires one non-empty DOS command line")
+        initial = self.wait_for_prompt(timeout=min(timeout, 10.0)).text()
+        self.type(command + "\r")
+        deadline = time.monotonic() + timeout
+        changed_at: float | None = None
+        last_text = initial
+        last_error: Exception | None = None
+        prompt = re.compile(r"[A-Z]:\\[^>\r\n]*>")
+        while time.monotonic() < deadline:
+            if not self.is_alive():
+                raise DosVMError(f"QEMU stopped while launching {command!r}")
+            try:
+                info = self.video_info()
+                if info.kind == "graphics":
+                    return LaunchResult(info, prompt_returned=False)
+                current = self.screen()
+                last_text = current.text()
+                if last_text != initial:
+                    lines = [line.rstrip() for line in last_text.splitlines() if line.rstrip()]
+                    if lines and prompt.fullmatch(lines[-1]):
+                        return LaunchResult(info, prompt_returned=True, screen=current)
+                    if changed_at is None:
+                        changed_at = time.monotonic()
+                    elif time.monotonic() - changed_at >= 1.0:
+                        return LaunchResult(info, prompt_returned=False, screen=current)
+            except (UnsupportedVideoMode, QMPError, OSError, TimeoutError) as exc:
+                last_error = exc
+            time.sleep(0.05)
+        raise self.timeout_error(
+            f"launch {command!r}",
+            timeout,
+            last_text,
+            str(last_error) if last_error else None,
+        )
 
     def screenshot(self, output: str | Path | None = None) -> Path:
         if output is None:
@@ -565,8 +679,13 @@ class DosVM:
         """Quit, terminate, then kill with bounded waits and PID verification."""
         pid = self.pid()
         if pid is None or not self.is_alive():
+            self._write_held_keys([])
             self._clear_current()
             return
+        try:
+            self.release_all_keys()
+        except Exception:
+            pass
         try:
             with self.qmp(timeout=1.0) as qmp:
                 qmp.execute("quit", timeout=1.0)

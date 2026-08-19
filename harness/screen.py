@@ -28,6 +28,24 @@ class UnsupportedVideoMode(RuntimeError):
 
 
 @dataclass(frozen=True)
+class VideoInfo:
+    mode: int
+    kind: str
+    columns: int | None = None
+    rows: int | None = None
+    page_offset: int = 0
+    memory_address: int | None = None
+
+    def summary(self) -> str:
+        if self.kind == "text":
+            return (
+                f"text mode=0x{self.mode:02X} "
+                f"{self.columns}x{self.rows} page=0x{self.page_offset:X}"
+            )
+        return f"graphics mode=0x{self.mode:02X}"
+
+
+@dataclass(frozen=True)
 class Cell:
     character: str
     attribute: int
@@ -94,22 +112,47 @@ def read_physical(qmp: QMPClient, address: int, count: int) -> bytes:
     return bytes(values)
 
 
-def read_text_screen(qmp: QMPClient) -> TextScreen:
+def read_video_info(qmp: QMPClient) -> VideoInfo:
     bda = read_physical(qmp, 0x400, 0x100)
     mode = bda[0x49]
-    if mode != 0x03:
-        raise UnsupportedVideoMode(
-            f"text scraping supports VGA color mode 0x03; current mode is 0x{mode:02x}"
-        )
+    if mode not in {0x00, 0x01, 0x02, 0x03, 0x07}:
+        return VideoInfo(mode=mode, kind="graphics")
+
     columns = int.from_bytes(bda[0x4A:0x4C], "little")
     page_offset = int.from_bytes(bda[0x4E:0x50], "little")
     reported_rows = bda[0x84] + 1
+    default_columns = 40 if mode in {0x00, 0x01} else 80
     if not 20 <= columns <= 160:
-        columns = 80
+        columns = default_columns
     if not 20 <= reported_rows <= 60:
         reported_rows = 25
-    rows = reported_rows
-    raw = read_physical(qmp, 0xB8000 + page_offset, columns * rows * 2)
+    memory_address = 0xB0000 if mode == 0x07 else 0xB8000
+    return VideoInfo(
+        mode=mode,
+        kind="text",
+        columns=columns,
+        rows=reported_rows,
+        page_offset=page_offset,
+        memory_address=memory_address,
+    )
+
+
+def read_text_screen(qmp: QMPClient) -> TextScreen:
+    info = read_video_info(qmp)
+    if info.kind != "text":
+        raise UnsupportedVideoMode(
+            f"text is unavailable in BIOS video mode 0x{info.mode:02x}"
+        )
+    assert info.columns is not None
+    assert info.rows is not None
+    assert info.memory_address is not None
+    columns = info.columns
+    rows = info.rows
+    raw = read_physical(
+        qmp,
+        info.memory_address + info.page_offset,
+        columns * rows * 2,
+    )
     grid: list[tuple[Cell, ...]] = []
     for row_number in range(rows):
         row: list[Cell] = []
@@ -119,7 +162,7 @@ def read_text_screen(qmp: QMPClient) -> TextScreen:
             attribute = raw[base + column * 2 + 1]
             row.append(Cell(character, attribute))
         grid.append(tuple(row))
-    return TextScreen(mode, columns, rows, page_offset, tuple(grid))
+    return TextScreen(info.mode, columns, rows, info.page_offset, tuple(grid))
 
 
 def screenshot(qmp: QMPClient, output: str | Path) -> Path:

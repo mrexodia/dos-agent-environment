@@ -15,7 +15,10 @@ image. DJGPP, IA-16 GCC, Open Watcom V2, JWasm, FASM, bcc/bin86, both Free
 Pascal DOS targets, and UPX are pinned independently from the core harness;
 each output is compile-and-run
 tested in DOS on amd64 and arm64. See `toolchains/README.md` for the prebuilt
-and source-build Dev Container CLI workflows.
+and source-build Dev Container CLI workflows. The public CLI also auto-selects
+text extraction or PNG capture from the current BIOS display mode, supports
+bounded key holds plus explicit key-down/key-up state, and has a foreground
+`launch` operation.
 
 ## Goal
 
@@ -77,6 +80,7 @@ normalized.
 ├── payload/                      # mirrors the guest filesystem root
 │   └── BIN/
 ├── scripts/
+│   ├── build-base.sh
 │   ├── build-image.sh
 │   ├── build-runtime.sh
 │   └── smoke.py
@@ -94,6 +98,7 @@ normalized.
 │       └── test_browse.py
 ├── tests/
 ├── build/                        # generated and gitignored
+│   ├── dos71-base.img
 │   ├── dos71.img
 │   ├── dos71.qcow2
 │   └── runs/<run-id>/
@@ -187,7 +192,7 @@ record through an mtools-style `@@offset`.
 `ms-sys --fat16` or `--fat32` against the whole-disk image; that location is the
 MBR, not the partition boot sector.
 
-`scripts/build-image.sh` performs these steps:
+`scripts/build-base.sh` performs these steps:
 
 1. Create a 504 MiB temporary whole-disk image (exactly 1024×16×63 sectors).
 2. Create an MBR partition table with one active FAT16 partition starting at
@@ -223,7 +228,9 @@ MBR, not the partition boot sector.
     ms-sys --force --mbr95b "$disk_img"
     ```
 
-12. Atomically rename the temporary whole-disk image to `build/dos71.img`.
+12. Atomically rename the temporary whole-disk image to
+    `build/dos71-base.img`. This clean, payload-free image is cached until a
+    declared input, guest file, or base-build script changes.
 
 Run `fsck.fat -vn` against the temporary partition image and inspect it with
 `mdir` before assembly. The script uses `set -euo pipefail`, temporary files,
@@ -263,11 +270,19 @@ cross-compile -> copy into payload/... -> make runtime -> cold boot -> test
 
 Make targets:
 
-- `make image`: rebuild `build/dos71.img`.
-- `make runtime`: run `make image`, then atomically create
+- `make base`: build the clean payload-free `build/dos71-base.img` only when
+  its declared inputs change.
+- `make image`: sparse-clone the clean base and deploy the current `payload/`
+  into the clone, producing `build/dos71.img` without reconstructing DOS.
+- `make runtime`: run the fast clean deployment, then atomically create
   `build/dos71.qcow2` from the raw image.
+- `make full-rebuild`: discard and recreate the clean base before deployment.
 - `make smoke`: create a disposable run and execute smoke tests.
 - `make test`: run all tests.
+
+Every normal deployment starts from the clean cached image; there is no mutable
+incremental payload state to clean. The clone may use filesystem reflinks but
+must also work as a sparse copy when reflinks are unavailable.
 
 `build/dos71.qcow2` is a read-only base by convention. `dosctl start` creates:
 
@@ -338,10 +353,14 @@ Minimum commands:
 dosctl start [--run-id ID]
 dosctl status [--run-id ID]
 dosctl exec [--timeout SEC] [--serial] "DOS command"
+dosctl launch [--timeout SEC] "interactive DOS command"
 dosctl type "text"
-dosctl key ENTER|ESC|UP|DOWN|PGUP|PGDN|...
+dosctl key [--hold-ms MS] ENTER|ESC|UP|DOWN|PGUP|PGDN|...
+dosctl keydown KEY...
+dosctl keyup KEY...
 dosctl wait [--timeout SEC] "regular expression"
-dosctl screen [--text|--json|--png [output.png]]
+dosctl display
+dosctl screen [--text|--json|--png [output.png]] [--output PATH]
 dosctl screenshot [output.png]  # backwards-compatible alias
 dosctl collect DOS_PATH [HOST_PATH]
 dosctl stop [--run-id ID|--all]
@@ -375,10 +394,12 @@ screen is not considered command completion.
 
 ### Keyboard input
 
-Use the native QMP `send-key` command. `keymap.py` covers the full DOS-safe US
-ASCII set and named navigation/function keys, including shift chords. Type at a
-bounded rate suitable for the DOS keyboard buffer. Start around 40 ms/key and
-make it configurable.
+Use QMP `send-key` for bounded taps and `input-send-event` for explicit key
+state. `keymap.py` covers the full DOS-safe US ASCII set and named
+navigation/function keys, including modifier chords. Type at a bounded rate
+suitable for the DOS keyboard buffer. Start around 40 ms/key and make it
+configurable. Persist intentionally held keys per run, release chords in reverse
+order, and best-effort release every recorded key before stopping QEMU.
 
 ## 7. Seeing the screen
 
@@ -394,8 +415,9 @@ plus attributes. Do not blindly assume page zero and 80x25; inspect BIOS data:
 - active-page/start offset at `0x44E`;
 - rows minus one at `0x484` where supported.
 
-The MVP supports color mode `0x03` and reports a clear unsupported-mode error
-for text scraping otherwise. Preserve a cell grid (`character`, foreground,
+Decode standard BIOS text modes `0x00`, `0x01`, `0x02`, `0x03`, and monochrome
+mode `0x07`, using the appropriate `0xB8000` or `0xB0000` video-memory window.
+Preserve a cell grid (`character`, foreground,
 background, blink/intensity) internally; `screen` emits plain 7-bit ASCII by
 default for text-only agents, `--text` emits decoded CP437, and `--json`
 exposes dimensions and cells/attributes needed by app drivers.
@@ -407,9 +429,15 @@ include the last screen.
 ### Image view
 
 Use QMP `screendump` to create a PPM and Pillow to convert it to PNG. This works
-with `-display none` and gives the agent a genuine screenshot. It also permits
-manual diagnosis of graphics modes even though the first automated app tests
-remain text-mode.
+with `-display none` and gives the agent a genuine screenshot. `dosctl screen`
+auto-detects the BIOS mode: it prints decoded text in text modes, otherwise it
+saves a PNG and prints the path. `dosctl display` reports the mode in one concise
+text line.
+
+Optional future extensions may add deterministic visual-change and
+visual-stability waits in the Python library. They are not current milestone
+requirements; OCR and application-specific image recognition remain outside the
+core harness.
 
 **Done when:** after a cold boot, an agent can start a VM, obtain both text and
 PNG views, run `VER`, type `DIR`, and stop the VM using only `dosctl`.
