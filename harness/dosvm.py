@@ -168,6 +168,8 @@ class DosVM:
                 "none",
                 "-no-reboot",
             ]
+            extra = os.environ.get("DOSCTL_QEMU_ARGS", "").split()
+            command += extra
             with vm.log_path.open("wb") as log:
                 process = subprocess.Popen(
                     command,
