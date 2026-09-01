@@ -69,6 +69,30 @@ masked), aggravated under QEMU timing. It is not a harness protocol bug: the
 QEMU-side serial socket and QMP stay healthy, and `dosctl`'s `exec --serial`
 path (which also uses `CTTY COM1`) inherits the same flakiness.
 
+## NE2000 experiment — wedge reduced, not eliminated (correction)
+
+Swapped the PCNet NIC for an ISA NE2000 (`-nic user,model=ne2k_isa`, io=0x300
+irq=9) with the Crynwr `NE2000.COM` packet driver from the
+[fragglet/crynwr_mirror](https://github.com/fragglet/crynwr_mirror) GitHub
+mirror (8693 bytes, SHA-256 `69573724d30a9498f2a81d3b0ca9b79b4a326522d8aa43d111f7a9ddf047bc12`).
+An initial 8-boot run (`scripts/repro-ne2k.py`) showed 8/8 boots with a live
+console, but extended testing corrected this:
+
+- Repeated runs of the same reproducer later wedged 1-in-3 at the usual spots.
+- `scripts/probe-ctty-cycle.py` (repeated CTTY COM1↔CON toggles in one boot)
+- wedges 4/4 boots, sometimes already at the `PROMPT` echo (keyboard path).
+- Booting **without the DHCP step** (packet driver loaded, no mTCP program
+   ever run, no network traffic) still wedges → mTCP and slirp traffic are
+  exonerated; a resident packet driver plus CTTY COM1 is sufficient.
+- NE2000 + TCG is also noticeably slower (mTCP output trickles), which
+  initially masked wedges as slow PING output.
+
+Conclusion: the wedge is not specific to the PCI PCNet IRQ path. It is a
+guest-side race that any resident packet driver can trigger; the driver
+switch alone is not a fix. The harness default stays PCNet; `DOSCTL_QEMU_NIC`
+remains available for experiments. `payload/DRIVERS/NE2000.COM` and the
+AUTOEXEC preference logic stay for future debugging.
+
 ## Next steps (ideas)
 
 - Run QEMU with `-d int -D file` on a hanging boot to capture the exact last

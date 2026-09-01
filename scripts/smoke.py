@@ -52,7 +52,7 @@ def _validate(vm: DosVM, fixture_url: str) -> None:
 
     tcp_cfg = vm.exec_serial(r"TYPE C:\MTCP\TCP.CFG")
     assert "IPADDR 10.0.2.15" in tcp_cfg, tcp_cfg
-    ping = vm.exec_serial("PING 10.0.2.2", timeout=20.0)
+    ping = vm.exec_serial("PING 10.0.2.2", timeout=45.0)
     assert "Replies lost: 0" in ping, ping
     vm.exec_serial(
         f"HTGET -quiet -o C:\\TMP\\NETWORK.TXT {fixture_url}/network.txt",
@@ -77,7 +77,7 @@ def run_once() -> None:
     thread.start()
     fixture_url = "http://10.0.2.2:8080"
     try:
-        vm = DosVM.start(timeout=30.0)
+        vm = DosVM.start(timeout=90.0)
         try:
             _validate(vm, fixture_url)
 
@@ -95,7 +95,7 @@ def run_once() -> None:
                 vm.stop(force=True)
 
         assert _sha256(base) == base_hash, "canonical qcow2 changed during a run"
-        recovered = DosVM.start(timeout=30.0)
+        recovered = DosVM.start(timeout=90.0)
         try:
             _validate(recovered, fixture_url)
             recovered.exec(r"ECHO POST_MORTEM>C:\TMP\POST.TXT")
