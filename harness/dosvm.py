@@ -159,7 +159,7 @@ class DosVM:
                 "-device",
                 "ide-hd,drive=dosdisk,bus=ide.0,unit=0,cyls=1024,heads=16,secs=63",
                 "-nic",
-                "user,model=pcnet",
+                os.environ.get("DOSCTL_QEMU_NIC", "user,model=pcnet,hostname=DOSBOX"),
                 "-qmp",
                 f"unix:{vm.qmp_path},server=on,wait=off",
                 "-serial",
