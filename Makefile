@@ -16,7 +16,11 @@ BASE_SOURCES := \
 
 .PHONY: payload base image runtime full-rebuild start stop smoke unit integration test toolchain-smoke clean
 
-payload: payload/BIN/HELLO.COM payload/BIN/MAKEBIN.COM payload/BIN/LINKS.EXE
+payload: payload/BIN/HELLO.COM payload/BIN/MAKEBIN.COM payload/BIN/LINKS.EXE payload/BIN/IDLE.COM
+
+payload/BIN/IDLE.COM: apps/idle/idle.asm
+	mkdir -p payload/BIN
+	nasm -f bin -o $@ $<
 
 payload/BIN/HELLO.COM: apps/smoke/hello.asm
 	mkdir -p payload/BIN
