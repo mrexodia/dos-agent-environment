@@ -139,6 +139,19 @@ real-mode interrupt reflector, not in QEMU, mTCP, or the harness.
   prompt change within N seconds) and cold-boot restart from the immutable
   base image.
 
+### KVM changes the picture
+
+With nested virtualization enabled (`/dev/kvm` passed into the Dev Container
+via `runArgs`), the harness now selects `-machine accel=kvm:tcg` when KVM is
+usable and falls back to TCG otherwise (`DOSCTL_QEMU_ACCEL` overrides). Under
+KVM the wedge did **not reproduce**: 26/26 full PROMPT/CTTY/PING cycles clean
+across four repro runs, and `make smoke` passes end-to-end including crash
+recovery. KVM's interrupt delivery timing evidently avoids the reflector
+race that TCG triggers. Boot time also drops from ~30 s to ~2 s. Caveat: the
+Win98 real-mode idle loop busy-polls (no HLT), so a running VM still uses a
+full core even under KVM — stop VMs when idle, or add an int-28h HLT TSR to
+the boot image as a future improvement.
+
 ## Next steps (ideas)
 
 - Run QEMU with `-d int -D file` on a hanging boot to capture the exact last

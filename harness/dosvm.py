@@ -41,6 +41,16 @@ class LaunchResult:
     screen: TextScreen | None = None
 
 
+def _default_accel() -> str:
+    """Prefer KVM when the device is usable; fall back to TCG otherwise."""
+    try:
+        if os.access("/dev/kvm", os.W_OK):
+            return "kvm:tcg"
+    except OSError:
+        pass
+    return "tcg"
+
+
 def project_root() -> Path:
     override = os.environ.get("DOSDEV_ROOT")
     return Path(override).resolve() if override else Path(__file__).resolve().parents[1]
@@ -148,8 +158,8 @@ class DosVM:
             )
             command = [
                 "qemu-system-i386",
-                "-accel",
-                "tcg",
+                "-machine",
+                f"accel={os.environ.get('DOSCTL_QEMU_ACCEL', _default_accel())}",
                 "-m",
                 "64",
                 "-boot",

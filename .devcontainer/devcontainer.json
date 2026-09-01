@@ -4,5 +4,6 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
+  "runArgs": ["--device=/dev/kvm"],
   "forwardPorts": [8080]
 }
