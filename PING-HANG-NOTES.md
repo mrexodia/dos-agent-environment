@@ -93,6 +93,52 @@ switch alone is not a fix. The harness default stays PCNet; `DOSCTL_QEMU_NIC`
 remains available for experiments. `payload/DRIVERS/NE2000.COM` and the
 AUTOEXEC preference logic stay for future debugging.
 
+## Root cause identified — `-d int` trace (2026-09-01)
+
+`scripts/probe-int-trace.py` boots with `-d int -D <log>`, repeats the wedging
+PROMPT sequence, and on failure analyzes the trace plus live QMP state.
+Findings from a wedged boot:
+
+1. **All keystrokes are delivered**: the trace shows 63–86 `Servicing hardware
+   INT=0x09` events (make+break) for ~26 typed characters. Nothing is lost on
+   the QEMU side.
+2. **After the last keystroke IRQ, no interrupt is serviced at all** — not
+   even the timer — for the whole 10 s timeout, while the CPU keeps executing
+   (EIP parked in SeaBIOS's `sti; nop; pause` keyboard-wait idle at
+   F000:877B, IF=1, SS/DS still the DOS kernel segment 0x00C9).
+3. Live PIC state: **`pic0 isr=02` — timer IRQ0 is In-Service and never
+   received an EOI**, `irr=10` (a pending, undeliverable serial IRQ4 edge),
+   `imr=b8`. With IRQ0 in-service at top priority, the 8259 will not deliver
+   any lower-priority master interrupt (IRQ1 keyboard, IRQ4 serial) — input
+   is dead while the machine keeps running.
+4. Disassembly of the wedge memory dump pinpoints the code: the INT 08/09/70/
+   0C vectors all point into a Win98 SE IO.SYS real-mode **interrupt reflector
+   at segment 0x0696** with a reentrancy guard flag. Its *busy* path is
+
+   ```asm
+   06B36: cli
+   06B37: mov al,0xFF
+   06B39: out 0x21,al    ; mask ALL master PIC IRQs
+   06B3B: out 0xA1,al    ; mask ALL slave PIC IRQs
+   06B3D: ...            ; then waits on a condition that never comes
+   ```
+
+**Mechanism**: when a hardware interrupt (timer/keyboard) re-enters the
+reflector while the guard flag is busy, it takes the path that masks every
+IRQ and CLI-spins, and the in-flight timer interrupt is never EOId. Under
+QEMU TCG timing this happens intermittently whenever interrupt traffic
+collides (typing over a ticking timer; packet-driver ISRs widen the window,
+which is why removing the NIC made it vanish). The bug is in Win98 SE's
+real-mode interrupt reflector, not in QEMU, mTCP, or the harness.
+
+### Consequences / options
+
+- A different DOS kernel (MS-DOS 6.x, FreeDOS, or Win98 DOS with the
+  reflector never armed) should eliminate the wedge entirely.
+- Harness-level mitigation: detect the wedge (typed input yields no echo or
+  prompt change within N seconds) and cold-boot restart from the immutable
+  base image.
+
 ## Next steps (ideas)
 
 - Run QEMU with `-d int -D file` on a hanging boot to capture the exact last
