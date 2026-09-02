@@ -134,3 +134,29 @@ final step; next instrumentation logs no_tls right after calloc, after
 the proxy strcpys, and in connected_callback to bracket the corruption
 window. (Note: with heavy logging the guest wedges differently - use
 short timeouts and reboot per run.)
+
+## ROUND 4: THE FIX — cross-TU ABI mismatch (HAVE_SSL defined mid-build)
+
+The "corrupting writer" was never a runtime writer at all: the core
+objects (session.o, sched.o original, etc.) had been compiled BEFORE
+HAVE_SSL was defined in config.h, while connect.o/https.o were compiled
+after. TUs without HAVE_SSL see struct connection WITHOUT the
+ssl/no_ssl_session/no_tls tail (12 bytes smaller); their list_entry
+pointer writes (add_to_list/del_from_list in session.c etc.) therefore
+landed exactly on ssl/no_ssl_session/no_tls of the real layout —
+c->no_tls received a queue-list pointer (0x7908F0), driving
+ssl_setup_downgrade to disable TLS 1.3/1.2/1.1.
+
+Rebuilding ALL objects with the current config.h fixes it. Verified in
+the DOS VM (build/runs/ABI*, KB, VICT):
+
+    handshake: ok                 (python TLS 1.3-only server)
+    GET: request arrived over TLS
+    GET: response sent
+
+Links now performs a complete native TLS 1.3 handshake and an encrypted
+HTTP round trip. Remaining issue (UI level): after the handshake the
+modal Welcome dialog does not dismiss and the page does not render -
+post-handshake read scheduling in Links' event loop needs one more look
+(ssl_want_io handler registration / msg_box interaction). The wolfSSL
+side is done.
