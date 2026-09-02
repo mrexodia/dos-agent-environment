@@ -88,7 +88,34 @@ rework, event-queue changes between 2007 and 2019).
 
 ## 4. Possible cures
 
-### Cure A — Graft the 2.1pre28 engine into 2.30 (upstream-sanctioned recipe)
+### Cure A — RESULT: WORKING (2026-09-02)
+
+Attempted and succeeded; the graft and its compat layer now live in this
+workspace (`build/links-2.30` + `js_compat.h`, deployed as `BIN/LINKSJS.EXE`).
+Changes needed beyond copying the files:
+
+1. `Makefile.am`: add the engine sources under `if JAVASCRIPT`
+   (`links_SOURCES+=`), rerun aclocal/automake/autoconf (needs a shim
+   `AM_CONDITIONAL([am__fastdepCXX], [false])` for modern automake, and
+   `pkg-config.m4` copied to `acinclude.m4`).
+2. `js_compat.h` — compatibility layer included by each engine .c after
+   `links.h`: restores the 2.1pre28 two-argument `foreach`/`foreachback`,
+   pointer-based `init_list`/`del_from_list`/`add_to_list`, `struct
+   xlist_head` + `ttime` (in `struct.h`), and maps `internal()` →
+   `internal_error()` and `TEXT()` → `TEXT_()` renames.
+3. One real API-drift fix in engine code: `javascript.c`'s warning-dialog
+   cleanup iterated `term->windows` with the old macro; rewritten as an
+   explicit loop over `struct list_head` with `list_struct()`.
+4. Two duplicate globals resolved: `js_fun_depth`/`js_memory_limit` are
+   defined in 2.30's `default.c`; changed to `extern` in `ipret.c`.
+
+Result: 4.5 MB `coff-go32-exe` built with DJGPP GCC 5.2 + Watt-32. Verified in
+the DOS VM: `LINKSJS.EXE` starts, and a local page with
+`<script>document.write("<h1>JS-WORKS-123</h1>")</script>` renders the
+written text — the interpreter executes. Static content and `document.write`
+both appear, as expected for 2007-era semantics.
+
+### Cure A — original assessment
 
 The engine files ship complete (including pregenerated `javascr.c` /
 `javascript.c`, so flex/bison are optional) in
