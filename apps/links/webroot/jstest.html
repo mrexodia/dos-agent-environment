@@ -32,7 +32,7 @@ function tf4() { var s = "Hello"; if (s.charAt(1) !== "e") throw "charAt"; if (s
 report("es3.strings", tf4);
 function tf5() { var a = [3, 1, 2]; a.sort(); if (a.join(",") !== "1,2,3") throw "sort"; return "ok"; }
 report("es3.arrays-basic", tf5);
-function tf6() { var o = null; o.foo; return "no-throw (engine does not throw on null property access)"; }
+function tf6() { try { var o = null; o.foo; } catch (e) { return "ok"; } throw "engine did not throw"; }
 report("es3.null-access-throws", tf6);
 
 /* --- Stage 2: DOM integration --- */
@@ -71,6 +71,8 @@ function tf16() { var sq = function_expr_test_placeholder; return "ok"; }
 function tf17() { var s = `hello ${1 + 2}`; if (s !== "hello 3") throw "tpl"; return "ok"; }
 report("es6.template-literals", tf17);
 flush();
+</script>
+<script>
 document.write("<pre>JS-TEST-END</pre>");
 </script>
 </body>
