@@ -41,3 +41,29 @@ main connect loop) and may interleave SSL_connect with shutdown/error
 paths, corrupting wolfSSL session state - unlike TLSTEST which only
 ever drives SSL_connect serially. Instrumenting those two call sites is
 the next debugging step.
+
+## BREAKTHROUGH (2026-09-02, second debugging round)
+
+Lifecycle tracing (tools/links-tls trace via C:\TLSGLUE.TXT) plus a raw
+ClientHello dumper (scripts/chdump.py) pinpointed the failure chain:
+
+1. Links' ClientHello is CRIPPLED compared to TLSTEST from the same lib:
+   - TLSTEST: 236 bytes, TLS 1.3 suites (1302/1301) + AES-GCM (c02f...)
+   - LNKNOJS: 118 bytes, only 4 legacy ECDHE-SHA1-CBC suites, no GCM,
+     and the signature_algorithms extension lacks every RSA algorithm
+     (0401/0806-rsae etc.) - only ECDSA/Ed25519 entries.
+2. The server correctly alerts (TLS1.3-only server: unsupported
+   protocol; TLS1.2 server: no suitable signature algorithm).
+3. Links then runs the ssl_downgrade_dance/freeSSL path and crashes in
+   DJGPP malloc's _extendsbrk.
+
+Since the ctx configuration calls are now literally identical between
+TLSTEST and Links (verified call by call), the crippled suite/sigalg
+state is best explained by heap corruption occurring BEFORE the
+handshake - during Links' connection setup (URL parsing, DNS via
+watt32, nonblocking connect) - which damages the freshly allocated CTX
+or its suites array. The TLS alert is a SYMPTOM, not the cause.
+
+Next step: run the plain-HTTP path of the same binary watching for the
+same corruption signature, and/or wrap Links' mem_alloc with canaries
+to catch the offending write.
