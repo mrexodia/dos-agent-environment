@@ -32,3 +32,12 @@ out-of-bounds write in some Links network path only exercised on https.
 Next steps: try alternative DPMI hosts (HDPMI, CWSDPMI r7), or build
 Links with LEAK_DEBUG for allocator checking, or single-step the
 handshake with QEMU -d exec around the crash.
+
+## Update: DPMI host excluded too
+Swapping CWSDPMI for HDPMI32 (HX v2.23) does not change the crash, so it
+is not a CWSDPMI bug. Prime remaining suspect: Links' connection state
+machine drives SSL from TWO call sites (connect.c is_connected + the
+main connect loop) and may interleave SSL_connect with shutdown/error
+paths, corrupting wolfSSL session state - unlike TLSTEST which only
+ever drives SSL_connect serially. Instrumenting those two call sites is
+the next debugging step.
