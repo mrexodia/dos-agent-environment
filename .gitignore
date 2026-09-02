@@ -13,3 +13,6 @@ __pycache__/
 
 # Editor/OS
 .DS_Store
+tools/djgpp/
+build/watt32/
+build/links-2.30/
