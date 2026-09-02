@@ -105,3 +105,32 @@ have captured a retry rather than the first attempt. Next session:
 Suggested next tool: wolfSSL_DEBUG build that logs only MatchSuites
 results to our file logger (the full-debug lib crashed, but that was the
 default stderr path; a custom callback that only sprintf's may work).
+
+## ROUND 3 BREAKTHROUGH: the corrupting write found (field-precise)
+
+wolfSSL hello-hook (WOLFSSL_HELLO_DBG_HOOK in SendClientHello and
+SendTls13ClientHello, built into the lib, implemented by the app):
+
+    TLSTEST: HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+    LNKNOJS: HELLO_DBG: ver=3.01 suites=8  mask=3c1003ff mindg=3 dg=1
+
+The options mask differs by exactly 0x2C000000 = WOLFSSL_OP_NO_TLSv1_3 |
+NO_TLSv1_2 | NO_TLSv1_1. wolfSSL_set_options steps ssl->version down one
+notch per NO flag: 3.4 -> 3.1, and InitSuites then emits only legacy
+ECDHE-SHA1-CBC suites. Everything downstream (server alert, downgrade
+dance, _extendsbrk crash) follows from this.
+
+The flags come from Links' ssl_setup_downgrade(c) which fires per
+c->no_tls - and logging c->no_tls at the SSL_set_fd site showed:
+
+    set_fd: no_tls=7926768        (0x7908F0 - a heap-pointer fragment!)
+
+struct connection is mem_calloc'd (sched.c:894), so no_tls=0 at creation
+and something OVERWRITES it with a pointer fragment before the first
+connect. The corrupting write lands at offsetof(struct connection,
+no_tls) - i.e. in the ssl/no_ssl_session/no_tls tail area, behind
+socks_proxy/dns_append/last_lookup_state. Finding that writer is the
+final step; next instrumentation logs no_tls right after calloc, after
+the proxy strcpys, and in connected_callback to bracket the corruption
+window. (Note: with heavy logging the guest wedges differently - use
+short timeouts and reboot per run.)
