@@ -19,3 +19,5 @@ build/links-2.30/
 payload/BIN/DJERR.EXE
 payload/BIN/LINKSDEV.EXE
 build/mujs/
+build/wolfssl/
+build/tlstest/
