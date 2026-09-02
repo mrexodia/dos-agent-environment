@@ -67,3 +67,24 @@ or its suites array. The TLS alert is a SYMPTOM, not the cause.
 Next step: run the plain-HTTP path of the same binary watching for the
 same corruption signature, and/or wrap Links' mem_alloc with canaries
 to catch the offending write.
+
+## Canary results + suite-suffix clue (end of round 2)
+
+Arena canaries (every wolfSSL allocation guarded and re-verified on
+each subsequent allocation) show NO memory smash: the crippled ClientHello
+is produced LEGITIMATELY by wolfSSL from Links' call sequence. TLSTEST
+survives every individual ctx call replicated exactly (options, mode,
+min_proto_version with SSL3_VERSION like Links, VERIFY_NONE, passwd cb).
+
+Remaining clue: LNKNOJS' cipher list (c00a c009 c014 c013) is a TRUNCATED
+SUFFIX of TLSTEST's full list (1302 1301 1303 c02c c02b c030 c02f cca9
+cca8 ccaa c027 c023 c028 c024 c00a c009 c014 ...) - as if the suite array
+pointer advanced ~13 entries, or the hello belongs to a LATER DOWNGRADE
+ATTEMPT (Links' ssl_downgrade_dance sets SSL_OP_NO_TLSv1_3/1_2/1_1
+progressively). The chdump server accepts only one connection, so it may
+have captured a retry rather than the first attempt. Next session:
+1) dump ALL ClientHellos (multi-accept dump server) with the no_tls
+   attempt counter in the trace;
+2) if the FIRST hello is healthy, the fix is to stop the downgrade dance
+   from treating the wolfSSL alert as a protocol-version failure (map
+   wolfSSL errors so Links does not retry with lower versions).
