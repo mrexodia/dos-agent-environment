@@ -14,23 +14,27 @@ def dump_server(port, out, timeout=25):
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(("0.0.0.0", port))
-    s.listen(1)
+    s.listen(8)
     s.settimeout(timeout)
-    try:
-        c, a = s.accept()
-        c.settimeout(5)
-        data = c.recv(4096)
-        rec_type = data[0]
-        version = (data[1], data[2])
-        # handshake version lives at offset 4+4..4+5 for clienthello
-        hs_ver = (data[8], data[9]) if len(data) > 9 else None
-        out.append(f"type={rec_type} recver={version[0]:02x}{version[1]:02x} hsver={hs_ver[0]:02x}{hs_ver[1]:02x} len={len(data)}")
-        out.append(data[:80].hex())
+    n = 0
+    while n < 6:
+        try:
+            c, a = s.accept()
+        except Exception:
+            break
+        c.settimeout(4)
+        try:
+            data = c.recv(4096)
+            rec_type = data[0]
+            version = (data[1], data[2])
+            hs_ver = (data[8], data[9]) if len(data) > 9 else None
+            out.append(f"hello#{n}: type={rec_type} recver={version[0]:02x}{version[1]:02x} hsver={hs_ver[0]:02x}{hs_ver[1]:02x} len={len(data)}")
+            out.append(data[:60].hex())
+        except Exception as e:
+            out.append(f"conn#{n}: {e}")
         c.close()
-    except Exception as e:
-        out.append(f"server: {e}")
-    finally:
-        s.close()
+        n += 1
+    s.close()
 
 
 def main():

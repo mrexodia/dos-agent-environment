@@ -88,3 +88,20 @@ have captured a retry rather than the first attempt. Next session:
 2) if the FIRST hello is healthy, the fix is to stop the downgrade dance
    from treating the wolfSSL alert as a protocol-version failure (map
    wolfSSL errors so Links does not retry with lower versions).
+
+## Round 2 final facts
+- Multi-accept hello dumper: Links' FIRST ClientHello is already crippled
+  (118 bytes, 4 ECDHE-SHA1-CBC suites) - NOT a downgrade-dance retry.
+- Zero-filling the arena changes nothing; canaries stay clean.
+- SSL_CTX_get_options() after setup is BIT-IDENTICAL between TLSTEST
+  (healthy 236-byte TLS1.3 hello) and Links (crippled hello):
+  opts=101003ff, verify=0. Same library, same ctx calls, same ctx state,
+  different suite selection at SSL/hello-build time.
+- Remaining suspects: ssl-object-level state divergence (SSL_set_options
+  via SCRUB_HEADERS verified harmless bit-wise), stack-layout-dependent
+  behaviour in wolfSSL's ClientHello builder, or a wolfSSL
+  config-flag query that reads global state outside the ctx (e.g. an
+  environment/getenv check that differs under Links).
+Suggested next tool: wolfSSL_DEBUG build that logs only MatchSuites
+results to our file logger (the full-debug lib crashed, but that was the
+default stderr path; a custom callback that only sprintf's may work).
