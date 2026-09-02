@@ -1,0 +1,8 @@
+<html><body><h1>F-START</h1><script>
+var r = [];
+var ok = true;
+r.push((ok ? "PASS " : "FAIL ") + "t1");
+var e = new Error("boom");
+document.write("<pre>RESULT " + r[0] + " err=" + String(e) + "</pre>");
+document.write("<pre>F-END</pre>");
+</script></body></html>

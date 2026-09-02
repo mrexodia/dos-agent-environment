@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head><title>JS Conformance Suite</title></head>
+<body>
+<h1>JS-TEST-START</h1>
+<script>
+var results = [];
+function report(name, fn) {
+  var ok = false, out = "";
+  try { out = fn(); ok = true; } catch (e) { out = String(e); }
+  results.push((ok ? "PASS " : "FAIL ") + name + (ok ? "" : " [" + out + "]"));
+}
+function flush() {
+  var s = "";
+  for (var i = 0; i < results.length; i++)
+    s += "RESULT " + results[i] + "\n";
+  document.write("<pre>" + s + "</pre>");
+}
+
+/* --- Stage 1: ES1/ES3 core (2007 engine should pass) --- */
+report("es3.var-decl", function () {
+  var x = 1; if (x !== 1) throw "var"; return "ok";
+});
+report("es3.functions", function () {
+  function add(a, b) { return a + b; }
+  if (add(2, 3) !== 5) throw "add"; return "ok";
+});
+report("es3.prototypes", function () {
+  function C() {} C.prototype.m = function () { return 42; };
+  var o = new C(); if (o.m() !== 42) throw "proto"; return "ok";
+});
+report("es3.strings", function () {
+  var s = "Hello";
+  if (s.charAt(1) !== "e") throw "charAt";
+  if (s.length !== 5) throw "length";
+  return "ok";
+});
+report("es3.arrays-basic", function () {
+  var a = [3, 1, 2];
+  if (a.length !== 3) throw "len";
+  a.sort();
+  if (a.join(",") !== "1,2,3") throw "sort";
+  return "ok";
+});
+report("es3.try-catch", function () {
+  try { null.foo; } catch (e) { return "ok"; }
+  throw "nocatch";
+});
+
+/* --- Stage 2: DOM integration (Links-specific) --- */
+report("dom.document-write", function () {
+  return "ok"; /* the whole page depends on this */
+});
+report("dom.forms", function () {
+  if (typeof document.forms !== "object" && typeof document.forms !== "function")
+    throw "no forms";
+  return "ok";
+});
+flush();
+
+/* --- Stage 3: ES5 (modern baseline target) --- */
+report("es5.json", function () {
+  var o = JSON.parse('{"a":2}');
+  if (o.a !== 2) throw "parse";
+  if (JSON.stringify({b:3}).indexOf('"b":3') < 0) throw "stringify";
+  return "ok";
+});
+report("es5.array-extras", function () {
+  var out = "";
+  [1,2,3].forEach(function (v) { out += v; });
+  if (out !== "123") throw "forEach";
+  if ([1,2,3].map(function(v){return v*2;}).join(",") !== "2,4,6") throw "map";
+  return "ok";
+});
+report("es5.object-keys", function () {
+  var k = Object.keys({x:1, y:2});
+  if (k.length !== 2) throw "keys";
+  return "ok";
+});
+report("es5.getters", function () {
+  var o = {};
+  Object.defineProperty(o, "g", { get: function () { return 7; } });
+  if (o.g !== 7) throw "getter";
+  return "ok";
+});
+report("es5.promise-stub", function () {
+  if (typeof Promise === "undefined") throw "no Promise";
+  return "ok";
+});
+flush();
+</script>
+<script>
+document.write("<pre>JS-TEST-END</pre>");
+</script>
+</body>
+</html>

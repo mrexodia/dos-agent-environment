@@ -1,0 +1,9 @@
+var a = [1, 2, 3];
+print("len=" + a.length);
+var o = JSON.parse(String.fromCharCode(123,34,120,34,58,55,125));
+print("json.x=" + o.x);
+var out = "";
+[1,2,3].forEach(function (v) { out += v; });
+print("each=" + out);
+try { null.foo; } catch (e) { print("caught=" + (e instanceof Error)); }
+print("keys=" + Object.keys({q:1,w:2}).length);

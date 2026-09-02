@@ -1,0 +1,11 @@
+<html><body><h1>C-START</h1><script>
+var results = [];
+function report(name, fn) {
+  var ok = false, out = "";
+  try { out = fn(); ok = true; } catch (e) { out = String(e); }
+  results.push((ok ? "PASS " : "FAIL ") + name);
+}
+report("t1", function () { var x = 1; if (x !== 1) throw "var"; return "ok"; });
+document.write("<pre>RESULT " + results[0] + "</pre>");
+document.write("<pre>C-END</pre>");
+</script></body></html>

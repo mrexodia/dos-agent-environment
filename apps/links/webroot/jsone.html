@@ -1,0 +1,13 @@
+<html><body><h1>ONE-START</h1><script>
+var results = [];
+function report(name, fn) {
+  var ok = false, out = "";
+  try { out = fn(); ok = true; } catch (e) { out = String(e); }
+  results.push((ok ? "PASS " : "FAIL ") + name);
+}
+report("t1", function () { var x = 1; if (x !== 1) throw "var"; return "ok"; });
+var s = "";
+for (var i = 0; i < results.length; i++) s += "RESULT " + results[i] + "\n";
+document.write("<pre>" + s + "</pre>");
+document.write("<pre>ONE-END</pre>");
+</script></body></html>

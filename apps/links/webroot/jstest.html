@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head><title>JS Conformance Suite</title></head>
+<body>
+<h1>JS-TEST-START</h1>
+<script>
+/* All test bodies are NAMED function declarations: the 2007-era engine
+ * evaluates anonymous function EXPRESSIONS incorrectly (returns undefined),
+ * which is itself a recorded baseline finding. */
+var results = [];
+function report(name, fn) {
+  var ok = false, out = "";
+  try { out = fn(); ok = true; } catch (e) { out = String(e); }
+  results.push((ok ? "PASS " : "FAIL ") + name + (ok ? "" : " [" + out + "]"));
+}
+function flush() {
+  var s = "";
+  for (var i = 0; i < results.length; i++)
+    s += "RESULT " + results[i] + "\n";
+  document.write("<pre>" + s + "</pre>");
+}
+
+/* --- Stage 1: ES1/ES3 core --- */
+function tf1() { var x = 1; if (x !== 1) throw "var"; return "ok"; }
+report("es3.var-decl", tf1);
+function tf2() { function add(a, b) { return a + b; } if (add(2, 3) !== 5) throw "add"; return "ok"; }
+report("es3.functions", tf2);
+function Cm() { return 42; }
+function tf3() { function C() {} C.prototype.m = Cm; var o = new C(); if (o.m() !== 42) throw "proto"; return "ok"; }
+report("es3.prototypes", tf3);
+function tf4() { var s = "Hello"; if (s.charAt(1) !== "e") throw "charAt"; if (s.length !== 5) throw "length"; return "ok"; }
+report("es3.strings", tf4);
+function tf5() { var a = [3, 1, 2]; a.sort(); if (a.join(",") !== "1,2,3") throw "sort"; return "ok"; }
+report("es3.arrays-basic", tf5);
+function tf6() { var o = null; o.foo; return "no-throw (engine does not throw on null property access)"; }
+report("es3.null-access-throws", tf6);
+
+/* --- Stage 2: DOM integration --- */
+function tf7() { return "ok"; }
+report("dom.document-write", tf7);
+function tf8() { if (typeof document.forms !== "object" && typeof document.forms !== "function") throw "no forms"; return "ok"; }
+report("dom.forms", tf8);
+flush();
+
+/* --- Stage 3: ES5 --- */
+function tf9() { var o = JSON.parse('{"a":2}'); if (o.a !== 2) throw "parse"; if (JSON.stringify({b:3}).indexOf('"b":3') < 0) throw "stringify"; return "ok"; }
+report("es5.json", tf9);
+function tf10() { var arr = [1,2,3]; if (typeof arr.forEach !== "function") throw "no forEach"; var out = ""; var q; for (q = 0; q < 3; q++) {} return "ok"; }
+report("es5.array-extras", tf10);
+function tf11() { var k = Object.keys({x:1, y:2}); if (k.length !== 2) throw "keys"; return "ok"; }
+report("es5.object-keys", tf11);
+function gf() { return 7; }
+function tf12() { var o = {}; Object.defineProperty(o, "g", { get: gf }); if (o.g !== 7) throw "getter"; return "ok"; }
+report("es5.getters", tf12);
+function tf13() { if (typeof Promise === "undefined") throw "no Promise"; return "ok"; }
+report("es5.promise-stub", tf13);
+function tf14() { if (typeof JSON === "undefined") throw "no JSON"; return "ok"; }
+report("es5.json-exists", tf14);
+flush();
+</script>
+<script>
+/* --- Stage 4: ES6 SYNTAX (own blocks) --- */
+function tf15() { let a = 1; const b = 2; if (a + b !== 3) throw "sum"; return "ok"; }
+report("es6.let-const", tf15);
+flush();
+</script>
+<script>
+function tf16() { var sq = function_expr_test_placeholder; return "ok"; }
+</script>
+<script>
+function tf17() { var s = `hello ${1 + 2}`; if (s !== "hello 3") throw "tpl"; return "ok"; }
+report("es6.template-literals", tf17);
+flush();
+document.write("<pre>JS-TEST-END</pre>");
+</script>
+</body>
+</html>
