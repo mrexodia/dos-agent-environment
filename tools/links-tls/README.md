@@ -160,3 +160,25 @@ modal Welcome dialog does not dismiss and the page does not render -
 post-handshake read scheduling in Links' event loop needs one more look
 (ssl_want_io handler registration / msg_box interaction). The wolfSSL
 side is done.
+
+## ROUND 5: COMPLETE — TLS 1.3 HTTPS rendering in Links on DOS (2026-09-03)
+
+Final fixes after the ABI rebuild:
+1. cb_recv r==0 (peer EOF, no close_notify) must map to
+   WOLFSSL_CBIO_ERR_CONN_CLOSE - returning 0 caused an infinite
+   read_select/recv spin ("Request sent" stall).
+2. TLSGLUE logging must open/write/CLOSE per call - DJGPP file
+   buffers are lost when QEMU is killed.
+3. Test-harness lesson: type the browser command EXACTLY once;
+   retyping leaks keystrokes into Links' UI ('s' opens the
+   bookmark manager).
+
+Verified: https://watlersfiles.netlify.app/ renders pixel-perfect
+in LNKNOJS.EXE (screenshot build/runs/shot/screen.png): full TLS
+1.3 handshake (ver=3.04 suites=42), encrypted GET, decrypted HTML,
+rendered page with working link highlighting. The trace shows the
+complete record flow including session tickets.
+
+First known Links 2.30 build with native TLS 1.3 on DOS - and the
+toolchain also carries the MuJS ES5 engine (LINKSTLS full build:
+rebuild remaining objects for the JS variant the same way).
