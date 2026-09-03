@@ -32,6 +32,7 @@ def main() -> int:
         "linksjs": "C:\\BIN\\LINKSJS.EXE",
         "linksdev": "C:\\BIN\\LINKSDEV.EXE",
         "linkses5": "C:\\BIN\\LINKSES5.EXE",
+        "linkstls": "C:\\BIN\\LINKSTLS.EXE",
     }
     binary = sys.argv[1] if len(sys.argv) > 1 else "linksjs"
     binary = binaries.get(binary.lower(), binary).replace("\\\\", "\\")

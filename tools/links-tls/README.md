@@ -182,3 +182,18 @@ complete record flow including session tickets.
 First known Links 2.30 build with native TLS 1.3 on DOS - and the
 toolchain also carries the MuJS ES5 engine (LINKSTLS full build:
 rebuild remaining objects for the JS variant the same way).
+
+## FINAL BUILD: LINKSTLS.EXE = Links + MuJS ES5 + wolfSSL TLS 1.3
+
+All objects rebuilt with the HAVE_SSL-consistent config; jsint.o and
+mujs_engine.o compiled with the same define set. Verified:
+- JS conformance: 20/20 (scripts/js-eval.py linkstls)
+- https://watlersfiles.netlify.app/ pixel-perfect render
+- https://hn.algolia.com/ loads natively over TLS 1.3: the React app
+  shell ("Hacker News Search powered by Algolia") renders; the ES6
+  bundle fails gracefully under the ES5 engine (expected, matches the
+  earlier TLS-bridge stress test); browser stays alive. Screenshots in
+  build/runs/ES5-algolia-native/. Google-AI integration tips recorded
+  for future work: document.write byte-offset injection, js_gc() after
+  page load / before new connections, and a MuJS timer tick in the
+  select loop.
