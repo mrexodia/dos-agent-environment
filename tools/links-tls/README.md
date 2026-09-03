@@ -197,3 +197,16 @@ mujs_engine.o compiled with the same define set. Verified:
   for future work: document.write byte-offset injection, js_gc() after
   page load / before new connections, and a MuJS timer tick in the
   select loop.
+
+## GC discipline (AI tip #2) - implemented 2026-09-03
+
+mujs_engine.c now calls js_gc(ctx->J, 0) after every js_dostring
+(each <script> block) and in js_destroy_context before
+js_freestate. Verified:
+- JS conformance: 20/20 with GC active (js-eval.py linkstls)
+- Multi-page stability (scripts/multibrowse.py): 4 sequential pages
+  in one session (JS suite x2 -> https://watlersfiles.netlify.app/
+  over TLS 1.3 -> JS suite again): 4/4 PASS, browser alive.
+(The earlier FAIL lines in the first multibrowse run were a test
+artifact: the JS-TEST-END marker sat below the 25-line fold; the
+marker is now es5.json.)
