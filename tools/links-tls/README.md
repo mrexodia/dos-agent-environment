@@ -230,3 +230,19 @@ LINKSQJS.EXE (8.7MB): full Links + QuickJS ES2020 + wolfSSL TLS 1.3.
 Conformance: ES3 + DOM + ES5 + ALL ES6 stage tests pass (let/const,
 arrows, template literals, classes, Promise, Map) - suite page now
 single-flush so all results fit the 25-line screen.
+
+## EMFILE/SSL-error hardening (2026-09-04, after user report)
+
+User reported LINKSQJS failing on wikipedia with "Too many open files
+(EMFILE)" and SSL errors on other sites (LINKSTLS/MuJS was fine).
+Automated reproduction attempts all passed (6-page browse, form
+search with autocomplete keystrokes), so the exact trigger remains
+unknown; suspected long-session resource churn. Hardening applied in
+quickjs_engine.c:
+- JS heap cap 8MB -> 4MB, JS_SetGCThreshold(256KB) for eager GC,
+  JS_SetMaxStackSize(512KB)
+- JSERROR.LOG fopen/fclose throttled to the first exception per
+  document context (unbounded per-script file churn removed)
+Verified: 8-page HTTPS marathon (wikipedia x6 incl. de.wikipedia,
+netlify, articles with heavy scripts) all load, no EMFILE, no SSL
+errors, browser alive; JSERROR.LOG exactly 1 line per context.
