@@ -210,3 +210,23 @@ js_freestate. Verified:
 (The earlier FAIL lines in the first multibrowse run were a test
 artifact: the JS-TEST-END marker sat below the 25-line fold; the
 marker is now es5.json.)
+
+## QuickJS ES2020 engine (Cure B++) - 2026-09-04
+
+quickjs-2025-04-26 cross-built for DJGPP (tools: same wolfdefs set +
+-std=gnu11 -DNDEBUG -ffloat-store). Portability fixes: guard <fenv.h>,
+disable CONFIG_ATOMICS + quickjs-libc workers (no pthreads), inline
+malloc_usable_size/fmax/fmin, and NAN/INFINITY constant-expression
+shims. CRITICAL: -DNDEBUG - without it an assert() fires in the
+exception path and abort()s; -ffloat-store for x87 excess precision.
+
+quickjs_engine.c mirrors mujs_engine.c (same jsint interface, DOM
+natives via js_upcall_*, JS_SetMemoryLimit 8MB, JS_RunGC after every
+script). GOTCHA: JS_SetPropertyFunctionList with stack compound
+literals aborts inside QuickJS GC - use explicit JS_SetPropertyStr +
+JS_NewCFunction instead.
+
+LINKSQJS.EXE (8.7MB): full Links + QuickJS ES2020 + wolfSSL TLS 1.3.
+Conformance: ES3 + DOM + ES5 + ALL ES6 stage tests pass (let/const,
+arrows, template literals, classes, Promise, Map) - suite page now
+single-flush so all results fit the 25-line screen.

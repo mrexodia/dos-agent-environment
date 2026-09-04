@@ -40,7 +40,6 @@ function tf7() { return "ok"; }
 report("dom.document-write", tf7);
 function tf8() { if (typeof document.forms !== "object" && typeof document.forms !== "function") throw "no forms"; return "ok"; }
 report("dom.forms", tf8);
-flush();
 
 /* --- Stage 3: ES5 --- */
 function tf9() { var o = JSON.parse('{"a":2}'); if (o.a !== 2) throw "parse"; if (JSON.stringify({b:3}).indexOf('"b":3') < 0) throw "stringify"; return "ok"; }
@@ -56,23 +55,22 @@ function tf13() { if (typeof Promise === "undefined") throw "no Promise"; return
 report("es5.promise-stub", tf13);
 function tf14() { if (typeof JSON === "undefined") throw "no JSON"; return "ok"; }
 report("es5.json-exists", tf14);
-flush();
 </script>
 <script>
-/* --- Stage 4: ES6 SYNTAX (own blocks) --- */
+/* --- Stage 4: ES6 SYNTAX (QuickJS target) --- */
 function tf15() { let a = 1; const b = 2; if (a + b !== 3) throw "sum"; return "ok"; }
 report("es6.let-const", tf15);
-flush();
-</script>
-<script>
-function tf16() { var sq = function_expr_test_placeholder; return "ok"; }
-</script>
-<script>
+function tf16() { var sq = x => x * x; if (sq(4) !== 16) throw "sq"; return "ok"; }
+report("es6.arrow", tf16);
 function tf17() { var s = `hello ${1 + 2}`; if (s !== "hello 3") throw "tpl"; return "ok"; }
 report("es6.template-literals", tf17);
+function tf18() { class C { constructor(v) { this.v = v; } get2x() { return this.v * 2; } } if (new C(21).get2x() !== 42) throw "class"; return "ok"; }
+report("es6.class", tf18);
+function tf19() { if (typeof Promise === "undefined") throw "no Promise"; return "ok"; }
+report("es6.promise", tf19);
+function tf20() { const m = new Map([[1, "a"], [2, "b"]]); if (m.get(2) !== "b") throw "map"; return "ok"; }
+report("es6.map", tf20);
 flush();
-</script>
-<script>
 document.write("<pre>JS-TEST-END</pre>");
 </script>
 </body>
