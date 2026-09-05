@@ -273,3 +273,25 @@ user:
   3. visit https://www.mdgx.com     (fails now)
   4. quit Links, send C:\SOCKSTAT.LOG
 The SSLFAIL lines reveal the true wolfSSL error at the first failure.
+
+## HARDWARE ROOT CAUSE: wolfSSL bump-arena exhaustion (2026-09-05)
+
+The user's C:\SOCKSTAT.LOG (hardware, mdgx.com reviews page) decoded:
+- SSLFAIL lines for every subresource (.eot/.woff/.ttf/.jpg) with
+  ret1=0 ret2=0 - that is getSSL() returning NULL, i.e. SSL_new
+  failing - after ~150-250 connections
+- each failure triggers Links' retry loop -> rapid socket churn ->
+  EMFILE
+- smallert.nl independently fails TLS (-308 socket error, -110 ASN
+  parse, -313 server alert) - genuine handshake incompatibility, but
+  the "poisoning" of later sites was the shared arena exhaustion
+
+ROOT CAUSE: the wolfSSL bump arena (wa_malloc 3MB, wa_free a NO-OP)
+never freed anything - each TLS connection permanently consumed
+arena memory. Pages with hundreds of subresources (mdgx reviews)
+exhausted it. The arena had been a workaround for the crash later
+root-caused as the cross-TU ABI mismatch.
+
+FIX: bump arena removed entirely; wolfSSL uses its default
+malloc/free again (SSL_free now actually frees). Verified: 20/20
+JS conformance + 5/5 marathon after the change.

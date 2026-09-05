@@ -1,0 +1,1148 @@
+open open=1 close=0
+open open=2 close=0
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-308 err=0 errno=33 open=2 close=0
+close open=2 close=1
+open open=3 close=1
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=3 close=1
+close open=3 close=2
+open open=4 close=2
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=4 close=2
+close open=4 close=3
+open open=5 close=3
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=5 close=3
+close open=5 close=4
+open open=6 close=4
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-308 err=0 errno=33 open=6 close=4
+close open=6 close=5
+open open=7 close=5
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=7 close=5
+close open=7 close=6
+open open=8 close=6
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=8 close=6
+close open=8 close=7
+open open=9 close=7
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=9 close=7
+close open=9 close=8
+open open=10 close=8
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-308 err=0 errno=33 open=10 close=8
+close open=10 close=9
+open open=11 close=9
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=11 close=9
+close open=11 close=10
+open open=12 close=10
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=12 close=10
+close open=12 close=11
+open open=13 close=11
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=13 close=11
+close open=13 close=12
+open open=14 close=12
+open open=15 close=12
+open open=16 close=12
+close open=16 close=13
+open open=17 close=13
+close open=17 close=14
+open open=18 close=14
+close open=18 close=15
+open open=19 close=15
+close open=19 close=16
+open open=20 close=16
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=-1 ret2=-125 err=0 errno=0 open=20 close=16
+close open=20 close=17
+open open=21 close=17
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=21 close=17
+close open=21 close=18
+open open=22 close=18
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=22 close=18
+close open=22 close=19
+open open=23 close=19
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=23 close=19
+close open=23 close=20
+open open=24 close=20
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=24 close=20
+close open=24 close=21
+open open=25 close=21
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=25 close=21
+close open=25 close=22
+open open=26 close=22
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=26 close=22
+close open=26 close=23
+open open=27 close=23
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=27 close=23
+close open=27 close=24
+open open=28 close=24
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=28 close=24
+close open=28 close=25
+open open=29 close=25
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=29 close=25
+close open=29 close=26
+open open=30 close=26
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=30 close=26
+close open=30 close=27
+open open=31 close=27
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=31 close=27
+close open=31 close=28
+open open=32 close=28
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=32 close=28
+close open=32 close=29
+open open=33 close=29
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=33 close=29
+close open=33 close=30
+open open=34 close=30
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=34 close=30
+close open=34 close=31
+open open=35 close=31
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=35 close=31
+close open=35 close=32
+open open=36 close=32
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=36 close=32
+close open=36 close=33
+open open=37 close=33
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=37 close=33
+close open=37 close=34
+open open=38 close=34
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=38 close=34
+close open=38 close=35
+open open=39 close=35
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=39 close=35
+close open=39 close=36
+open open=40 close=36
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=40 close=36
+close open=40 close=37
+open open=41 close=37
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=41 close=37
+close open=41 close=38
+open open=42 close=38
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=42 close=38
+close open=42 close=39
+open open=43 close=39
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=43 close=39
+close open=43 close=40
+open open=44 close=40
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=44 close=40
+close open=44 close=41
+open open=45 close=41
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=45 close=41
+close open=45 close=42
+open open=46 close=42
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=46 close=42
+close open=46 close=43
+open open=47 close=43
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=47 close=43
+close open=47 close=44
+open open=48 close=44
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=48 close=44
+close open=48 close=45
+open open=49 close=45
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=49 close=45
+close open=49 close=46
+open open=50 close=46
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=50 close=46
+close open=50 close=47
+open open=51 close=47
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=51 close=47
+close open=51 close=48
+open open=52 close=48
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=52 close=48
+close open=52 close=49
+open open=53 close=49
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=53 close=49
+close open=53 close=50
+open open=54 close=50
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=54 close=50
+close open=54 close=51
+open open=55 close=51
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=55 close=51
+close open=55 close=52
+open open=56 close=52
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=56 close=52
+close open=56 close=53
+open open=57 close=53
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=57 close=53
+close open=57 close=54
+open open=58 close=54
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=58 close=54
+close open=58 close=55
+open open=59 close=55
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=59 close=55
+close open=59 close=56
+open open=60 close=56
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=60 close=56
+close open=60 close=57
+open open=61 close=57
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=61 close=57
+close open=61 close=58
+open open=62 close=58
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=62 close=58
+close open=62 close=59
+open open=63 close=59
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=63 close=59
+close open=63 close=60
+open open=64 close=60
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=64 close=60
+close open=64 close=61
+open open=65 close=61
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=65 close=61
+close open=65 close=62
+open open=66 close=62
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=66 close=62
+close open=66 close=63
+open open=67 close=63
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=67 close=63
+close open=67 close=64
+open open=68 close=64
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=68 close=64
+close open=68 close=65
+open open=69 close=65
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=69 close=65
+close open=69 close=66
+open open=70 close=66
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=70 close=66
+close open=70 close=67
+open open=71 close=67
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=71 close=67
+close open=71 close=68
+open open=72 close=68
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=72 close=68
+close open=72 close=69
+open open=73 close=69
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=73 close=69
+close open=73 close=70
+open open=74 close=70
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=74 close=70
+close open=74 close=71
+open open=75 close=71
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=75 close=71
+close open=75 close=72
+open open=76 close=72
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=76 close=72
+close open=76 close=73
+open open=77 close=73
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=77 close=73
+close open=77 close=74
+open open=78 close=74
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=78 close=74
+close open=78 close=75
+open open=79 close=75
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=79 close=75
+close open=79 close=76
+open open=80 close=76
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=80 close=76
+close open=80 close=77
+open open=81 close=77
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=81 close=77
+close open=81 close=78
+open open=82 close=78
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=82 close=78
+close open=82 close=79
+open open=83 close=79
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=83 close=79
+close open=83 close=80
+open open=84 close=80
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=84 close=80
+close open=84 close=81
+open open=85 close=81
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=85 close=81
+close open=85 close=82
+open open=86 close=82
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=86 close=82
+close open=86 close=83
+open open=87 close=83
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=87 close=83
+close open=87 close=84
+open open=88 close=84
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=88 close=84
+close open=88 close=85
+open open=89 close=85
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=89 close=85
+close open=89 close=86
+open open=90 close=86
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=90 close=86
+close open=90 close=87
+open open=91 close=87
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=91 close=87
+close open=91 close=88
+open open=92 close=88
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=92 close=88
+close open=92 close=89
+open open=93 close=89
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=93 close=89
+close open=93 close=90
+open open=94 close=90
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=94 close=90
+close open=94 close=91
+open open=95 close=91
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=95 close=91
+close open=95 close=92
+open open=96 close=92
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=96 close=92
+close open=96 close=93
+open open=97 close=93
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=97 close=93
+close open=97 close=94
+open open=98 close=94
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=98 close=94
+close open=98 close=95
+open open=99 close=95
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=99 close=95
+close open=99 close=96
+open open=100 close=96
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=100 close=96
+close open=100 close=97
+open open=101 close=97
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=101 close=97
+close open=101 close=98
+open open=102 close=98
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=102 close=98
+close open=102 close=99
+open open=103 close=99
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=103 close=99
+close open=103 close=100
+open open=104 close=100
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=104 close=100
+close open=104 close=101
+open open=105 close=101
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=105 close=101
+close open=105 close=102
+open open=106 close=102
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=106 close=102
+close open=106 close=103
+open open=107 close=103
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=107 close=103
+close open=107 close=104
+open open=108 close=104
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=108 close=104
+close open=108 close=105
+open open=109 close=105
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=109 close=105
+close open=109 close=106
+open open=110 close=106
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=110 close=106
+close open=110 close=107
+open open=111 close=107
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=111 close=107
+close open=111 close=108
+open open=112 close=108
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=112 close=108
+close open=112 close=109
+open open=113 close=109
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=113 close=109
+close open=113 close=110
+open open=114 close=110
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=114 close=110
+close open=114 close=111
+open open=115 close=111
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=115 close=111
+close open=115 close=112
+open open=116 close=112
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=116 close=112
+close open=116 close=113
+open open=117 close=113
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=117 close=113
+close open=117 close=114
+open open=118 close=114
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=118 close=114
+close open=118 close=115
+open open=119 close=115
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=119 close=115
+close open=119 close=116
+open open=120 close=116
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=120 close=116
+close open=120 close=117
+open open=121 close=117
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=121 close=117
+close open=121 close=118
+open open=122 close=118
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=122 close=118
+close open=122 close=119
+open open=123 close=119
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=123 close=119
+close open=123 close=120
+open open=124 close=120
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=124 close=120
+close open=124 close=121
+open open=125 close=121
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=125 close=121
+close open=125 close=122
+open open=126 close=122
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=126 close=122
+close open=126 close=123
+open open=127 close=123
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=127 close=123
+close open=127 close=124
+open open=128 close=124
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=128 close=124
+close open=128 close=125
+open open=129 close=125
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=129 close=125
+close open=129 close=126
+open open=130 close=126
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=130 close=126
+close open=130 close=127
+open open=131 close=127
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=131 close=127
+close open=131 close=128
+open open=132 close=128
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=132 close=128
+close open=132 close=129
+open open=133 close=129
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=133 close=129
+close open=133 close=130
+open open=134 close=130
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=134 close=130
+close open=134 close=131
+open open=135 close=131
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=135 close=131
+close open=135 close=132
+open open=136 close=132
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=136 close=132
+close open=136 close=133
+open open=137 close=133
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=137 close=133
+close open=137 close=134
+open open=138 close=134
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=138 close=134
+close open=138 close=135
+open open=139 close=135
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=139 close=135
+close open=139 close=136
+open open=140 close=136
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=140 close=136
+close open=140 close=137
+open open=141 close=137
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=141 close=137
+close open=141 close=138
+open open=142 close=138
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=142 close=138
+close open=142 close=139
+open open=143 close=139
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=143 close=139
+close open=143 close=140
+open open=144 close=140
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=144 close=140
+close open=144 close=141
+open open=145 close=141
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=145 close=141
+close open=145 close=142
+open open=146 close=142
+open open=1 close=0
+open open=2 close=0
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-308 err=0 errno=33 open=2 close=0
+close open=2 close=1
+open open=3 close=1
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=3 close=1
+close open=3 close=2
+open open=4 close=2
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=4 close=2
+close open=4 close=3
+open open=5 close=3
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=5 close=3
+close open=5 close=4
+open open=6 close=4
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-308 err=0 errno=33 open=6 close=4
+close open=6 close=5
+open open=7 close=5
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=7 close=5
+close open=7 close=6
+open open=8 close=6
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=8 close=6
+close open=8 close=7
+open open=9 close=7
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=9 close=7
+close open=9 close=8
+open open=10 close=8
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-308 err=0 errno=33 open=10 close=8
+close open=10 close=9
+open open=11 close=9
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=11 close=9
+close open=11 close=10
+open open=12 close=10
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=12 close=10
+close open=12 close=11
+open open=13 close=11
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=13 close=11
+close open=13 close=12
+open open=14 close=12
+open open=15 close=12
+open open=16 close=12
+close open=16 close=13
+open open=17 close=13
+close open=17 close=14
+open open=18 close=14
+close open=18 close=15
+open open=19 close=15
+close open=19 close=16
+open open=20 close=16
+close open=20 close=17
+open open=21 close=17
+close open=21 close=18
+open open=22 close=18
+close open=22 close=19
+open open=23 close=19
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=23 close=19
+close open=23 close=20
+open open=24 close=20
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=24 close=20
+close open=24 close=21
+open open=25 close=21
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=25 close=21
+close open=25 close=22
+open open=26 close=22
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=26 close=22
+close open=26 close=23
+open open=27 close=23
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=27 close=23
+close open=27 close=24
+open open=28 close=24
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=28 close=24
+close open=28 close=25
+open open=29 close=25
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=29 close=25
+close open=29 close=26
+open open=30 close=26
+SSLFAIL url=https://www.mdgx.com/droid.eot ret1=0 ret2=0 err=0 errno=0 open=30 close=26
+close open=30 close=27
+open open=31 close=27
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=31 close=27
+close open=31 close=28
+open open=32 close=28
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=32 close=28
+close open=32 close=29
+open open=33 close=29
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=33 close=29
+close open=33 close=30
+open open=34 close=30
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=34 close=30
+close open=34 close=31
+open open=35 close=31
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=35 close=31
+close open=35 close=32
+open open=36 close=32
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=36 close=32
+close open=36 close=33
+open open=37 close=33
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=37 close=33
+close open=37 close=34
+open open=38 close=34
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=38 close=34
+close open=38 close=35
+open open=39 close=35
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=39 close=35
+close open=39 close=36
+open open=40 close=36
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=40 close=36
+close open=40 close=37
+open open=41 close=37
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=41 close=37
+close open=41 close=38
+open open=42 close=38
+SSLFAIL url=https://www.mdgx.com/droid.woff ret1=0 ret2=0 err=0 errno=0 open=42 close=38
+close open=42 close=39
+open open=43 close=39
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=43 close=39
+close open=43 close=40
+open open=44 close=40
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=44 close=40
+close open=44 close=41
+open open=45 close=41
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=45 close=41
+close open=45 close=42
+open open=46 close=42
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=46 close=42
+close open=46 close=43
+open open=47 close=43
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=47 close=43
+close open=47 close=44
+open open=48 close=44
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=48 close=44
+close open=48 close=45
+open open=49 close=45
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=49 close=45
+close open=49 close=46
+open open=50 close=46
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=50 close=46
+close open=50 close=47
+open open=51 close=47
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=51 close=47
+close open=51 close=48
+open open=52 close=48
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=52 close=48
+close open=52 close=49
+open open=53 close=49
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=53 close=49
+close open=53 close=50
+open open=54 close=50
+SSLFAIL url=https://www.mdgx.com/droid.ttf ret1=0 ret2=0 err=0 errno=0 open=54 close=50
+close open=54 close=51
+open open=55 close=51
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=55 close=51
+close open=55 close=52
+open open=56 close=52
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=56 close=52
+close open=56 close=53
+open open=57 close=53
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=57 close=53
+close open=57 close=54
+open open=58 close=54
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=58 close=54
+close open=58 close=55
+open open=59 close=55
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=59 close=55
+close open=59 close=56
+open open=60 close=56
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=60 close=56
+close open=60 close=57
+open open=61 close=57
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=61 close=57
+close open=61 close=58
+open open=62 close=58
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=62 close=58
+close open=62 close=59
+open open=63 close=59
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=63 close=59
+close open=63 close=60
+open open=64 close=60
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=64 close=60
+close open=64 close=61
+open open=65 close=61
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=65 close=61
+close open=65 close=62
+open open=66 close=62
+SSLFAIL url=https://www.mdgx.com/D850/2021_PANO_NorthWest_017.jpg ret1=0 ret2=0 err=0 errno=0 open=66 close=62
+close open=66 close=63
+open open=67 close=63
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=67 close=63
+close open=67 close=64
+open open=68 close=64
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=68 close=64
+close open=68 close=65
+open open=69 close=65
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=69 close=65
+close open=69 close=66
+open open=70 close=66
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=70 close=66
+close open=70 close=67
+open open=71 close=67
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=71 close=67
+close open=71 close=68
+open open=72 close=68
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=72 close=68
+close open=72 close=69
+open open=73 close=69
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=73 close=69
+close open=73 close=70
+open open=74 close=70
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=74 close=70
+close open=74 close=71
+open open=75 close=71
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=75 close=71
+close open=75 close=72
+open open=76 close=72
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=76 close=72
+close open=76 close=73
+open open=77 close=73
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=77 close=73
+close open=77 close=74
+open open=78 close=74
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_13159.jpg ret1=0 ret2=0 err=0 errno=0 open=78 close=74
+close open=78 close=75
+open open=79 close=75
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=79 close=75
+close open=79 close=76
+open open=80 close=76
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=80 close=76
+close open=80 close=77
+open open=81 close=77
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=81 close=77
+close open=81 close=78
+open open=82 close=78
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=82 close=78
+close open=82 close=79
+open open=83 close=79
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=83 close=79
+close open=83 close=80
+open open=84 close=80
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=84 close=80
+close open=84 close=81
+open open=85 close=81
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=85 close=81
+close open=85 close=82
+open open=86 close=82
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=86 close=82
+close open=86 close=83
+open open=87 close=83
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=87 close=83
+close open=87 close=84
+open open=88 close=84
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=88 close=84
+close open=88 close=85
+open open=89 close=85
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=89 close=85
+close open=89 close=86
+open open=90 close=86
+SSLFAIL url=https://www.mdgx.com/D850/2021_NORTHWEST_NIK_20967.jpg ret1=0 ret2=0 err=0 errno=0 open=90 close=86
+close open=90 close=87
+open open=91 close=87
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=91 close=87
+close open=91 close=88
+open open=92 close=88
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=92 close=88
+close open=92 close=89
+open open=93 close=89
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=93 close=89
+close open=93 close=90
+open open=94 close=90
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=94 close=90
+close open=94 close=91
+open open=95 close=91
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=95 close=91
+close open=95 close=92
+open open=96 close=92
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=96 close=92
+close open=96 close=93
+open open=97 close=93
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=97 close=93
+close open=97 close=94
+open open=98 close=94
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=98 close=94
+close open=98 close=95
+open open=99 close=95
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=99 close=95
+close open=99 close=96
+open open=100 close=96
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=100 close=96
+close open=100 close=97
+open open=101 close=97
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=101 close=97
+close open=101 close=98
+open open=102 close=98
+SSLFAIL url=https://www.mdgx.com/D850/2025_PANO_Bosque_del_Apache_01d.jpg ret1=0 ret2=0 err=0 errno=0 open=102 close=98
+close open=102 close=99
+open open=103 close=99
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=103 close=99
+close open=103 close=100
+open open=104 close=100
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=104 close=100
+close open=104 close=101
+open open=105 close=101
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=105 close=101
+close open=105 close=102
+open open=106 close=102
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=106 close=102
+close open=106 close=103
+open open=107 close=103
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=107 close=103
+close open=107 close=104
+open open=108 close=104
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=108 close=104
+close open=108 close=105
+open open=109 close=105
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=109 close=105
+close open=109 close=106
+open open=110 close=106
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=110 close=106
+close open=110 close=107
+open open=111 close=107
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=111 close=107
+close open=111 close=108
+open open=112 close=108
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=112 close=108
+close open=112 close=109
+open open=113 close=109
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=113 close=109
+close open=113 close=110
+open open=114 close=110
+SSLFAIL url=https://www.mdgx.com/D850/2017_PANO_Trieste_01.jpg ret1=0 ret2=0 err=0 errno=0 open=114 close=110
+close open=114 close=111
+open open=115 close=111
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=115 close=111
+close open=115 close=112
+open open=116 close=112
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=116 close=112
+close open=116 close=113
+open open=117 close=113
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=117 close=113
+close open=117 close=114
+open open=118 close=114
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=118 close=114
+close open=118 close=115
+open open=119 close=115
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=119 close=115
+close open=119 close=116
+open open=120 close=116
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=120 close=116
+close open=120 close=117
+open open=121 close=117
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=121 close=117
+close open=121 close=118
+open open=122 close=118
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=122 close=118
+close open=122 close=119
+open open=123 close=119
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=123 close=119
+close open=123 close=120
+open open=124 close=120
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=124 close=120
+close open=124 close=121
+open open=125 close=121
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=125 close=121
+close open=125 close=122
+open open=126 close=122
+SSLFAIL url=https://www.mdgx.com/D850/2019_VLA_NIK_6102_NEW.jpg ret1=0 ret2=0 err=0 errno=0 open=126 close=122
+close open=126 close=123
+open open=127 close=123
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=127 close=123
+close open=127 close=124
+open open=128 close=124
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=128 close=124
+close open=128 close=125
+open open=129 close=125
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=129 close=125
+close open=129 close=126
+open open=130 close=126
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=130 close=126
+close open=130 close=127
+open open=131 close=127
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=131 close=127
+close open=131 close=128
+open open=132 close=128
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=132 close=128
+close open=132 close=129
+open open=133 close=129
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=133 close=129
+close open=133 close=130
+open open=134 close=130
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=134 close=130
+close open=134 close=131
+open open=135 close=131
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=135 close=131
+close open=135 close=132
+open open=136 close=132
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=136 close=132
+close open=136 close=133
+open open=137 close=133
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=137 close=133
+close open=137 close=134
+open open=138 close=134
+SSLFAIL url=https://www.mdgx.com/D850/2014_GR_DSC_3480.jpg ret1=0 ret2=0 err=0 errno=0 open=138 close=134
+close open=138 close=135
+open open=139 close=135
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=139 close=135
+close open=139 close=136
+open open=140 close=136
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=140 close=136
+close open=140 close=137
+open open=141 close=137
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=141 close=137
+close open=141 close=138
+open open=142 close=138
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=142 close=138
+close open=142 close=139
+open open=143 close=139
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=143 close=139
+close open=143 close=140
+open open=144 close=140
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=144 close=140
+close open=144 close=141
+open open=145 close=141
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=145 close=141
+close open=145 close=142
+open open=146 close=142
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=146 close=142
+close open=146 close=143
+open open=147 close=143
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=147 close=143
+close open=147 close=144
+open open=148 close=144
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=148 close=144
+close open=148 close=145
+open open=149 close=145
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=149 close=145
+close open=149 close=146
+open open=150 close=146
+SSLFAIL url=https://www.mdgx.com/D850/2014_PANO_Fagaras_03_2x.jpg ret1=0 ret2=0 err=0 errno=0 open=150 close=146
+close open=150 close=147
+open open=151 close=147
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=151 close=147
+close open=151 close=148
+open open=152 close=148
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=152 close=148
+close open=152 close=149
+open open=153 close=149
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=153 close=149
+close open=153 close=150
+open open=154 close=150
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=154 close=150
+close open=154 close=151
+open open=155 close=151
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=155 close=151
+close open=155 close=152
+open open=156 close=152
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=156 close=152
+close open=156 close=153
+open open=157 close=153
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=157 close=153
+close open=157 close=154
+open open=158 close=154
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=158 close=154
+close open=158 close=155
+open open=159 close=155
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=159 close=155
+close open=159 close=156
+open open=160 close=156
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=160 close=156
+close open=160 close=157
+open open=161 close=157
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=161 close=157
+close open=161 close=158
+open open=162 close=158
+SSLFAIL url=https://www.mdgx.com/D850/2015_BRAN_DSC_9609.jpg ret1=0 ret2=0 err=0 errno=0 open=162 close=158
+close open=162 close=159
+open open=163 close=159
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=163 close=159
+close open=163 close=160
+open open=164 close=160
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=164 close=160
+close open=164 close=161
+open open=165 close=161
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=165 close=161
+close open=165 close=162
+open open=166 close=162
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=166 close=162
+close open=166 close=163
+open open=167 close=163
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=167 close=163
+close open=167 close=164
+open open=168 close=164
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=168 close=164
+close open=168 close=165
+open open=169 close=165
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=169 close=165
+close open=169 close=166
+open open=170 close=166
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=170 close=166
+close open=170 close=167
+open open=171 close=167
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=171 close=167
+close open=171 close=168
+open open=172 close=168
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=172 close=168
+close open=172 close=169
+open open=173 close=169
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=173 close=169
+close open=173 close=170
+open open=174 close=170
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_BUZAU_DSC_8347.jpg ret1=0 ret2=0 err=0 errno=0 open=174 close=170
+close open=174 close=171
+open open=175 close=171
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=175 close=171
+close open=175 close=172
+open open=176 close=172
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=176 close=172
+close open=176 close=173
+open open=177 close=173
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=177 close=173
+close open=177 close=174
+open open=178 close=174
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=178 close=174
+close open=178 close=175
+open open=179 close=175
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=179 close=175
+close open=179 close=176
+open open=180 close=176
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=180 close=176
+close open=180 close=177
+open open=181 close=177
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=181 close=177
+close open=181 close=178
+open open=182 close=178
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=182 close=178
+close open=182 close=179
+open open=183 close=179
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=183 close=179
+close open=183 close=180
+open open=184 close=180
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=184 close=180
+close open=184 close=181
+open open=185 close=181
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=185 close=181
+close open=185 close=182
+open open=186 close=182
+SSLFAIL url=https://www.mdgx.com/D850/2015_PANO_Rasnov_3.jpg ret1=0 ret2=0 err=0 errno=0 open=186 close=182
+close open=186 close=183
+open open=187 close=183
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=187 close=183
+close open=187 close=184
+open open=188 close=184
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=188 close=184
+close open=188 close=185
+open open=189 close=185
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=189 close=185
+close open=189 close=186
+open open=190 close=186
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=190 close=186
+close open=190 close=187
+open open=191 close=187
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=191 close=187
+close open=191 close=188
+open open=192 close=188
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=192 close=188
+close open=192 close=189
+open open=193 close=189
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=193 close=189
+close open=193 close=190
+open open=194 close=190
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=194 close=190
+close open=194 close=191
+open open=195 close=191
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=195 close=191
+close open=195 close=192
+open open=196 close=192
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=196 close=192
+close open=196 close=193
+open open=197 close=193
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=197 close=193
+close open=197 close=194
+open open=198 close=194
+SSLFAIL url=https://www.mdgx.com/D850/2016_MRO_DSC_4673.jpg ret1=0 ret2=0 err=0 errno=0 open=198 close=194
+close open=198 close=195
+open open=199 close=195
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=199 close=195
+close open=199 close=196
+open open=200 close=196
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=200 close=196
+close open=200 close=197
+open open=201 close=197
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=201 close=197
+close open=201 close=198
+open open=202 close=198
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=202 close=198
+close open=202 close=199
+open open=203 close=199
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=203 close=199
+close open=203 close=200
+open open=204 close=200
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=204 close=200
+close open=204 close=201
+open open=205 close=201
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=205 close=201
+close open=205 close=202
+open open=206 close=202
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=206 close=202
+close open=206 close=203
+open open=207 close=203
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=207 close=203
+close open=207 close=204
+open open=208 close=204
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=208 close=204
+close open=208 close=205
+open open=209 close=205
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=209 close=205
+close open=209 close=206
+open open=210 close=206
+SSLFAIL url=https://www.mdgx.com/a2mission.jpg ret1=0 ret2=0 err=0 errno=0 open=210 close=206
+close open=210 close=207
+open open=211 close=207
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=211 close=207
+close open=211 close=208
+open open=212 close=208
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=212 close=208
+close open=212 close=209
+open open=213 close=209
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=213 close=209
+close open=213 close=210
+open open=214 close=210
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=214 close=210
+close open=214 close=211
+open open=215 close=211
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=215 close=211
+close open=215 close=212
+open open=216 close=212
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=216 close=212
+close open=216 close=213
+open open=217 close=213
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=217 close=213
+close open=217 close=214
+open open=218 close=214
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=218 close=214
+close open=218 close=215
+open open=219 close=215
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=219 close=215
+close open=219 close=216
+open open=220 close=216
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=220 close=216
+close open=220 close=217
+open open=221 close=217
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=221 close=217
+close open=221 close=218
+open open=222 close=218
+SSLFAIL url=https://www.mdgx.com/a2patch.gif ret1=0 ret2=0 err=0 errno=0 open=222 close=218
+close open=222 close=219
+open open=223 close=219
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=223 close=219
+close open=223 close=220
+open open=224 close=220
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=224 close=220
+close open=224 close=221
+open open=225 close=221
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=225 close=221
+close open=225 close=222
+open open=226 close=222
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=226 close=222
+close open=226 close=223
+open open=227 close=223
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=227 close=223
+close open=227 close=224
+open open=228 close=224
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=228 close=224
+close open=228 close=225
+open open=229 close=225
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=229 close=225
+close open=229 close=226
+open open=230 close=226
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=230 close=226
+close open=230 close=227
+open open=231 close=227
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=231 close=227
+close open=231 close=228
+open open=232 close=228
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=232 close=228
+close open=232 close=229
+open open=233 close=229
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=233 close=229
+close open=233 close=230
+open open=234 close=230
+SSLFAIL url=https://www.mdgx.com/nvforget.jpg ret1=0 ret2=0 err=0 errno=0 open=234 close=230
+close open=234 close=231
+open open=235 close=231
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=235 close=231
+close open=235 close=232
+open open=236 close=232
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=236 close=232
+close open=236 close=233
+open open=237 close=233
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=237 close=233
+close open=237 close=234
+open open=238 close=234
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=238 close=234
+close open=238 close=235
+open open=239 close=235
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=239 close=235
+close open=239 close=236
+open open=240 close=236
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=240 close=236
+close open=240 close=237
+open open=241 close=237
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=241 close=237
+close open=241 close=238
+open open=242 close=238
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=242 close=238
+close open=242 close=239
+open open=243 close=239
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=243 close=239
+close open=243 close=240
+open open=244 close=240
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=244 close=240
+close open=244 close=241
+open open=245 close=241
+SSLFAIL url=https://www.mdgx.com/stopcv19.png ret1=0 ret2=0 err=0 errno=0 open=245 close=241
+close open=245 close=242
