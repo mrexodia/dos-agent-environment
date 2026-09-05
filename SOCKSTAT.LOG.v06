@@ -1,0 +1,1481 @@
+open open=1 close=0
+open open=2 close=0
+open open=3 close=0
+open open=4 close=0
+close open=4 close=1
+open open=5 close=1
+close open=5 close=2
+open open=6 close=2
+open open=7 close=2
+open open=8 close=2
+open open=9 close=2
+close open=9 close=3
+open open=10 close=3
+close open=10 close=4
+open open=11 close=4
+close open=11 close=5
+open open=12 close=5
+close open=12 close=6
+open open=13 close=6
+close open=13 close=7
+open open=14 close=7
+close open=14 close=8
+open open=15 close=8
+close open=15 close=9
+open open=16 close=9
+close open=16 close=10
+open open=17 close=10
+close open=17 close=11
+open open=18 close=11
+close open=18 close=12
+open open=19 close=12
+close open=19 close=13
+open open=20 close=13
+close open=20 close=14
+open open=21 close=14
+close open=21 close=15
+open open=22 close=15
+close open=22 close=16
+open open=23 close=16
+close open=23 close=17
+open open=24 close=17
+close open=24 close=18
+open open=25 close=18
+close open=25 close=19
+open open=26 close=19
+close open=26 close=20
+open open=27 close=20
+open open=28 close=20
+open open=29 close=20
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-328 err=0 errno=0 open=29 close=20
+close open=29 close=21
+open open=30 close=21
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=30 close=21
+close open=30 close=22
+open open=31 close=22
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=31 close=22
+close open=31 close=23
+open open=32 close=23
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=32 close=23
+close open=32 close=24
+open open=33 close=24
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-328 err=0 errno=0 open=33 close=24
+close open=33 close=25
+open open=34 close=25
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=34 close=25
+close open=34 close=26
+open open=35 close=26
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=35 close=26
+close open=35 close=27
+open open=36 close=27
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=36 close=27
+close open=36 close=28
+open open=37 close=28
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-328 err=0 errno=0 open=37 close=28
+close open=37 close=29
+open open=38 close=29
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=38 close=29
+close open=38 close=30
+open open=39 close=30
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=39 close=30
+close open=39 close=31
+open open=40 close=31
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=40 close=31
+close open=40 close=32
+open open=41 close=32
+open open=42 close=32
+close open=42 close=33
+open open=43 close=33
+close open=43 close=34
+open open=44 close=34
+close open=44 close=35
+open open=45 close=35
+close open=45 close=36
+open open=46 close=36
+close open=46 close=37
+open open=47 close=37
+open open=48 close=37
+close open=48 close=38
+open open=49 close=38
+open open=50 close=38
+open open=51 close=38
+close open=51 close=39
+open open=52 close=39
+open open=53 close=39
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=53 close=39
+close open=53 close=40
+open open=54 close=40
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=54 close=40
+close open=54 close=41
+open open=55 close=41
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=55 close=41
+close open=55 close=42
+open open=56 close=42
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=56 close=42
+close open=56 close=43
+open open=57 close=43
+close open=57 close=44
+open open=58 close=44
+close open=58 close=45
+open open=59 close=45
+close open=59 close=46
+open open=60 close=46
+close open=60 close=47
+open open=61 close=47
+close open=61 close=48
+open open=62 close=48
+close open=62 close=49
+open open=63 close=49
+close open=63 close=50
+open open=64 close=50
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=64 close=50
+close open=64 close=51
+open open=65 close=51
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=65 close=51
+close open=65 close=52
+open open=66 close=52
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=66 close=52
+close open=66 close=53
+open open=67 close=53
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=67 close=53
+close open=67 close=54
+open open=68 close=54
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=68 close=54
+close open=68 close=55
+open open=69 close=55
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=69 close=55
+close open=69 close=56
+open open=70 close=56
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=70 close=56
+close open=70 close=57
+open open=71 close=57
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=71 close=57
+close open=71 close=58
+open open=72 close=58
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=72 close=58
+close open=72 close=59
+open open=73 close=59
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=73 close=59
+close open=73 close=60
+open open=74 close=60
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=74 close=60
+close open=74 close=61
+open open=75 close=61
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=75 close=61
+close open=75 close=62
+open open=76 close=62
+close open=76 close=63
+open open=77 close=63
+close open=77 close=64
+open open=78 close=64
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=78 close=64
+close open=78 close=65
+open open=79 close=65
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=79 close=65
+close open=79 close=66
+open open=80 close=66
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=80 close=66
+close open=80 close=67
+open open=81 close=67
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=81 close=67
+close open=81 close=68
+open open=82 close=68
+close open=82 close=69
+open open=83 close=69
+close open=83 close=70
+open open=84 close=70
+close open=84 close=71
+open open=85 close=71
+close open=85 close=72
+open open=86 close=72
+close open=86 close=73
+open open=87 close=73
+close open=87 close=74
+open open=88 close=74
+close open=88 close=75
+open open=89 close=75
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=89 close=75
+close open=89 close=76
+open open=90 close=76
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=90 close=76
+close open=90 close=77
+open open=91 close=77
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=91 close=77
+close open=91 close=78
+open open=92 close=78
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=92 close=78
+close open=92 close=79
+open open=93 close=79
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=93 close=79
+close open=93 close=80
+open open=94 close=80
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=94 close=80
+close open=94 close=81
+open open=95 close=81
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=95 close=81
+close open=95 close=82
+open open=96 close=82
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=96 close=82
+close open=96 close=83
+open open=97 close=83
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=97 close=83
+close open=97 close=84
+open open=98 close=84
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=98 close=84
+close open=98 close=85
+open open=99 close=85
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=99 close=85
+close open=99 close=86
+open open=100 close=86
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=100 close=86
+close open=100 close=87
+open open=101 close=87
+close open=101 close=88
+open open=102 close=88
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=102 close=88
+close open=102 close=89
+open open=103 close=89
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=103 close=89
+close open=103 close=90
+open open=104 close=90
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=104 close=90
+close open=104 close=91
+open open=105 close=91
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=105 close=91
+close open=105 close=92
+open open=106 close=92
+close open=106 close=93
+open open=107 close=93
+close open=107 close=94
+open open=108 close=94
+close open=108 close=95
+open open=109 close=95
+close open=109 close=96
+open open=110 close=96
+close open=110 close=97
+open open=111 close=97
+close open=111 close=98
+open open=112 close=98
+close open=112 close=99
+open open=113 close=99
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=113 close=99
+close open=113 close=100
+open open=114 close=100
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=114 close=100
+close open=114 close=101
+open open=115 close=101
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=115 close=101
+close open=115 close=102
+open open=116 close=102
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=116 close=102
+close open=116 close=103
+open open=117 close=103
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=117 close=103
+close open=117 close=104
+open open=118 close=104
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=118 close=104
+close open=118 close=105
+open open=119 close=105
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=119 close=105
+close open=119 close=106
+open open=120 close=106
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=120 close=106
+close open=120 close=107
+open open=121 close=107
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=121 close=107
+close open=121 close=108
+open open=122 close=108
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=122 close=108
+close open=122 close=109
+open open=123 close=109
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=123 close=109
+close open=123 close=110
+open open=124 close=110
+SSLFAIL url=https://www.reuters.com/ ret1=-1 ret2=-313 err=0 errno=0 open=124 close=110
+close open=124 close=111
+open open=125 close=111
+close open=125 close=112
+open open=126 close=112
+open open=127 close=112
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=127 close=112
+close open=127 close=113
+open open=128 close=113
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=128 close=113
+close open=128 close=114
+open open=129 close=114
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=129 close=114
+close open=129 close=115
+open open=130 close=115
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=130 close=115
+close open=130 close=116
+open open=131 close=116
+close open=131 close=117
+open open=132 close=117
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=132 close=117
+close open=132 close=118
+open open=133 close=118
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=133 close=118
+close open=133 close=119
+open open=134 close=119
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=134 close=119
+close open=134 close=120
+open open=135 close=120
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=135 close=120
+close open=135 close=121
+open open=136 close=121
+close open=136 close=122
+open open=137 close=122
+close open=137 close=123
+open open=138 close=123
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=138 close=123
+close open=138 close=124
+open open=139 close=124
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=139 close=124
+close open=139 close=125
+open open=140 close=125
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=140 close=125
+close open=140 close=126
+open open=141 close=126
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=141 close=126
+close open=141 close=127
+open open=142 close=127
+close open=142 close=128
+open open=143 close=128
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=143 close=128
+close open=143 close=129
+open open=144 close=129
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=144 close=129
+close open=144 close=130
+open open=145 close=130
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=145 close=130
+close open=145 close=131
+open open=146 close=131
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=146 close=131
+close open=146 close=132
+open open=147 close=132
+close open=147 close=133
+open open=148 close=133
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=148 close=133
+close open=148 close=134
+open open=149 close=134
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=149 close=134
+close open=149 close=135
+open open=150 close=135
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=150 close=135
+close open=150 close=136
+open open=151 close=136
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=151 close=136
+close open=151 close=137
+open open=152 close=137
+close open=152 close=138
+open open=153 close=138
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=153 close=138
+close open=153 close=139
+open open=154 close=139
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=154 close=139
+close open=154 close=140
+open open=155 close=140
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=155 close=140
+close open=155 close=141
+open open=156 close=141
+SSLFAIL url=https://hengelsport.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=156 close=141
+close open=156 close=142
+open open=157 close=142
+close open=157 close=143
+open open=158 close=143
+open open=159 close=143
+close open=159 close=144
+open open=160 close=144
+open open=161 close=144
+open open=162 close=144
+close open=162 close=145
+open open=163 close=145
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=163 close=145
+close open=163 close=146
+open open=164 close=146
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=164 close=146
+close open=164 close=147
+open open=165 close=147
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=165 close=147
+close open=165 close=148
+open open=166 close=148
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=166 close=148
+close open=166 close=149
+open open=167 close=149
+close open=167 close=150
+open open=168 close=150
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=168 close=150
+close open=168 close=151
+open open=169 close=151
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=169 close=151
+close open=169 close=152
+open open=170 close=152
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=170 close=152
+close open=170 close=153
+open open=171 close=153
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=171 close=153
+close open=171 close=154
+open open=172 close=154
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=172 close=154
+close open=172 close=155
+open open=173 close=155
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=173 close=155
+close open=173 close=156
+open open=174 close=156
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=174 close=156
+close open=174 close=157
+open open=175 close=157
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=175 close=157
+close open=175 close=158
+open open=176 close=158
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=176 close=158
+close open=176 close=159
+open open=177 close=159
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=177 close=159
+close open=177 close=160
+open open=178 close=160
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=178 close=160
+close open=178 close=161
+open open=179 close=161
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=179 close=161
+close open=179 close=162
+open open=180 close=162
+close open=180 close=163
+open open=181 close=163
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=181 close=163
+close open=181 close=164
+open open=182 close=164
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=182 close=164
+close open=182 close=165
+open open=183 close=165
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=183 close=165
+close open=183 close=166
+open open=184 close=166
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=184 close=166
+close open=184 close=167
+open open=185 close=167
+close open=185 close=168
+open open=186 close=168
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=186 close=168
+close open=186 close=169
+open open=187 close=169
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=187 close=169
+close open=187 close=170
+open open=188 close=170
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=188 close=170
+close open=188 close=171
+open open=189 close=171
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=189 close=171
+close open=189 close=172
+open open=190 close=172
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=190 close=172
+close open=190 close=173
+open open=191 close=173
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=191 close=173
+close open=191 close=174
+open open=192 close=174
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=192 close=174
+close open=192 close=175
+open open=193 close=175
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=193 close=175
+close open=193 close=176
+open open=194 close=176
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=194 close=176
+close open=194 close=177
+open open=195 close=177
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=195 close=177
+close open=195 close=178
+open open=196 close=178
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=196 close=178
+close open=196 close=179
+open open=197 close=179
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=197 close=179
+close open=197 close=180
+open open=198 close=180
+close open=198 close=181
+open open=199 close=181
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=199 close=181
+close open=199 close=182
+open open=200 close=182
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=200 close=182
+close open=200 close=183
+open open=201 close=183
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=201 close=183
+close open=201 close=184
+open open=202 close=184
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=202 close=184
+close open=202 close=185
+open open=203 close=185
+close open=203 close=186
+open open=204 close=186
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=204 close=186
+close open=204 close=187
+open open=205 close=187
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=205 close=187
+close open=205 close=188
+open open=206 close=188
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=206 close=188
+close open=206 close=189
+open open=207 close=189
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=207 close=189
+close open=207 close=190
+open open=208 close=190
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=208 close=190
+close open=208 close=191
+open open=209 close=191
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=209 close=191
+close open=209 close=192
+open open=210 close=192
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=210 close=192
+close open=210 close=193
+open open=211 close=193
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=211 close=193
+close open=211 close=194
+open open=212 close=194
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=212 close=194
+close open=212 close=195
+open open=213 close=195
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=213 close=195
+close open=213 close=196
+open open=214 close=196
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=214 close=196
+close open=214 close=197
+open open=215 close=197
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=215 close=197
+close open=215 close=198
+open open=216 close=198
+close open=216 close=199
+open open=217 close=199
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=217 close=199
+close open=217 close=200
+open open=218 close=200
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=218 close=200
+close open=218 close=201
+open open=219 close=201
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=219 close=201
+close open=219 close=202
+open open=220 close=202
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=220 close=202
+close open=220 close=203
+open open=221 close=203
+close open=221 close=204
+open open=222 close=204
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=222 close=204
+close open=222 close=205
+open open=223 close=205
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=223 close=205
+close open=223 close=206
+open open=224 close=206
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=224 close=206
+close open=224 close=207
+open open=225 close=207
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=225 close=207
+close open=225 close=208
+open open=226 close=208
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=226 close=208
+close open=226 close=209
+open open=227 close=209
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=227 close=209
+close open=227 close=210
+open open=228 close=210
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=228 close=210
+close open=228 close=211
+open open=229 close=211
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=229 close=211
+close open=229 close=212
+open open=230 close=212
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=230 close=212
+close open=230 close=213
+open open=231 close=213
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=231 close=213
+close open=231 close=214
+open open=232 close=214
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=232 close=214
+close open=232 close=215
+open open=233 close=215
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=233 close=215
+close open=233 close=216
+open open=234 close=216
+close open=234 close=217
+open open=235 close=217
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=235 close=217
+close open=235 close=218
+open open=236 close=218
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=236 close=218
+close open=236 close=219
+open open=237 close=219
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=237 close=219
+close open=237 close=220
+open open=238 close=220
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=238 close=220
+close open=238 close=221
+open open=239 close=221
+close open=239 close=222
+open open=240 close=222
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=240 close=222
+close open=240 close=223
+open open=241 close=223
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=241 close=223
+close open=241 close=224
+open open=242 close=224
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=242 close=224
+close open=242 close=225
+open open=243 close=225
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=243 close=225
+close open=243 close=226
+open open=244 close=226
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=244 close=226
+close open=244 close=227
+open open=245 close=227
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=245 close=227
+close open=245 close=228
+open open=246 close=228
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=246 close=228
+close open=246 close=229
+open open=247 close=229
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=247 close=229
+close open=247 close=230
+open open=248 close=230
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=248 close=230
+close open=248 close=231
+open open=249 close=231
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=249 close=231
+close open=249 close=232
+open open=250 close=232
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=250 close=232
+close open=250 close=233
+open open=251 close=233
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=251 close=233
+close open=251 close=234
+open open=252 close=234
+close open=252 close=235
+open open=253 close=235
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=253 close=235
+close open=253 close=236
+open open=254 close=236
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=254 close=236
+close open=254 close=237
+open open=255 close=237
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=255 close=237
+close open=255 close=238
+open open=256 close=238
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=256 close=238
+close open=256 close=239
+open open=257 close=239
+close open=257 close=240
+open open=258 close=240
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=258 close=240
+close open=258 close=241
+open open=259 close=241
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=259 close=241
+close open=259 close=242
+open open=260 close=242
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=260 close=242
+close open=260 close=243
+open open=261 close=243
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=261 close=243
+close open=261 close=244
+open open=262 close=244
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=262 close=244
+close open=262 close=245
+open open=263 close=245
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=263 close=245
+close open=263 close=246
+open open=264 close=246
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=264 close=246
+close open=264 close=247
+open open=265 close=247
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=265 close=247
+close open=265 close=248
+open open=266 close=248
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=266 close=248
+close open=266 close=249
+open open=267 close=249
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=267 close=249
+close open=267 close=250
+open open=268 close=250
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=268 close=250
+close open=268 close=251
+open open=269 close=251
+SSLFAIL url=https://r.bing.com/rs/6q/qZ/jnc,nj/2RFgnacsz6nPw9vvxd8AGFyaQr8.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=269 close=251
+close open=269 close=252
+open open=270 close=252
+close open=270 close=253
+open open=271 close=253
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=271 close=253
+close open=271 close=254
+open open=272 close=254
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=272 close=254
+close open=272 close=255
+open open=273 close=255
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=273 close=255
+close open=273 close=256
+open open=274 close=256
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=274 close=256
+close open=274 close=257
+open open=275 close=257
+close open=275 close=258
+open open=276 close=258
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=276 close=258
+close open=276 close=259
+open open=277 close=259
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=277 close=259
+close open=277 close=260
+open open=278 close=260
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=278 close=260
+close open=278 close=261
+open open=279 close=261
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=279 close=261
+close open=279 close=262
+open open=280 close=262
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=280 close=262
+close open=280 close=263
+open open=281 close=263
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=281 close=263
+close open=281 close=264
+open open=282 close=264
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=282 close=264
+close open=282 close=265
+open open=283 close=265
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=283 close=265
+close open=283 close=266
+open open=284 close=266
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=284 close=266
+close open=284 close=267
+open open=285 close=267
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=285 close=267
+close open=285 close=268
+open open=286 close=268
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=286 close=268
+close open=286 close=269
+open open=287 close=269
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=287 close=269
+close open=287 close=270
+open open=288 close=270
+close open=288 close=271
+open open=289 close=271
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=289 close=271
+close open=289 close=272
+open open=290 close=272
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=290 close=272
+close open=290 close=273
+open open=291 close=273
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=291 close=273
+close open=291 close=274
+open open=292 close=274
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=292 close=274
+close open=292 close=275
+open open=293 close=275
+close open=293 close=276
+open open=294 close=276
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=294 close=276
+close open=294 close=277
+open open=295 close=277
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=295 close=277
+close open=295 close=278
+open open=296 close=278
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=296 close=278
+close open=296 close=279
+open open=297 close=279
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=297 close=279
+close open=297 close=280
+open open=298 close=280
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=298 close=280
+close open=298 close=281
+open open=299 close=281
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=299 close=281
+close open=299 close=282
+open open=300 close=282
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=300 close=282
+close open=300 close=283
+open open=301 close=283
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=301 close=283
+close open=301 close=284
+open open=302 close=284
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=302 close=284
+close open=302 close=285
+open open=303 close=285
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=303 close=285
+close open=303 close=286
+open open=304 close=286
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=304 close=286
+close open=304 close=287
+open open=305 close=287
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=305 close=287
+close open=305 close=288
+open open=306 close=288
+close open=306 close=289
+open open=307 close=289
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=307 close=289
+close open=307 close=290
+open open=308 close=290
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=308 close=290
+close open=308 close=291
+open open=309 close=291
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=309 close=291
+close open=309 close=292
+open open=310 close=292
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=310 close=292
+close open=310 close=293
+open open=311 close=293
+close open=311 close=294
+open open=312 close=294
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=312 close=294
+close open=312 close=295
+open open=313 close=295
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=313 close=295
+close open=313 close=296
+open open=314 close=296
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=314 close=296
+close open=314 close=297
+open open=315 close=297
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=315 close=297
+close open=315 close=298
+open open=316 close=298
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=316 close=298
+close open=316 close=299
+open open=317 close=299
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=317 close=299
+close open=317 close=300
+open open=318 close=300
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=318 close=300
+close open=318 close=301
+open open=319 close=301
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=319 close=301
+close open=319 close=302
+open open=320 close=302
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=320 close=302
+close open=320 close=303
+open open=321 close=303
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=321 close=303
+close open=321 close=304
+open open=322 close=304
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=322 close=304
+close open=322 close=305
+open open=323 close=305
+SSLFAIL url=https://r.bing.com/rs/6q/eC/jnc,nj/CZwKVRB4ciQqBqIc5xpa4fPkn8A.js?or=d ret1=-1 ret2=-313 err=0 errno=0 open=323 close=305
+close open=323 close=306
+open open=324 close=306
+close open=324 close=307
+open open=325 close=307
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=325 close=307
+close open=325 close=308
+open open=326 close=308
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=326 close=308
+close open=326 close=309
+open open=327 close=309
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=327 close=309
+close open=327 close=310
+open open=328 close=310
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=328 close=310
+close open=328 close=311
+open open=329 close=311
+close open=329 close=312
+open open=330 close=312
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=330 close=312
+close open=330 close=313
+open open=331 close=313
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=331 close=313
+close open=331 close=314
+open open=332 close=314
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=332 close=314
+close open=332 close=315
+open open=333 close=315
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=333 close=315
+close open=333 close=316
+open open=334 close=316
+close open=334 close=317
+open open=335 close=317
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=335 close=317
+close open=335 close=318
+open open=336 close=318
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=336 close=318
+close open=336 close=319
+open open=337 close=319
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=337 close=319
+close open=337 close=320
+open open=338 close=320
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=338 close=320
+close open=338 close=321
+open open=339 close=321
+close open=339 close=322
+open open=340 close=322
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=340 close=322
+close open=340 close=323
+open open=341 close=323
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=341 close=323
+close open=341 close=324
+open open=342 close=324
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=342 close=324
+close open=342 close=325
+open open=343 close=325
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=343 close=325
+close open=343 close=326
+open open=344 close=326
+close open=344 close=327
+open open=345 close=327
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=345 close=327
+close open=345 close=328
+open open=346 close=328
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=346 close=328
+close open=346 close=329
+open open=347 close=329
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=347 close=329
+close open=347 close=330
+open open=348 close=330
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=348 close=330
+close open=348 close=331
+open open=349 close=331
+close open=349 close=332
+open open=350 close=332
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=350 close=332
+close open=350 close=333
+open open=351 close=333
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=351 close=333
+close open=351 close=334
+open open=352 close=334
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=352 close=334
+close open=352 close=335
+open open=353 close=335
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=353 close=335
+close open=353 close=336
+open open=354 close=336
+close open=354 close=337
+open open=355 close=337
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=355 close=337
+close open=355 close=338
+open open=356 close=338
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=356 close=338
+close open=356 close=339
+open open=357 close=339
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=357 close=339
+close open=357 close=340
+open open=358 close=340
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=358 close=340
+close open=358 close=341
+open open=359 close=341
+close open=359 close=342
+open open=360 close=342
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=360 close=342
+close open=360 close=343
+open open=361 close=343
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=361 close=343
+close open=361 close=344
+open open=362 close=344
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=362 close=344
+close open=362 close=345
+open open=363 close=345
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=363 close=345
+close open=363 close=346
+open open=364 close=346
+close open=364 close=347
+open open=365 close=347
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=365 close=347
+close open=365 close=348
+open open=366 close=348
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=366 close=348
+close open=366 close=349
+open open=367 close=349
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=367 close=349
+close open=367 close=350
+open open=368 close=350
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=368 close=350
+close open=368 close=351
+open open=369 close=351
+close open=369 close=352
+open open=370 close=352
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=370 close=352
+close open=370 close=353
+open open=371 close=353
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=371 close=353
+close open=371 close=354
+open open=372 close=354
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=372 close=354
+close open=372 close=355
+open open=373 close=355
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=373 close=355
+close open=373 close=356
+open open=374 close=356
+close open=374 close=357
+open open=375 close=357
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=375 close=357
+close open=375 close=358
+open open=376 close=358
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=376 close=358
+close open=376 close=359
+open open=377 close=359
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=377 close=359
+close open=377 close=360
+open open=378 close=360
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=378 close=360
+close open=378 close=361
+open open=379 close=361
+close open=379 close=362
+open open=380 close=362
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=380 close=362
+close open=380 close=363
+open open=381 close=363
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=381 close=363
+close open=381 close=364
+open open=382 close=364
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=382 close=364
+close open=382 close=365
+open open=383 close=365
+SSLFAIL url=https://www.volkskrant.nl/buitenland/rusland-bedreigt-een-verdeeld-en-wankel-dui ret1=-1 ret2=-313 err=0 errno=0 open=383 close=365
+close open=383 close=366
+open open=384 close=366
+close open=384 close=367
+open open=385 close=367
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=385 close=367
+close open=385 close=368
+open open=386 close=368
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=386 close=368
+close open=386 close=369
+open open=387 close=369
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=387 close=369
+close open=387 close=370
+open open=388 close=370
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=388 close=370
+close open=388 close=371
+open open=389 close=371
+close open=389 close=372
+open open=390 close=372
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=390 close=372
+close open=390 close=373
+open open=391 close=373
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=391 close=373
+close open=391 close=374
+open open=392 close=374
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=392 close=374
+close open=392 close=375
+open open=393 close=375
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=393 close=375
+close open=393 close=376
+open open=394 close=376
+close open=394 close=377
+open open=395 close=377
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=395 close=377
+close open=395 close=378
+open open=396 close=378
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=396 close=378
+close open=396 close=379
+open open=397 close=379
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=397 close=379
+close open=397 close=380
+open open=398 close=380
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=398 close=380
+close open=398 close=381
+open open=399 close=381
+close open=399 close=382
+open open=400 close=382
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=400 close=382
+close open=400 close=383
+open open=401 close=383
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=401 close=383
+close open=401 close=384
+open open=402 close=384
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=402 close=384
+close open=402 close=385
+open open=403 close=385
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=403 close=385
+close open=403 close=386
+open open=404 close=386
+close open=404 close=387
+open open=405 close=387
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=405 close=387
+close open=405 close=388
+open open=406 close=388
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=406 close=388
+close open=406 close=389
+open open=407 close=389
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=407 close=389
+close open=407 close=390
+open open=408 close=390
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=408 close=390
+close open=408 close=391
+open open=409 close=391
+close open=409 close=392
+open open=410 close=392
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=410 close=392
+close open=410 close=393
+open open=411 close=393
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=411 close=393
+close open=411 close=394
+open open=412 close=394
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=412 close=394
+close open=412 close=395
+open open=413 close=395
+SSLFAIL url=https://www.parool.nl/nederland/militairen-te-volgen-via-polarsteps-naar-huis-de ret1=-1 ret2=-313 err=0 errno=0 open=413 close=395
+close open=413 close=396
+open open=414 close=396
+close open=414 close=397
+open open=415 close=397
+open open=416 close=397
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=416 close=397
+close open=416 close=398
+open open=417 close=398
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=417 close=398
+close open=417 close=399
+open open=418 close=399
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=418 close=399
+close open=418 close=400
+open open=419 close=400
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=419 close=400
+close open=419 close=401
+open open=420 close=401
+close open=420 close=402
+open open=421 close=402
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=421 close=402
+close open=421 close=403
+open open=422 close=403
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=422 close=403
+close open=422 close=404
+open open=423 close=404
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=423 close=404
+close open=423 close=405
+open open=424 close=405
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=424 close=405
+close open=424 close=406
+open open=425 close=406
+close open=425 close=407
+open open=426 close=407
+close open=426 close=408
+open open=427 close=408
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=427 close=408
+close open=427 close=409
+open open=428 close=409
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=428 close=409
+close open=428 close=410
+open open=429 close=410
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=429 close=410
+close open=429 close=411
+open open=430 close=411
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=430 close=411
+close open=430 close=412
+open open=431 close=412
+close open=431 close=413
+open open=432 close=413
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=432 close=413
+close open=432 close=414
+open open=433 close=414
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=433 close=414
+close open=433 close=415
+open open=434 close=415
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=434 close=415
+close open=434 close=416
+open open=435 close=416
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=435 close=416
+close open=435 close=417
+open open=436 close=417
+close open=436 close=418
+open open=437 close=418
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=437 close=418
+close open=437 close=419
+open open=438 close=419
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=438 close=419
+close open=438 close=420
+open open=439 close=420
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=439 close=420
+close open=439 close=421
+open open=440 close=421
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=440 close=421
+close open=440 close=422
+open open=441 close=422
+close open=441 close=423
+open open=442 close=423
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=442 close=423
+close open=442 close=424
+open open=443 close=424
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=443 close=424
+close open=443 close=425
+open open=444 close=425
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=444 close=425
+close open=444 close=426
+open open=445 close=426
+SSLFAIL url=https://www.parool.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=445 close=426
+close open=445 close=427
+open open=446 close=427
+open open=447 close=427
+close open=447 close=428
+open open=448 close=428
+close open=448 close=429
+open open=449 close=429
+open open=450 close=429
+close open=450 close=430
+open open=451 close=430
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=451 close=430
+close open=451 close=431
+open open=452 close=431
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=452 close=431
+close open=452 close=432
+open open=453 close=432
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=453 close=432
+close open=453 close=433
+open open=454 close=433
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=454 close=433
+close open=454 close=434
+open open=455 close=434
+close open=455 close=435
+open open=456 close=435
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=456 close=435
+close open=456 close=436
+open open=457 close=436
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=457 close=436
+close open=457 close=437
+open open=458 close=437
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=458 close=437
+close open=458 close=438
+open open=459 close=438
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=459 close=438
+close open=459 close=439
+open open=460 close=439
+close open=460 close=440
+open open=461 close=440
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=461 close=440
+close open=461 close=441
+open open=462 close=441
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=462 close=441
+close open=462 close=442
+open open=463 close=442
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=463 close=442
+close open=463 close=443
+open open=464 close=443
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=464 close=443
+close open=464 close=444
+open open=465 close=444
+close open=465 close=445
+open open=466 close=445
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=466 close=445
+close open=466 close=446
+open open=467 close=446
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=467 close=446
+close open=467 close=447
+open open=468 close=447
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=468 close=447
+close open=468 close=448
+open open=469 close=448
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=469 close=448
+close open=469 close=449
+open open=470 close=449
+close open=470 close=450
+open open=471 close=450
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=471 close=450
+close open=471 close=451
+open open=472 close=451
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=472 close=451
+close open=472 close=452
+open open=473 close=452
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=473 close=452
+close open=473 close=453
+open open=474 close=453
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=474 close=453
+close open=474 close=454
+open open=475 close=454
+close open=475 close=455
+open open=476 close=455
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=476 close=455
+close open=476 close=456
+open open=477 close=456
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=477 close=456
+close open=477 close=457
+open open=478 close=457
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=478 close=457
+close open=478 close=458
+open open=479 close=458
+SSLFAIL url=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js ret1=-1 ret2=-313 err=0 errno=0 open=479 close=458
+close open=479 close=459
+open open=480 close=459
+close open=480 close=460
+open open=481 close=460
+open open=482 close=460
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=482 close=460
+close open=482 close=461
+open open=483 close=461
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=483 close=461
+close open=483 close=462
+open open=484 close=462
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=484 close=462
+close open=484 close=463
+open open=485 close=463
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=485 close=463
+close open=485 close=464
+open open=486 close=464
+close open=486 close=465
+open open=487 close=465
+close open=487 close=466
+open open=488 close=466
+close open=488 close=467
+open open=489 close=467
+close open=489 close=468
+open open=490 close=468
+close open=490 close=469
+open open=491 close=469
+close open=491 close=470
+open open=492 close=470
+close open=492 close=471
+open open=493 close=471
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=493 close=471
+close open=493 close=472
+open open=494 close=472
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=494 close=472
+close open=494 close=473
+open open=495 close=473
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=495 close=473
+close open=495 close=474
+open open=496 close=474
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=496 close=474
+close open=496 close=475
+open open=497 close=475
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=497 close=475
+close open=497 close=476
+open open=498 close=476
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=498 close=476
+close open=498 close=477
+open open=499 close=477
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=499 close=477
+close open=499 close=478
+open open=500 close=478
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=500 close=478
+close open=500 close=479
+open open=501 close=479
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=501 close=479
+close open=501 close=480
+open open=502 close=480
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=502 close=480
+close open=502 close=481
+open open=503 close=481
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=503 close=481
+close open=503 close=482
+open open=504 close=482
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=504 close=482
+close open=504 close=483
+open open=505 close=483
+close open=505 close=484
+open open=506 close=484
+close open=506 close=485
+open open=507 close=485
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=507 close=485
+close open=507 close=486
+open open=508 close=486
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=508 close=486
+close open=508 close=487
+open open=509 close=487
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=509 close=487
+close open=509 close=488
+open open=510 close=488
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=510 close=488
+close open=510 close=489
+open open=511 close=489
+close open=511 close=490
+open open=512 close=490
+close open=512 close=491
+open open=513 close=491
+close open=513 close=492
+open open=514 close=492
+close open=514 close=493
+open open=515 close=493
+close open=515 close=494
+open open=516 close=494
+close open=516 close=495
+open open=517 close=495
+close open=517 close=496
+open open=518 close=496
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=518 close=496
+close open=518 close=497
+open open=519 close=497
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=519 close=497
+close open=519 close=498
+open open=520 close=498
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=520 close=498
+close open=520 close=499
+open open=521 close=499
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=521 close=499
+close open=521 close=500
+open open=522 close=500
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=522 close=500
+close open=522 close=501
+open open=523 close=501
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=523 close=501
+close open=523 close=502
+open open=524 close=502
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=524 close=502
+close open=524 close=503
+open open=525 close=503
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=525 close=503
+close open=525 close=504
+open open=526 close=504
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=526 close=504
+close open=526 close=505
+open open=527 close=505
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=527 close=505
+close open=527 close=506
+open open=528 close=506
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=528 close=506
+close open=528 close=507
+open open=529 close=507
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=529 close=507
+close open=529 close=508
+open open=530 close=508
+close open=530 close=509
+open open=531 close=509
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=531 close=509
+close open=531 close=510
+open open=532 close=510
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=532 close=510
+close open=532 close=511
+open open=533 close=511
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=533 close=511
+close open=533 close=512
+open open=534 close=512
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=534 close=512
+close open=534 close=513
+open open=535 close=513
+close open=535 close=514
+open open=536 close=514
+close open=536 close=515
+open open=537 close=515
+close open=537 close=516
+open open=538 close=516
+close open=538 close=517
+open open=539 close=517
+close open=539 close=518
+open open=540 close=518
+close open=540 close=519
+open open=541 close=519
+close open=541 close=520
+open open=542 close=520
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=542 close=520
+close open=542 close=521
+open open=543 close=521
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=543 close=521
+close open=543 close=522
+open open=544 close=522
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=544 close=522
+close open=544 close=523
+open open=545 close=523
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=545 close=523
+close open=545 close=524
+open open=546 close=524
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=546 close=524
+close open=546 close=525
+open open=547 close=525
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=547 close=525
+close open=547 close=526
+open open=548 close=526
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=548 close=526
+close open=548 close=527
+open open=549 close=527
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=549 close=527
+close open=549 close=528
+open open=550 close=528
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=550 close=528
+close open=550 close=529
+open open=551 close=529
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=551 close=529
+close open=551 close=530
+open open=552 close=530
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=552 close=530
+close open=552 close=531
+open open=553 close=531
+SSLFAIL url=https://www.brave.com/ ret1=-1 ret2=-313 err=0 errno=0 open=553 close=531
+close open=553 close=532

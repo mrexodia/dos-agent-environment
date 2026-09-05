@@ -1,0 +1,22 @@
+TypeError: cannot read property 'createElement' of undefined
+ReferenceError: 'top' is not defined
+ReferenceError: 'self' is not defined
+ReferenceError: 'parent' is not defined
+TypeError: cannot read property 'createElement' of undefined
+TypeError: cannot read property 'createElement' of undefined
+TypeError: cannot read property 'createElement' of undefined
+TypeError: cannot read property 'createElement' of undefined
+TypeError: cannot read property 'createElement' of undefined
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+ReferenceError: '_w' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_w' is not defined
+ReferenceError: '_G' is not defined
+TypeError: not a function

@@ -1,15 +1,8 @@
 TypeError: cannot read property 'createElement' of undefined
-ReferenceError: 'top' is not defined
-ReferenceError: 'self' is not defined
-ReferenceError: 'parent' is not defined
-TypeError: cannot read property 'createElement' of undefined
-TypeError: cannot read property 'createElement' of undefined
-TypeError: cannot read property 'createElement' of undefined
-TypeError: cannot read property 'createElement' of undefined
-TypeError: cannot read property 'createElement' of undefined
+ReferenceError: 'addEventListener' is not defined
+TypeError: cannot read property 'set' of undefined
 TypeError: not a function
-TypeError: not a function
-TypeError: not a function
+ReferenceError: 'URL' is not defined
 TypeError: not a function
 ReferenceError: '_w' is not defined
 ReferenceError: '_G' is not defined
@@ -19,4 +12,41 @@ ReferenceError: '_G' is not defined
 ReferenceError: '_G' is not defined
 ReferenceError: '_w' is not defined
 ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: 'setTimeout' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: 'setTimeout' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_w' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+SyntaxError: expecting ';'
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+SyntaxError: expecting ';'
+SyntaxError: expecting ';'
+ReferenceError: '_G' is not defined
+ReferenceError: '_w' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+ReferenceError: '_G' is not defined
+SyntaxError: expecting ';'
+SyntaxError: expecting ';'
+SyntaxError: expecting ';'
 TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+SyntaxError: expecting ';'
+TypeError: not a function
+ReferenceError: 'navigator' is not defined

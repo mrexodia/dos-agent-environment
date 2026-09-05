@@ -1,0 +1,1167 @@
+read_select
+objsize: SSL=4368 CTX=328 METHOD=4
+install_io enter
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+read_select
+read_select
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1
+HELLO_DBG: ver=3.04 suites=42 mask=101003ff mindg=3 dg=1
+HELLO_DBG: ver=3.03 suites=36 mask=301003ff mindg=3 dg=1
+HELLO_DBG: ver=3.02 suites=8 mask=381003ff mindg=3 dg=1
+HELLO_DBG: ver=3.01 suites=8 mask=3c1003ff mindg=3 dg=1

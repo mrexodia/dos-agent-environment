@@ -333,3 +333,24 @@ VBox gurus: VBox.log shows PGM nested-paging inconsistency
 (fIsNested=true) in VBoxVMM.DLL - a VirtualBox bug under nested-KVM
 load. --nestedpaging off made the VM unstartable, reverted. Mitigation:
 accept occasional gurus, or DOSCTL_QEMU_ACCEL=tcg for long runs.
+
+## Site verification round (2026-09-05d)
+
+Hardware confirmed working after SNI fix: brave.com (search!),
+theguardian.com (local editions), hengelsport.nl, parool.nl (shell),
+bing news/images, youtube/instagram connect. Hardware SOCKSTAT: 81
+connections, ZERO SSLFAIL lines.
+
+- www.minuszerodegree.net: domain no longer exists (NXDOMAIN from
+  host too). The real site www.minuszerodegrees.net works: TLS 1.3
+  handshake OK (the old '421 Misdirected' was the SNI bug).
+- TikTok: real crash with register dump - needs the crash EIP to
+  diagnose (capture next time).
+- www.smallert.nl (the lone failure): server FORCES secp256r1
+  (ignores our x25519 offer; x25519-only gets a fatal alert). With
+  P-256 offered the server sends its full flight, then our send
+  gets EPIPE (errno 33) - the client P-256 key-agreement path fails
+  after ServerHello. SP-math vs fp-math makes no difference. Only
+  known P-256-forcing site; documented as a limitation.
+- JSERROR shows 'navigator' is not defined - add a navigator global
+  alias in quickjs_engine.c register_globals (next session).
