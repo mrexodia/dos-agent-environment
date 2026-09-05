@@ -309,3 +309,27 @@ glibc). LINKSQJS.EXE now contains:
   per heavy page and a serious slowdown)
 Verified 20/20 after rebuild. Ready for the mdgx.com/10.php
 hardware retest.
+
+## SNI + curve25519 added (2026-09-05c)
+
+Hardware reports decoded: 348x ret1=0/ret2=0 SSLFAILs gone after the
+arena fix (no GETSSL-FAIL lines at all); remaining failures uniform
+-313/-328. Standalone TLSTEST.EXE (now with host/port args + SNI)
+reproduced: brave.com/reuters.com/hengelsport-class sites FAILED
+without SNI (wolfSSL was built without --enable-sni; the browser's
+SSL_set_tlsext_host_name call was compiled out). Rebuilt with
+--enable-sni: brave, reuters, hengelsport now complete TLS 1.3.
+
+Second finding: our ClientHello offered NO x25519 (missing
+--enable-curve25519; only secp256r1/384/521 + ffdhe2048). Host build
+(default flags) succeeds on all sites. Rebuilt with
+--enable-curve25519.
+
+smallert.nl residual: now fails with -308 (cb_send errno=33=EPIPE -
+server closes right after our ClientHello, no alert). Site-specific;
+under investigation.
+
+VBox gurus: VBox.log shows PGM nested-paging inconsistency
+(fIsNested=true) in VBoxVMM.DLL - a VirtualBox bug under nested-KVM
+load. --nestedpaging off made the VM unstartable, reverted. Mitigation:
+accept occasional gurus, or DOSCTL_QEMU_ACCEL=tcg for long runs.
