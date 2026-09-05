@@ -295,3 +295,17 @@ root-caused as the cross-TU ABI mismatch.
 FIX: bump arena removed entirely; wolfSSL uses its default
 malloc/free again (SSL_free now actually frees). Verified: 20/20
 JS conformance + 5/5 marathon after the change.
+
+## 2026-09-05b: guru ate the diagnostics build; rebuilt
+
+The VBox guru (nested-KVM) killed the container mid-compile, so the
+GETSSL-FAIL diagnostic build never landed (https.o was stale from
+Sep 2). Rebuilt with a DJGPP mallinfo() shim (different struct than
+glibc). LINKSQJS.EXE now contains:
+- arena removal (SSL_new uses real malloc/free)
+- GETSSL-FAIL lines in SOCKSTAT.LOG: which NULL path (mem_alloc vs
+  SSL_new) plus mallinfo used/free heap figures
+- per-packet cb_recv/cb_send TLSGLUE logging removed (was 65k lines
+  per heavy page and a serious slowdown)
+Verified 20/20 after rebuild. Ready for the mdgx.com/10.php
+hardware retest.
