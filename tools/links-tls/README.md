@@ -380,3 +380,20 @@ connections, ZERO SSLFAIL lines.
    build with the actual abort site - next session.
 
 5. smallert.nl: still the P-256-forcing server (unchanged).
+
+## Stability round + web API globals (2026-09-05f)
+
+Hardware session: brave search ("SSL error"), IBM, support.microsoft.com
+all stable; learn.microsoft.com renders despite its "browser no longer
+supported" banner. SOCKSTAT: 103 connections, only the 12 known
+smallert.nl P-256 SSLFAILs; 73 closed/103 opened = normal keepalive
+lifespan. Escape not stopping slow loads = Links behavior when the
+connection thread is deep in a read loop (menu > File kills all
+connections - that is the reliable stop).
+
+belastingdienst "asking for javascript": the site's search forms need
+the DOM. Added the commonly-probed globals to quickjs_engine.c:
+navigator (userAgent/appName getters, appVersion, platform,
+language, cookieEnabled), global addEventListener/removeEventListener
+no-ops, and encodeURIComponent/decodeURIComponent. navtest.html
+verifies UA-OK/AEL-OK/ENC pass. 20/20 conformance retained.

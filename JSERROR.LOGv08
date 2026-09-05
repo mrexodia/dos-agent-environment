@@ -1,0 +1,24 @@
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: not a function
+TypeError: cannot read property 'createElement' of undefined
+TypeError: not a function
+ReferenceError: 'Element' is not defined
+TypeError: not a function
+TypeError: cannot read property 'createElement' of undefined
+TypeError: not a function
+TypeError: not a function
+ReferenceError: 'parent' is not defined
+ReferenceError: 'parent' is not defined
+ReferenceError: 'parent' is not defined
+ReferenceError: 'parent' is not defined
+ReferenceError: 'parent' is not defined
+ReferenceError: 'navigator' is not defined
+TypeError: not a function
+TypeError: not a function
+TypeError: cannot read property 'readyState' of undefined
+TypeError: not a function
+ReferenceError: 'navigator' is not defined
+ReferenceError: 'navigator' is not defined

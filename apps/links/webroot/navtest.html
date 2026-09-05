@@ -1,0 +1,10 @@
+<html><body><h1>NAV-START</h1><script>
+var ua = navigator.userAgent;
+var e = encodeURIComponent('a b&c');
+document.write('<pre>');
+document.write('UA-OK:' + (ua && ua.length > 0));
+document.write(' AEL-OK:' + (typeof addEventListener));
+document.write(' ENC:' + e);
+document.write('</pre>');
+document.write('<pre>NAV-TEST-END</pre>');
+</script></body></html>
