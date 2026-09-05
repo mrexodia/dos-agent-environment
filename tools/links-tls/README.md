@@ -354,3 +354,29 @@ connections, ZERO SSLFAIL lines.
   known P-256-forcing site; documented as a limitation.
 - JSERROR shows 'navigator' is not defined - add a navigator global
   alias in quickjs_engine.c register_globals (next session).
+
+## SNI call-site fix + belastingdienst/TikTok/ALPN findings (2026-09-05e)
+
+1. BROWSER SNI BUG: wolfSSL headers never define
+   SSL_CTRL_SET_TLSEXT_HOSTNAME, so Links' SNI call in connect.c
+   (#ifdef-guarded) was COMPILED OUT even with --enable-sni. TLSTEST
+   worked because it calls wolfSSL_UseSNI directly. Fixed by defining
+   SSL_CTRL_SET_TLSEXT_HOSTNAME=55 (OpenSSL value) in the shim's
+   ssl_extra.h. Verified: belastingdienst.nl now renders in the
+   browser ("Belastingdienst Nederland | Belastingdienst (p1 of 6)").
+
+2. belastingdienst EPIPE earlier: scheme-less URLs default to http://;
+   the site's port 80 closes plain connections. With browser SNI +
+   explicit https:// it works. Standard Links behavior - type https://.
+
+3. ALPN theory (Google AI) DISPROVEN for our stack: the ClientHello
+   dump shows NO ALPN extension (0x0010) - we never advertise h2, so
+   servers fall back to HTTP/1.1 over TLS. No fix needed.
+
+4. TikTok crash (JPEG OCR): SIGABRT at eip=002fcd05 = inside
+   DJGPP's traceback printer; the abort() originates from a QuickJS
+   internal abort() ("impossible" code paths in quickjs.c) under
+   TikTok's heavy scripts. Needs a QuickJS-level guard or a debug
+   build with the actual abort site - next session.
+
+5. smallert.nl: still the P-256-forcing server (unchanged).
