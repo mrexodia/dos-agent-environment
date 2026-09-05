@@ -246,3 +246,30 @@ quickjs_engine.c:
 Verified: 8-page HTTPS marathon (wikipedia x6 incl. de.wikipedia,
 netlify, articles with heavy scripts) all load, no EMFILE, no SSL
 errors, browser alive; JSERROR.LOG exactly 1 line per context.
+
+## Real-hardware report + diagnostic build (2026-09-05)
+
+User on MS-DOS 7.10 / 2011 AMD Bulldozer board:
+- mdgx.com directly after reboot works (incl. frame navigation)
+- smallert.nl fails DIRECTLY with SSL error (no JS involved - so the
+  earlier starvation theory was wrong)
+- after that failure mdgx.com fails too (SSL error or EMFILE in frames)
+- bing.com/images (plain HTTP) clicking also breaks state
+- hengelsport.nl: "Unknown error: 69" = Watt-32 EHOSTUNREACH
+- Links 2.21 official: all these sites fine and faster
+- QEMU marathon passes 8/8 - hardware/timing specific
+
+=> a failed connection poisons global watt32/wolfSSL state; frames
+(= many parallel connections) then hit EMFILE. A tcp_tick pump inside
+the QuickJS interrupt handler was tried and REVERTED (corrupted state
+mid-processing; marathon regression).
+
+Diagnostic build deployed: C:\SOCKSTAT.LOG logs every socket open/
+close with running counters, and every SSL handshake failure with
+url/ret1/ret2/ERR_get_error/errno. Hardware test procedure for the
+user:
+  1. delete C:\SOCKSTAT.LOG, reboot, run LINKSQJS
+  2. visit https://www.smallert.nl  (fails)
+  3. visit https://www.mdgx.com     (fails now)
+  4. quit Links, send C:\SOCKSTAT.LOG
+The SSLFAIL lines reveal the true wolfSSL error at the first failure.
