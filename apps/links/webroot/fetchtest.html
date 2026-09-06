@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><body>
+<h1>FETCH-TEST-START</h1>
+<script>
+var out = [];
+function show(s) { document.write("<pre>" + s + "</pre>"); }
+fetch("/api.json").then(function(r) {
+  return r.json();
+}).then(function(j) {
+  show("RESULT " + (j.ok === true && j.val === 42 ? "PASS" : "FAIL") + " json");
+  return fetch("/echo/");
+}).then(function(r2) {
+  show("RESULT " + (r2.status === 200 ? "PASS" : "FAIL") + " status");
+  return r2.text();
+}).then(function(t) {
+  show("RESULT " + (t.indexOf("echo") >= 0 ? "PASS" : "FAIL") + " text");
+  show("FETCH-TEST-END");
+}).catch(function(e) {
+  show("RESULT FAIL exception " + e);
+  show("FETCH-TEST-END");
+});
+</script>
+</body></html>

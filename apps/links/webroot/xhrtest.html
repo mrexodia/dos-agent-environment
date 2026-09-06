@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><body>
+<h1>XHR-TEST-START</h1>
+<script>
+var x = new XMLHttpRequest();
+x.onreadystatechange = function () {
+  if (x.readyState === 4) {
+    document.write("<pre>RESULT " + (x.status === 200 ? "PASS" : "FAIL") + " xhr-status</pre>");
+    try {
+      var j = JSON.parse(x.responseText);
+      document.write("<pre>RESULT " + (j.val === 42 ? "PASS" : "FAIL") + " xhr-json</pre>");
+    } catch (e) {
+      document.write("<pre>RESULT FAIL xhr-json " + e + "</pre>");
+    }
+    var x2 = new XMLHttpRequest();
+    x2.open("POST", "/api.json");
+    x2.setRequestHeader("Content-Type", "application/json");
+    x2.onload = function () {
+      document.write("<pre>RESULT " + (x2.status === 501 ? "PASS" : "FAIL") + " xhr-post</pre>");
+      document.write("<pre>XHR-TEST-END</pre>");
+    };
+    x2.onerror = function () {
+      document.write("<pre>RESULT FAIL xhr-post-err</pre>");
+      document.write("<pre>XHR-TEST-END</pre>");
+    };
+    x2.send("{\"a\":1}");
+  }
+};
+x.open("GET", "/api.json");
+x.send();
+</script>
+</body></html>

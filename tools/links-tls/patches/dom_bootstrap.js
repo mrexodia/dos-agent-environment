@@ -8,7 +8,7 @@
 
 	function elem() {
 		return {
-			nodeType: 1, style: {}, className: "", innerHTML: "", textContent: "", value: "",
+			nodeType: 1, lang: "nl", style: {}, className: "", innerHTML: "", textContent: "", value: "",
 			checked: false,
 			parentNode: { removeChild: function () {} },
 			childNodes: [],
@@ -45,8 +45,15 @@
 		d.getElementsByClassName = function () { return []; };
 		d.getElementsByName = function () { return []; };
 		d.querySelector = function () { return elem(); };
+		d.getElementById = function () { return elem(); };
 		d.querySelectorAll = function () { return []; };
-		d.getElementsByTagName = function () { return []; };
+		d.getElementsByTagName = function (t) {
+			var tl = (t || "").toLowerCase();
+			if (tl === "body") return [d.body || elem()];
+			if (tl === "head") return [d.head || elem()];
+			if (tl === "html") return [d.documentElement || elem()];
+			return [];
+		};
 		d.addEventListener = function () {};
 		d.removeEventListener = function () {};
 		d.implementation = {
@@ -86,18 +93,8 @@
 		w.name = "";
 	}
 
-	/* timers: no event loop yet — return ids, never fire */
-	var __tid = 0;
-	globalThis.setTimeout = function () { return ++__tid; };
-	globalThis.clearTimeout = function () {};
-	globalThis.setInterval = function () { return ++__tid; };
-	globalThis.clearInterval = function () {};
-	if (w) {
-		w.setTimeout = globalThis.setTimeout;
-		w.clearTimeout = globalThis.clearTimeout;
-		w.setInterval = globalThis.setInterval;
-		w.clearInterval = globalThis.clearInterval;
-	}
+	/* timers: setTimeout is REAL (C-implemented via Links install_timer);
+	 * setInterval still a no-op stub */
 
 	globalThis.getComputedStyle = globalThis.getComputedStyle ||
 		function () { return { getPropertyValue: function () { return ""; } }; };
@@ -106,6 +103,13 @@
 	globalThis.requestAnimationFrame = function () { return 0; };
 	globalThis.cancelAnimationFrame = function () {};
 
+	globalThis.HTMLElement = function HTMLElement() { throw new TypeError("Illegal constructor"); };
+	globalThis.Element = function Element() { throw new TypeError("Illegal constructor"); };
+	globalThis.Node = function Node() { throw new TypeError("Illegal constructor"); };
+	globalThis.customElements = globalThis.customElements || {
+		define: function () {}, get: function () { return undefined; },
+		whenDefined: function () { return Promise.resolve(); }
+	};
 	globalThis.CustomEvent = globalThis.CustomEvent || function (t) { this.type = t; };
 	globalThis.Event = globalThis.Event || function (t) { this.type = t; };
 	globalThis.MutationObserver = globalThis.MutationObserver ||
@@ -137,4 +141,96 @@
 			}
 		};
 	};
+
+	/* URL (needed by bld-search.js: new URL(location.href)) */
+	if (!globalThis.URL) {
+		globalThis.URL = function (href, base) {
+			if (base && !/^[a-z]+:\/\//i.test(href)) {
+				var b = new globalThis.URL(base);
+				if (href.charAt(0) === "/")
+					href = b.origin + href;
+				else {
+					var dir = b.pathname.replace(/[^/]*$/, "");
+					href = b.origin + dir + href;
+				}
+			}
+			var m = /^(?:([a-z]+):)?\/\/?([^/?#]*)([^?#]*)(\?[^#]*)?(#.*)?/i.exec(href) || [];
+			var host = m[2] || "", path = m[3] || "/";
+			var pi = host.indexOf(":");
+			this.protocol = (m[1] || "http") + ":";
+			this.host = host;
+			this.hostname = pi >= 0 ? host.slice(0, pi) : host;
+			this.port = pi >= 0 ? host.slice(pi + 1) : "";
+			this.pathname = path;
+			this.search = m[4] || "";
+			this.hash = m[5] || "";
+			this.href = href;
+			this.origin = this.protocol + "//" + this.host;
+			var sp = new URLSearchParams(this.search);
+			this.searchParams = sp;
+			this.toString = function () { return this.href; };
+		};
+	}
+	/* location.search / location.hash (bld-search reads ?q=) */
+	if (globalThis.location) {
+		(function () {
+			var loc = globalThis.location;
+			try {
+				Object.defineProperty(loc, "search", {
+					get: function () {
+						var h = this.href, i = h.indexOf("?");
+						return i < 0 ? "" : h.slice(i).replace(/#.*$/, "");
+					}, configurable: true
+				});
+				Object.defineProperty(loc, "hash", {
+					get: function () {
+						var h = this.href, i = h.indexOf("#");
+						return i < 0 ? "" : h.slice(i);
+					}, configurable: true
+				});
+			} catch (e) {}
+		})();
+	}
+
+	/* XMLHttpRequest: synchronous via native __linksHttp */
+	if (!globalThis.XMLHttpRequest && globalThis.__linksHttp) {
+		globalThis.XMLHttpRequest = function () {
+			var self = this;
+			this.readyState = 0;
+			this.status = 0;
+			this.statusText = "";
+			this.responseText = "";
+			this.response = "";
+			this.onreadystatechange = null;
+			this.onload = null;
+			this.onerror = null;
+			var _m = "GET", _u = "", _h = {}, _sent = false;
+			this.open = function (m, u, a) { _m = m; _u = u; this.readyState = 1; };
+			this.setRequestHeader = function (k, v) { _h[k] = v; };
+			this.getAllResponseHeaders = function () { return ""; };
+			this.getResponseHeader = function () { return null; };
+			this.abort = function () {};
+			this.send = function (body) {
+				if (_sent) return;
+				_sent = true;
+				var ctype = _h["Content-Type"] || _h["content-type"] || null;
+				var absu = _u;
+				try { absu = new globalThis.URL(_u, globalThis.location && globalThis.location.href).href; } catch (e) {}
+				var r = globalThis.__linksHttp(absu, _m, ctype,
+					typeof body === "string" ? body : (body == null ? null : String(body)));
+				self.readyState = 4;
+				if (r) {
+					self.status = r.status;
+					self.responseText = r.body;
+					self.response = r.body;
+				} else {
+					self.status = 0;
+				}
+				if (typeof self.onreadystatechange === "function")
+					try { self.onreadystatechange(); } catch (e) {}
+				if (typeof self.onload === "function")
+					try { self.onload(); } catch (e) {}
+			};
+		};
+	}
 })();

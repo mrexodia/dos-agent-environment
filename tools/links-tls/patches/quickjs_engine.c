@@ -240,6 +240,313 @@ static JSValue qj_get_useragent(JSContext *ctx, JSValueConst t, int a, JSValueCo
 
 
 
+/* native HTTP for the bootstrap XHR: returns {status, body} or null */
+static JSValue qj_http_native(JSContext *ctx, JSValueConst t, int argc, JSValueConst *argv)
+{
+	const char *url = argc > 0 ? JS_ToCString(ctx, argv[0]) : NULL;
+	const char *method = argc > 1 ? JS_ToCString(ctx, argv[1]) : NULL;
+	const char *ctype = argc > 2 ? JS_ToCString(ctx, argv[2]) : NULL;
+	const char *body = argc > 3 ? JS_ToCString(ctx, argv[3]) : NULL;
+	char *resp = NULL;
+	long len = 0;
+	int status = 0;
+	JSValue o = JS_NULL;
+	unsigned char *uau;
+	char ua[128];
+
+	if (!url || !*url) goto ret;
+	uau = js_upcall_get_useragent(ctxof(ctx)->ptr);
+	snprintf(ua, sizeof ua, "%s", uau ? (const char *)uau : "Links");
+	if (uau) mem_free(uau);
+	if (qjs_http_request(url, method && *method ? method : "GET",
+			     ctype && *ctype ? ctype : NULL,
+			     body && *body ? body : NULL, ua,
+			     &resp, &len, &status) == 0) {
+		char *hdr_end = NULL;
+		long i;
+		for (i = 0; i + 3 < len; i++)
+			if (resp[i] == '\r' && resp[i+1] == '\n' &&
+			    resp[i+2] == '\r' && resp[i+3] == '\n') {
+				hdr_end = resp + i;
+				break;
+			}
+		o = JS_NewObject(ctx);
+		JS_SetPropertyStr(ctx, o, "status", JS_NewInt32(ctx, status));
+		if (hdr_end)
+			JS_SetPropertyStr(ctx, o, "body",
+				JS_NewStringLen(ctx, hdr_end + 4, len - (hdr_end + 4 - resp)));
+		else
+			JS_SetPropertyStr(ctx, o, "body", JS_NewStringLen(ctx, resp, len));
+	}
+ret:
+	free(resp);
+	JS_FreeCString(ctx, url);
+	JS_FreeCString(ctx, method);
+	JS_FreeCString(ctx, ctype);
+	JS_FreeCString(ctx, body);
+	return o;
+}
+
+/* ---------------- real setTimeout via Links install_timer ---------------- */
+struct qjs_timer {
+	struct javascript_context *c;
+	struct timer *tm;
+	JSValue func;
+	JSValue arg;
+};
+
+static void qjs_pump_jobs(struct javascript_context *c)
+{
+	for (;;) {
+		JSContext *pc = c->ctx;
+		int jr = JS_ExecutePendingJob(c->rt, &pc);
+		if (jr == 0) break;
+		if (jr < 0) {
+			if (c->logged_error < 5) {
+				c->logged_error++;
+				JSValue ex = JS_GetException(c->ctx);
+				const char *exs = JS_ToCString(c->ctx, ex);
+				FILE *f = fopen("C:\\JSERROR.LOG", "a");
+				if (f) { fprintf(f, "JOB: %s\n", exs ? exs : "?"); fclose(f); }
+				if (exs) JS_FreeCString(c->ctx, exs);
+				JS_FreeValue(c->ctx, ex);
+			} else
+				JS_FreeValue(c->ctx, JS_GetException(c->ctx));
+			break;
+		}
+	}
+}
+
+static void qjs_timer_fire(struct qjs_timer *q)
+{
+	if (q->c && !q->c->dead && q->c->ctx) {
+		JSValue r = JS_Call(q->c->ctx, q->func, JS_UNDEFINED, 1, &q->arg);
+		if (JS_IsException(r)) {
+			JSValue ex = JS_GetException(q->c->ctx);
+			if (q->c->logged_error < 5) {
+				q->c->logged_error++;
+				{
+					const char *exs = JS_ToCString(q->c->ctx, ex);
+					FILE *f = fopen("C:\\JSERROR.LOG", "a");
+					if (f) { fprintf(f, "TIMER: %s\n", exs ? exs : "?"); fclose(f); }
+					if (exs) JS_FreeCString(q->c->ctx, exs);
+				}
+			}
+			JS_FreeValue(q->c->ctx, ex);
+		} else
+			JS_FreeValue(q->c->ctx, r);
+		qjs_pump_jobs(q->c);
+		JS_FreeValue(q->c->ctx, q->func);
+		JS_FreeValue(q->c->ctx, q->arg);
+	}
+	mem_free(q);
+}
+
+static int qjs_timer_ids;
+
+static JSValue qj_set_timeout(JSContext *ctx, JSValueConst t, int argc, JSValueConst *argv)
+{
+	struct javascript_context *c = ctxof(ctx);
+	double ms = 1;
+	struct qjs_timer *q;
+	if (!c || argc < 1 || !JS_IsFunction(ctx, argv[0]))
+		return JS_NewInt32(ctx, 0);
+	if (argc > 1 && JS_IsNumber(argv[1])) {
+		if (JS_ToFloat64(ctx, &ms, argv[1]) < 0) ms = 1;
+		if (ms < 1) ms = 1;
+		if (ms > 600000) ms = 600000;
+	}
+	q = mem_alloc(sizeof(struct qjs_timer));
+	if (!q) return JS_NewInt32(ctx, 0);
+	q->c = c;
+	q->func = JS_DupValue(ctx, argv[0]);
+	q->arg = argc > 2 ? JS_DupValue(ctx, argv[2]) : JS_UNDEFINED;
+	q->tm = install_timer((uttime)ms, (void (*)(void *))qjs_timer_fire, q);
+	return JS_NewInt32(ctx, ++qjs_timer_ids);
+}
+
+static JSValue qj_clear_timeout(JSContext *ctx, JSValueConst t, int argc, JSValueConst *argv)
+{
+	/* we do not track id -> timer: clear is a no-op (matches the old
+	 * behavior; timers are short-lived one-shots) */
+	return JS_UNDEFINED;
+}
+
+/* ---------------- fetch(): synchronous blocking HTTP(S) ---------------- */
+extern int qjs_http_request(const char *url, const char *method,
+	const char *content_type, const char *body, const char *user_agent,
+	char **out, long *outlen, int *status);
+
+static JSValue qj_resp_text(JSContext *ctx, JSValueConst t, int a, JSValueConst *v)
+{
+	/* body string stored on `this` as __body at construction */
+	JSValue b = JS_GetPropertyStr(ctx, t, "__body");
+	return b;
+}
+
+static JSValue qj_resp_json(JSContext *ctx, JSValueConst t, int a, JSValueConst *v)
+{
+	JSValue b = JS_GetPropertyStr(ctx, t, "__body");
+	const char *s = JS_ToCString(ctx, b);
+	JSValue r = JS_ParseJSON(ctx, s, strlen(s), "<response>");
+	JS_FreeCString(ctx, s);
+	JS_FreeValue(ctx, b);
+	return r;
+}
+
+static char *qjs_resolve_url(JSContext *ctx, const char *url)
+{
+	/* absolute? */
+	if (!strncasecmp(url, "http://", 7) || !strncasecmp(url, "https://", 8))
+		return strdup(url);
+	{
+		unsigned char *locu = js_upcall_get_location(ctxof(ctx)->ptr);
+		const char *loc = locu ? (const char *)locu : "";
+		char *base = strdup(loc);
+		char *out;
+		const char *scheme = strncasecmp(loc, "https:", 6) ? "http" : "https";
+		char *host = strstr(base, "://");
+		if (url[0] == '/' && url[1] == '/') {
+			/* //host/path -> scheme://host/path */
+			out = malloc(strlen(scheme) + strlen(url) + 2);
+			if (out) sprintf(out, "%s:%s", scheme, url);
+		} else if (url[0] == '/') {
+			char *path;
+			if (!host) { free(base); if (locu) mem_free(locu); return strdup(url); }
+			host += 3;
+			path = strchr(host, '/');
+			if (path) *path = 0;
+			out = malloc(strlen(scheme) + strlen(host) + strlen(url) + 8);
+			if (out) sprintf(out, "%s://%s%s", scheme, host, url);
+		} else {
+			/* relative: strip last path segment of base */
+			char *slash;
+			if (!host) { free(base); if (locu) mem_free(locu); return strdup(url); }
+			host += 3;
+			slash = strrchr(host, '/');
+			if (slash) slash[1] = 0; else strcat(base, "/");
+			out = malloc(strlen(base) + strlen(url) + 2);
+			if (out) sprintf(out, "%s%s", base, url);
+		}
+		free(base);
+		if (locu) mem_free(locu);
+		return out;
+	}
+}
+
+static JSValue qj_fetch(JSContext *ctx, JSValueConst t, int argc, JSValueConst *argv)
+{
+	const char *url = argc > 0 ? JS_ToCString(ctx, argv[0]) : NULL;
+	const char *method = "GET";
+	char *method_dup = NULL, *ctype_dup = NULL, *body_dup = NULL;
+	const char *ctype = NULL, *body = NULL;
+	char *absurl, *resp = NULL;
+	long resplen = 0;
+	int status = 0;
+	JSValue result = JS_UNDEFINED;
+	JSValue funcs[2];
+	JSValue promise, resolve_args[1];
+	unsigned char *uau;
+	char ua[128];
+	JSValue resp_obj, body_val;
+	char *hdr_end;
+
+	if (!url) return JS_EXCEPTION;
+	if (argc > 1 && JS_IsObject(argv[1])) {
+		JSValue m = JS_GetPropertyStr(ctx, argv[1], "method");
+		const char *ms = JS_ToCString(ctx, m);
+		if (ms && *ms) { method_dup = strdup(ms); if (method_dup) method = method_dup; }
+		JS_FreeCString(ctx, ms);
+		JS_FreeValue(ctx, m);
+		{
+			JSValue h = JS_GetPropertyStr(ctx, argv[1], "headers");
+			if (JS_IsObject(h)) {
+				JSValue ct = JS_GetPropertyStr(ctx, h, "Content-Type");
+				if (!JS_IsUndefined(ct) && !JS_IsException(ct))
+						ctype = strdup(JS_ToCString(ctx, ct) ? : NULL);
+				JS_FreeValue(ctx, ct);
+			}
+			JS_FreeValue(ctx, h);
+		}
+		{
+			JSValue b = JS_GetPropertyStr(ctx, argv[1], "body");
+			if (JS_IsString(b))
+				body = strdup(JS_ToCString(ctx, b));
+			else if (!JS_IsUndefined(b) && !JS_IsNull(b)) {
+				/* JSON-serialise non-string bodies */
+				JSValue js = JS_JSONStringify(ctx, b, JS_UNDEFINED, JS_UNDEFINED);
+				if (JS_IsString(js)) {
+					const char *js_s = JS_ToCString(ctx, js);
+					if (js_s) { body_dup = strdup(js_s); if (body_dup) body = body_dup; }
+				}
+				JS_FreeValue(ctx, js);
+			}
+			JS_FreeValue(ctx, b);
+		}
+		if (body && !ctype) ctype = "application/json";
+	}
+
+	absurl = qjs_resolve_url(ctx, url);
+	uau = js_upcall_get_useragent(ctxof(ctx)->ptr);
+	snprintf(ua, sizeof ua, "%s", uau ? (const char *)uau : "Links");
+	if (uau) mem_free(uau);
+
+	if (qjs_http_request(absurl ? absurl : url, method, ctype, body, ua,
+			     &resp, &resplen, &status) != 0) {
+		char m[256];
+		snprintf(m, sizeof m, "FETCHFAIL url=%.120s", absurl ? absurl : url);
+		{ extern void sock_log2(const char *); sock_log2(m); }
+		goto ret;
+	}
+
+	/* split off headers: body begins after first \r\n\r\n */
+	hdr_end = NULL;
+	{
+		long i;
+		for (i = 0; i + 3 < resplen; i++)
+			if (resp[i] == '\r' && resp[i+1] == '\n' && resp[i+2] == '\r' && resp[i+3] == '\n') {
+				hdr_end = resp + i;
+				break;
+			}
+	}
+	if (hdr_end) {
+		body_val = JS_NewStringLen(ctx, hdr_end + 4, resplen - (hdr_end + 4 - resp));
+	} else {
+		/* no header split: whole payload is the body (HTTP/1.0-style) */
+		body_val = JS_NewStringLen(ctx, resp, resplen);
+		status = status ? status : 200;
+	}
+
+	resp_obj = JS_NewObject(ctx);
+	JS_SetPropertyStr(ctx, resp_obj, "__body", body_val);
+	JS_SetPropertyStr(ctx, resp_obj, "ok", JS_NewBool(ctx, status >= 200 && status < 300));
+	JS_SetPropertyStr(ctx, resp_obj, "status", JS_NewInt32(ctx, status));
+	JS_SetPropertyStr(ctx, resp_obj, "statusText", JS_NewString(ctx, ""));
+	JS_SetPropertyStr(ctx, resp_obj, "url", JS_NewString(ctx, absurl ? absurl : url));
+	JS_SetPropertyStr(ctx, resp_obj, "text", JS_NewCFunction(ctx, qj_resp_text, "text", 0));
+	JS_SetPropertyStr(ctx, resp_obj, "json", JS_NewCFunction(ctx, qj_resp_json, "json", 0));
+
+	/* resolve a promise with the response */
+	promise = JS_NewPromiseCapability(ctx, funcs);
+	if (JS_IsException(promise)) {
+		JS_FreeValue(ctx, resp_obj);
+		goto ret;
+	}
+	resolve_args[0] = resp_obj;
+	JS_FreeValue(ctx, JS_Call(ctx, funcs[0], JS_UNDEFINED, 1, resolve_args));
+	JS_FreeValue(ctx, funcs[0]);
+	JS_FreeValue(ctx, funcs[1]);
+	result = promise;
+ret:
+	free(resp);
+	free(absurl);
+	free(method_dup);
+	free(ctype_dup);
+	free(body_dup);
+	JS_FreeCString(ctx, url);
+	return result;
+}
+
 static JSValue qj_noop(JSContext *ctx, JSValueConst t, int a, JSValueConst *v)
 {
 	return JS_UNDEFINED;
@@ -454,6 +761,10 @@ static void register_globals(JSContext *ctx)
 	}, 1);
 	/* win IS the global object: bind the name window to itself */
 	JS_SetPropertyStr(ctx, win, "window", win);
+	JS_SetPropertyStr(ctx, win, "fetch", JS_NewCFunction(ctx, qj_fetch, "fetch", 2));
+	JS_SetPropertyStr(ctx, win, "setTimeout", JS_NewCFunction(ctx, qj_set_timeout, "setTimeout", 2));
+	JS_SetPropertyStr(ctx, win, "clearTimeout", JS_NewCFunction(ctx, qj_clear_timeout, "clearTimeout", 1));
+	JS_SetPropertyStr(ctx, win, "__linksHttp", JS_NewCFunction(ctx, qj_http_native, "__linksHttp", 4));
 
 	/* navigator: sites probe navigator.userAgent / .platform / .language */
 	{
@@ -504,8 +815,8 @@ static void register_globals(JSContext *ctx)
 
 	/* HTMLElement: webcomponents.js (customElements) probes it; a plain
 	 * function object satisfies typeof === 'function' and subclass probes */
-	JS_SetPropertyStr(ctx, JS_GetGlobalObject(ctx), "HTMLElement",
-		JS_NewCFunction(ctx, qj_noop, "HTMLElement", 0));
+	/* HTMLElement defined in dom_bootstrap.js as a JS function: C
+	 * functions are not valid ES class bases in QuickJS */
 
 	/* Intl: belastingdienst.js / bld-webcomponents.js throw without it.
 	 * Minimal stubs: constructors returning do-nothing instances. */
@@ -534,7 +845,7 @@ static const char qjs_dom_bootstrap[] =
 	"\n"
 	"	function elem() {\n"
 	"		return {\n"
-	"			nodeType: 1, style: {}, className: \"\", innerHTML: \"\", value: \"\",\n"
+	"			nodeType: 1, lang: \"nl\", style: {}, className: \"\", innerHTML: \"\", textContent: \"\", value: \"\",\n"
 	"			checked: false,\n"
 	"			parentNode: { removeChild: function () {} },\n"
 	"			childNodes: [],\n"
@@ -571,8 +882,15 @@ static const char qjs_dom_bootstrap[] =
 	"		d.getElementsByClassName = function () { return []; };\n"
 	"		d.getElementsByName = function () { return []; };\n"
 	"		d.querySelector = function () { return elem(); };\n"
+	"		d.getElementById = function () { return elem(); };\n"
 	"		d.querySelectorAll = function () { return []; };\n"
-	"		d.getElementsByTagName = function () { return []; };\n"
+	"		d.getElementsByTagName = function (t) {\n"
+	"			var tl = (t || \"\").toLowerCase();\n"
+	"			if (tl === \"body\") return [d.body || elem()];\n"
+	"			if (tl === \"head\") return [d.head || elem()];\n"
+	"			if (tl === \"html\") return [d.documentElement || elem()];\n"
+	"			return [];\n"
+	"		};\n"
 	"		d.addEventListener = function () {};\n"
 	"		d.removeEventListener = function () {};\n"
 	"		d.implementation = {\n"
@@ -612,18 +930,8 @@ static const char qjs_dom_bootstrap[] =
 	"		w.name = \"\";\n"
 	"	}\n"
 	"\n"
-	"	/* timers: no event loop yet — return ids, never fire */\n"
-	"	var __tid = 0;\n"
-	"	globalThis.setTimeout = function () { return ++__tid; };\n"
-	"	globalThis.clearTimeout = function () {};\n"
-	"	globalThis.setInterval = function () { return ++__tid; };\n"
-	"	globalThis.clearInterval = function () {};\n"
-	"	if (w) {\n"
-	"		w.setTimeout = globalThis.setTimeout;\n"
-	"		w.clearTimeout = globalThis.clearTimeout;\n"
-	"		w.setInterval = globalThis.setInterval;\n"
-	"		w.clearInterval = globalThis.clearInterval;\n"
-	"	}\n"
+	"	/* timers: setTimeout is REAL (C-implemented via Links install_timer);\n"
+	"	 * setInterval still a no-op stub */\n"
 	"\n"
 	"	globalThis.getComputedStyle = globalThis.getComputedStyle ||\n"
 	"		function () { return { getPropertyValue: function () { return \"\"; } }; };\n"
@@ -632,6 +940,13 @@ static const char qjs_dom_bootstrap[] =
 	"	globalThis.requestAnimationFrame = function () { return 0; };\n"
 	"	globalThis.cancelAnimationFrame = function () {};\n"
 	"\n"
+	"	globalThis.HTMLElement = function HTMLElement() { throw new TypeError(\"Illegal constructor\"); };\n"
+	"	globalThis.Element = function Element() { throw new TypeError(\"Illegal constructor\"); };\n"
+	"	globalThis.Node = function Node() { throw new TypeError(\"Illegal constructor\"); };\n"
+	"	globalThis.customElements = globalThis.customElements || {\n"
+	"		define: function () {}, get: function () { return undefined; },\n"
+	"		whenDefined: function () { return Promise.resolve(); }\n"
+	"	};\n"
 	"	globalThis.CustomEvent = globalThis.CustomEvent || function (t) { this.type = t; };\n"
 	"	globalThis.Event = globalThis.Event || function (t) { this.type = t; };\n"
 	"	globalThis.MutationObserver = globalThis.MutationObserver ||\n"
@@ -663,6 +978,98 @@ static const char qjs_dom_bootstrap[] =
 	"			}\n"
 	"		};\n"
 	"	};\n"
+	"\n"
+	"	/* URL (needed by bld-search.js: new URL(location.href)) */\n"
+	"	if (!globalThis.URL) {\n"
+	"		globalThis.URL = function (href, base) {\n"
+	"			if (base && !/^[a-z]+:\\/\\//i.test(href)) {\n"
+	"				var b = new globalThis.URL(base);\n"
+	"				if (href.charAt(0) === \"/\")\n"
+	"					href = b.origin + href;\n"
+	"				else {\n"
+	"					var dir = b.pathname.replace(/[^/]*$/, \"\");\n"
+	"					href = b.origin + dir + href;\n"
+	"				}\n"
+	"			}\n"
+	"			var m = /^(?:([a-z]+):)?\\/\\/?([^/?#]*)([^?#]*)(\\?[^#]*)?(#.*)?/i.exec(href) || [];\n"
+	"			var host = m[2] || \"\", path = m[3] || \"/\";\n"
+	"			var pi = host.indexOf(\":\");\n"
+	"			this.protocol = (m[1] || \"http\") + \":\";\n"
+	"			this.host = host;\n"
+	"			this.hostname = pi >= 0 ? host.slice(0, pi) : host;\n"
+	"			this.port = pi >= 0 ? host.slice(pi + 1) : \"\";\n"
+	"			this.pathname = path;\n"
+	"			this.search = m[4] || \"\";\n"
+	"			this.hash = m[5] || \"\";\n"
+	"			this.href = href;\n"
+	"			this.origin = this.protocol + \"//\" + this.host;\n"
+	"			var sp = new URLSearchParams(this.search);\n"
+	"			this.searchParams = sp;\n"
+	"			this.toString = function () { return this.href; };\n"
+	"		};\n"
+	"	}\n"
+	"	/* location.search / location.hash (bld-search reads ?q=) */\n"
+	"	if (globalThis.location) {\n"
+	"		(function () {\n"
+	"			var loc = globalThis.location;\n"
+	"			try {\n"
+	"				Object.defineProperty(loc, \"search\", {\n"
+	"					get: function () {\n"
+	"						var h = this.href, i = h.indexOf(\"?\");\n"
+	"						return i < 0 ? \"\" : h.slice(i).replace(/#.*$/, \"\");\n"
+	"					}, configurable: true\n"
+	"				});\n"
+	"				Object.defineProperty(loc, \"hash\", {\n"
+	"					get: function () {\n"
+	"						var h = this.href, i = h.indexOf(\"#\");\n"
+	"						return i < 0 ? \"\" : h.slice(i);\n"
+	"					}, configurable: true\n"
+	"				});\n"
+	"			} catch (e) {}\n"
+	"		})();\n"
+	"	}\n"
+	"\n"
+	"	/* XMLHttpRequest: synchronous via native __linksHttp */\n"
+	"	if (!globalThis.XMLHttpRequest && globalThis.__linksHttp) {\n"
+	"		globalThis.XMLHttpRequest = function () {\n"
+	"			var self = this;\n"
+	"			this.readyState = 0;\n"
+	"			this.status = 0;\n"
+	"			this.statusText = \"\";\n"
+	"			this.responseText = \"\";\n"
+	"			this.response = \"\";\n"
+	"			this.onreadystatechange = null;\n"
+	"			this.onload = null;\n"
+	"			this.onerror = null;\n"
+	"			var _m = \"GET\", _u = \"\", _h = {}, _sent = false;\n"
+	"			this.open = function (m, u, a) { _m = m; _u = u; this.readyState = 1; };\n"
+	"			this.setRequestHeader = function (k, v) { _h[k] = v; };\n"
+	"			this.getAllResponseHeaders = function () { return \"\"; };\n"
+	"			this.getResponseHeader = function () { return null; };\n"
+	"			this.abort = function () {};\n"
+	"			this.send = function (body) {\n"
+	"				if (_sent) return;\n"
+	"				_sent = true;\n"
+	"				var ctype = _h[\"Content-Type\"] || _h[\"content-type\"] || null;\n"
+	"				var absu = _u;\n"
+	"				try { absu = new globalThis.URL(_u, globalThis.location && globalThis.location.href).href; } catch (e) {}\n"
+	"				var r = globalThis.__linksHttp(absu, _m, ctype,\n"
+	"					typeof body === \"string\" ? body : (body == null ? null : String(body)));\n"
+	"				self.readyState = 4;\n"
+	"				if (r) {\n"
+	"					self.status = r.status;\n"
+	"					self.responseText = r.body;\n"
+	"					self.response = r.body;\n"
+	"				} else {\n"
+	"					self.status = 0;\n"
+	"				}\n"
+	"				if (typeof self.onreadystatechange === \"function\")\n"
+	"					try { self.onreadystatechange(); } catch (e) {}\n"
+	"				if (typeof self.onload === \"function\")\n"
+	"					try { self.onload(); } catch (e) {}\n"
+	"			};\n"
+	"		};\n"
+	"	}\n"
 	"})();\n"
 	"\n";
 
@@ -791,6 +1198,11 @@ void js_execute_code(struct javascript_context *c, unsigned char *code,
 	} else {
 		JS_FreeValue(c->ctx, result);
 	}
+
+	/* run pending jobs to completion: fetch() resolves promises
+	 * synchronously and .then()/await continuations must execute now,
+	 * inside this script step (no event loop exists) */
+	qjs_pump_jobs(c);
 
 	/* GC discipline: collect after every script block */
 	JS_RunGC(c->rt);
