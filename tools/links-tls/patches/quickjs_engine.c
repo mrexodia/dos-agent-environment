@@ -48,6 +48,18 @@ static struct javascript_context *ctxof(JSContext *ctx)
 	return (struct javascript_context *)JS_GetContextOpaque(ctx);
 }
 
+static JSValue qj_document_replace_page(JSContext *ctx, JSValueConst this_val,
+					int argc, JSValueConst *argv)
+{
+	struct javascript_context *c = ctxof(ctx);
+	const char *s = argc > 0 ? JS_ToCString(ctx, argv[0]) : NULL;
+	if (s && *s)
+		js_upcall_document_replace(c->ptr, (unsigned char *)s,
+					   (int)strlen(s));
+	if (s) JS_FreeCString(ctx, s);
+	return JS_UNDEFINED;
+}
+
 static JSValue qj_document_write(JSContext *ctx, JSValueConst this_val,
 				 int argc, JSValueConst *argv)
 {
@@ -669,6 +681,8 @@ static void register_globals(JSContext *ctx)
 	proto = JS_GetPrototype(ctx, doc);
 	JS_SetPropertyStr(ctx, doc, "write", JS_NewCFunction(ctx, qj_document_write, "write", 0));
 	JS_SetPropertyStr(ctx, doc, "writeln", JS_NewCFunction(ctx, qj_document_writeLn, "writeln", 0));
+	JS_SetPropertyStr(ctx, doc, "__qjsReplacePage",
+		JS_NewCFunction(ctx, qj_document_replace_page, "__qjsReplacePage", 1));
 	JS_DefinePropertyGetSet(ctx, doc, JS_NewAtom(ctx, "cookie"),
 		JS_NewCFunction(ctx, qj_get_cookie, "getCookie", 0),
 		JS_NewCFunction(ctx, qj_set_cookie, "setCookie", 1),
@@ -1205,11 +1219,21 @@ static const char qjs_dom_bootstrap[] =
 	"					desc + \"<br>\" + url + \"</p>\";\n"
 	"			}\n"
 	"			out += \"<p>QJS-SEARCH-END</p>\";\n"
-	"			d.write(out);\n"
+	"			if (d.__qjsReplacePage)\n"
+	"				d.__qjsReplacePage(out);\n"
+	"			else\n"
+	"				d.write(out);\n"
 	"		}).catch(function (e) {\n"
 	"			d.write(\"<p>Zoekfout: \" + e + \"</p><p>QJS-SEARCH-END</p>\");\n"
 	"		});\n"
 	"	};\n"
+	"	/* console: page timers used console.log on hardware */\n"
+	"	if (!globalThis.console) {\n"
+	"		globalThis.console = {\n"
+	"			log: function () {}, info: function () {}, warn: function () {},\n"
+	"			error: function () {}, debug: function () {}, trace: function () {}\n"
+	"		};\n"
+	"	}\n"
 	"})();\n"
 	"\n";
 

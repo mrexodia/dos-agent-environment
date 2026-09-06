@@ -469,3 +469,34 @@ flaky in current environment).
   webroot/formtest.html (same get_form_url code path).
 - Tests: scripts/form-search-test.py (fixture form -> real vinden API
   -> visible results, PASS); conformance 20/20; fetch tests 3/3.
+
+## SESSION 2026-09-06 (cont3): hardware search report + visibility fix
+
+Hardware logs (JSERROR.LOG/SOCKSTAT.LOG, archived as *.hw1) showed the
+search DID fire on hardware: FORMSUBMIT q=IB+2026 x5 and q=mrexodia,
+each with FETCH-OK vinden api/v2/search status=200. The user saw
+nothing because post-load document.write APPENDED the results below
+the 6-page homepage.
+
+Fixes:
+- js_upcall_document_replace (jsint.c) + document.__qjsReplacePage(html)
+  (C): REPLACES the page source and re-renders from the top - the
+  fallback search now shows a clean results page like a real engine.
+- console stub in dom_bootstrap.js (TIMER: 'console' is not defined
+  from site timers on hardware).
+
+Findings on the Google-AI-suggested items:
+1. "Open zoeken" disclosure: it is a Bootstrap dropdown toggle
+   (<a data-toggle="dropdown" href="#">) - but Links ignores CSS, so
+   the search form is ALWAYS rendered and keyboard-reachable
+   (6 downs from the top). No unhiding needed. The hardware user
+   reached the field fine (q=IB+2026 in the logs).
+2. Consumed input chars: NOT a Links bug - hardware logs show
+   q=IB+2026 fully intact. The loss is a QEMU/automation timing
+   artifact: chars sent via QMP while the page JS is still running are
+   swallowed. Fix = wait for page settle (~50s under TCG) + sacrificial
+   probe char in the driver (scripts/homepage-search-test.py).
+3. Integration test: scripts/homepage-search-test.py - live homepage,
+   settle, 6 downs + probe, type, submit: page REPLACED with
+   "Zoekresultaten voor 'IB 2026' (505 gevonden)" (p1 of 3).
+   Conformance 20/20.

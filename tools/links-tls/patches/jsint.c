@@ -926,6 +926,29 @@ static long js_upcall_get_frame_id(void *data)
 }
 
 
+/* REPLACES the whole document source with str and re-renders: used by
+ * the QuickJS fallback search to show a clean results page instead of
+ * appending below the (multi-page) original content. */
+void js_upcall_document_replace(void *p, unsigned char *str, int len)
+{
+	struct f_data_c *fd = p;
+	struct js_state *js = fd->js;
+	if (!js || !str || len <= 0) return;
+	if (!fd->f_data || !fd->rq) return;
+	if (js->src) mem_free(js->src);
+	js->src = memacpy(str, len);
+	js->srclen = len;
+	js->newdata += len;
+	js_zaflaknuto_pameti += len;
+	fd->done = 0;
+	fd->parsed_done = 0;
+	/* jump to the top of the new page */
+	fd->vs->view_pos = 0;
+	fd->vs->orig_view_pos = 0;
+	if (fd->vs->current_link >= 0) fd->vs->current_link = 0;
+	fd_loaded(NULL, fd);
+}
+
 /* writes "len" bytes starting at "str" to document */
 void js_upcall_document_write(void *p, unsigned char *str, int len)
 {

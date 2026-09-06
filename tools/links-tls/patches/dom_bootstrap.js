@@ -341,9 +341,19 @@
 					desc + "<br>" + url + "</p>";
 			}
 			out += "<p>QJS-SEARCH-END</p>";
-			d.write(out);
+			if (d.__qjsReplacePage)
+				d.__qjsReplacePage(out);
+			else
+				d.write(out);
 		}).catch(function (e) {
 			d.write("<p>Zoekfout: " + e + "</p><p>QJS-SEARCH-END</p>");
 		});
 	};
+	/* console: page timers used console.log on hardware */
+	if (!globalThis.console) {
+		globalThis.console = {
+			log: function () {}, info: function () {}, warn: function () {},
+			error: function () {}, debug: function () {}, trace: function () {}
+		};
+	}
 })();
