@@ -61,7 +61,7 @@ try:
     for _ in range(120):
         time.sleep(1)
         t = vm.screen_text()
-        if "QJS-SEARCH-END" in t or "Zoekfout" in t:
+        if "QJS-SEARCH-END" in t or "Zoekresultaten" in t or "Zoekfout" in t:
             break
     txt = vm.screen_text()
     lines = [l.rstrip() for l in txt.splitlines() if l.strip()]
@@ -70,7 +70,7 @@ try:
         print("  ", l[:78])
     print("HAS-RESULTS:", "Zoekresultaten" in txt)
     print("SEARCH-END:", "QJS-SEARCH-END" in txt)
-    rc = 0 if ("QJS-SEARCH-END" in txt or "Zoekresultaten" in txt) else 1
+    rc = 0 if "Zoekresultaten" in txt else 1
 finally:
     vm.stop(force=True)
     srv.shutdown()

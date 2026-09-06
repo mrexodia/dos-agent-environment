@@ -262,20 +262,11 @@
 		for (var i = 0; i < list.length; i++) {
 			try { list[i](ev); } catch (e) {}
 		}
-		if (ev.defaultPrevented) {
-			globalThis.__qjsPreventDefault = true;
-			return;
-		}
+		/* URL-state design: let the native GET submit navigate to
+		 * zoeken?q=... so Links pushes a REAL history entry. The
+		 * auto-search timer on that page renders the results; the
+		 * Back key then returns to zoeken?q=... and re-renders. */
 		globalThis.__qjsPreventDefault = false;
-		try {
-			globalThis.__qjsFallbackSearch();
-			/* the fallback search renders its own visible results:
-			 * cancel the native GET navigation */
-			var pp = new URLSearchParams(globalThis.__qjsFormRaw || "");
-			if (pp.get("q")) globalThis.__qjsPreventDefault = true;
-		} catch (e) {
-			try { d.write("<p>QJS-SUBMIT-ERR " + e + "</p>"); } catch (e2) {}
-		}
 	};
 
 	/* Fallback search: renders vinden.belastingdienst.nl results as real
@@ -379,4 +370,31 @@
 			error: function () {}, debug: function () {}, trace: function () {}
 		};
 	}
+
+	/* ---------------- auto-search on zoeken?q= URLs ----------------
+	 * The search results live at a REAL URL (history/back works):
+	 * when a page whose path contains "zoeken" carries ?q=, fetch and
+	 * render the results into this page after it settles. */
+	(function () {
+		try {
+			if (!globalThis.location || !globalThis.setTimeout) return;
+			var p = globalThis.location.pathname || "";
+			if (p.indexOf("zoeken") < 0) return;
+			var sp = new URLSearchParams(globalThis.location.search || "");
+			if (!sp.get("q")) return;
+			globalThis.__qjsAutoSearchDone = false;
+			globalThis.setTimeout(function () {
+				if (globalThis.__qjsAutoSearchDone) return;
+				globalThis.__qjsAutoSearchDone = true;
+				globalThis.__qjsFormRaw = sp.toString();
+				try { globalThis.__qjsFallbackSearch(); }
+				catch (e) {
+					try {
+						(d || globalThis.document).write(
+							"<p>QJS-SEARCH-ERR " + e + "</p>");
+					} catch (e2) {}
+				}
+			}, 3000);
+		} catch (e) {}
+	})();
 })();

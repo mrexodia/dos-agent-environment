@@ -521,3 +521,24 @@ render tree):
 
 Tests: live homepage search -> results page -> click result -> real
 page loads. Conformance 20/20, fixture 187KB response parsed.
+
+## SESSION 2026-09-06 (cont5): BACK-key support via URL-state design
+
+Hardware report: search + clickable links work; Back ('z') lost the
+results. Root cause: __qjsReplacePage mutates the frame in place -
+ses_go_backward() restores a history location with the ORIGINAL
+URL/request, so the injected source was gone.
+
+Fix - results now live at a REAL URL (Google-AI option 1):
+- the form submit is no longer intercepted for rendering: the native
+  GET navigates to zoeken?q=... (Links pushes a real history entry)
+- dom_bootstrap.js auto-search: on page settle (setTimeout 3s), if
+  pathname contains "zoeken" and ?q= is set, __qjsFallbackSearch()
+  renders the results into that page (__qjsReplacePage)
+- Back from a clicked result returns to zoeken?q=...; the page
+  (re)loads, scripts run, the timer fires, results re-render.
+  Verified live: submit -> results (p1 of 26) -> click result ->
+  real page -> 'z' -> "Zoekresultaten voor 'IB 2026' (505 gevonden)"
+  restored (re-fetch 187951 bytes).
+- fixture formtest.html now targets the real zoeken URL so the
+  fixture exercises the identical URL flow. Conformance 20/20.
