@@ -542,3 +542,20 @@ Fix - results now live at a REAL URL (Google-AI option 1):
   restored (re-fetch 187951 bytes).
 - fixture formtest.html now targets the real zoeken URL so the
   fixture exercises the identical URL flow. Conformance 20/20.
+
+## SESSION 2026-09-06 (cont6): 'Javascript staat uit' footer removed
+
+Cause: the message is STATIC HTML (<div id="bld-nosupport"> in every
+page). belastingdienst.js jshtml5supported() removes it at runtime via
+getElementById(...).parentNode.removeChild(...) - our fake DOM's
+removeChild was a no-op, so the text stayed rendered.
+
+Fix - tracked elements with REAL source-level removal:
+- js_upcall_document_remove_element (jsint.c): nesting-aware removal
+  of <tag ... id="...">...</tag> from the page source + re-render
+- exposed to JS as global __linksRemoveElement(id)
+- dom_bootstrap trackedElem(): getElementById and querySelector('#id')
+  return elements whose remove()/parentNode.removeChild() call it
+  (once per id; plain element no-ops unchanged)
+- verified live: message gone on homepage, results page AND clicked
+  result pages; search flow + Back still work; conformance 20/20

@@ -48,6 +48,17 @@ static struct javascript_context *ctxof(JSContext *ctx)
 	return (struct javascript_context *)JS_GetContextOpaque(ctx);
 }
 
+static JSValue qj_remove_element(JSContext *ctx, JSValueConst this_val,
+				  int argc, JSValueConst *argv)
+{
+	struct javascript_context *c = ctxof(ctx);
+	const char *id = argc > 0 ? JS_ToCString(ctx, argv[0]) : NULL;
+	if (id && *id)
+		js_upcall_document_remove_element(c->ptr, id);
+	if (id) JS_FreeCString(ctx, id);
+	return JS_UNDEFINED;
+}
+
 static JSValue qj_document_replace_page(JSContext *ctx, JSValueConst this_val,
 					int argc, JSValueConst *argv)
 {
@@ -779,6 +790,7 @@ static void register_globals(JSContext *ctx)
 	JS_SetPropertyStr(ctx, win, "setTimeout", JS_NewCFunction(ctx, qj_set_timeout, "setTimeout", 2));
 	JS_SetPropertyStr(ctx, win, "clearTimeout", JS_NewCFunction(ctx, qj_clear_timeout, "clearTimeout", 1));
 	JS_SetPropertyStr(ctx, win, "__linksHttp", JS_NewCFunction(ctx, qj_http_native, "__linksHttp", 4));
+	JS_SetPropertyStr(ctx, win, "__linksRemoveElement", JS_NewCFunction(ctx, qj_remove_element, "__linksRemoveElement", 1));
 
 	/* navigator: sites probe navigator.userAgent / .platform / .language */
 	{
@@ -915,6 +927,20 @@ static const char qjs_dom_bootstrap[] =
 	"	}\n"
 	"	globalThis.__qjs_elem = elem;\n"
 	"\n"
+	"	var __qjsTrackedIds = {};\n"
+	"	function trackedElem(id) {\n"
+	"		var e = elem();\n"
+	"		e.__id = id || null;\n"
+	"		var kill = function () {\n"
+	"			if (e.__id && globalThis.__linksRemoveElement && !__qjsTrackedIds[e.__id]) {\n"
+	"				__qjsTrackedIds[e.__id] = 1;\n"
+	"				globalThis.__linksRemoveElement(e.__id);\n"
+	"			}\n"
+	"		};\n"
+	"		e.remove = kill;\n"
+	"		e.parentNode = { removeChild: kill, appendChild: function () {} };\n"
+	"		return e;\n"
+	"	}\n"
 	"	var d = globalThis.document;\n"
 	"	if (d) {\n"
 	"		d.nodeType = 9;\n"
@@ -926,8 +952,12 @@ static const char qjs_dom_bootstrap[] =
 	"		d.createTextNode = function (t) { return { nodeType: 3, data: t }; };\n"
 	"		d.getElementsByClassName = function () { return []; };\n"
 	"		d.getElementsByName = function () { return []; };\n"
-	"		d.querySelector = function () { return elem(); };\n"
-	"		d.getElementById = function () { return elem(); };\n"
+	"		d.querySelector = function (sel) {\n"
+	"			/* tracked element: m[1] of '#id' selectors gets real removal */\n"
+	"			var m = /^#([A-Za-z0-9_-]+)$/.exec(sel || \"\");\n"
+	"			return trackedElem(m ? m[1] : null);\n"
+	"		};\n"
+	"		d.getElementById = function (id) { return trackedElem(id); };\n"
 	"		d.querySelectorAll = function () { return []; };\n"
 	"		d.getElementsByTagName = function (t) {\n"
 	"			var tl = (t || \"\").toLowerCase();\n"

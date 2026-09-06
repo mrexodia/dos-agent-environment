@@ -926,6 +926,112 @@ static long js_upcall_get_frame_id(void *data)
 }
 
 
+/* Removes the element with the given id from the page source and
+ * re-renders: lets page scripts (e.g. belastingdienst.js
+ * jshtml5supported removing #bld-nosupport) actually take effect in
+ * the rendered text page. Simple nesting-aware tag matching. */
+void js_upcall_document_remove_element(void *p, const char *id)
+{
+	struct f_data_c *fd = p;
+	struct js_state *js = fd->js;
+	unsigned char *src;
+	long len, i, start = -1, end = -1, pos;
+	const char *tagopen = "<div";
+	char tag[16];
+	size_t taglen = 0;
+
+	if (!js || !id || !*id) return;
+	if (!fd->f_data || !fd->rq) return;
+	if (!js->src) {
+		size_t len0;
+		unsigned char *s0;
+		if (get_file(fd->rq, &s0, &len0)) return;
+		if (len0 > MAXINT) return;
+		js->src = memacpy(s0, len0);
+		js->srclen = len0;
+	}
+	src = js->src;
+	len = js->srclen;
+
+	/* find <tag ... id="id" ...> (also matches single quotes) */
+	for (i = 0; i + 4 < len; i++) {
+		long j, tstart;
+		if (src[i] != '<' || !isalpha(src[i + 1])) continue;
+		tstart = i;
+		j = i + 1;
+		while (j < len && isalpha(src[j])) j++;
+		{
+			size_t tl = (size_t)(j - i - 1);
+			if (tl >= sizeof(tag)) continue;
+			memcpy(tag, src + i + 1, tl);
+			tag[tl] = 0;
+			taglen = tl;
+		}
+		/* scan attributes within the opening tag */
+		while (j < len && src[j] != '>') {
+			if (j + 4 < len && !strncasecmp(cast_const_char(src + j), " id=", 4)) {
+				char q = src[j + 4];
+				long k;
+				if (q != '"' && q != '\'') { j++; continue; }
+				k = j + 5;
+				while (k < len && src[k] != (unsigned char)q) k++;
+				if ((size_t)(k - (j + 5)) == strlen(id) &&
+				    !memcmp(src + j + 5, id, strlen(id))) {
+					start = tstart;
+				}
+				j = k;
+			}
+			j++;
+		}
+		if (start >= 0) break;
+		tagopen = cast_const_char "";  /* unused, placate compiler */
+		(void)tagopen;
+	}
+	if (start < 0) return;  /* not present: nothing to do */
+
+	/* find matching close tag with nesting of the same tag name */
+	{
+		long depth = 0;
+		char close[24], open_[24];
+		if (taglen > 18) taglen = 18;
+		snprintf(open_, sizeof open_, "<%.*s", (int)taglen, tag);
+		snprintf(close, sizeof close, "</%.*s", (int)taglen, tag);
+		pos = start;
+		for (;;) {
+			long nxt = -1, m;
+			/* find nearest open or close occurrence */
+			for (m = pos; m < len; m++) {
+				if (src[m] == '<') {
+					if (!strncasecmp(cast_const_char(src + m), close, strlen(close))) { nxt = m; break; }
+					if (!strncasecmp(cast_const_char(src + m), open_, strlen(open_)) &&
+					    (src[m + strlen(open_)] == '>' || src[m + strlen(open_)] == ' ' ||
+					     src[m + strlen(open_)] == '\t' || src[m + strlen(open_)] == '\n' ||
+					     src[m + strlen(open_)] == '\r' || src[m + strlen(open_)] == '/')) { nxt = m; break; }
+				}
+			}
+			if (nxt < 0) return;
+			if (!strncasecmp(cast_const_char(src + nxt), close, strlen(close))) {
+				depth--;
+				if (depth == 0) {
+					end = nxt;
+					while (end < len && src[end] != '>') end++;
+					end++;
+					break;
+				}
+			} else
+				depth++;
+			pos = nxt + 1;
+		}
+	}
+	if (end <= start || end > len) return;
+	memmove(src + start, src + end, len - end);
+	js->srclen = len - (end - start);
+	js->newdata -= (end - start);
+	fd->done = 0;
+	fd->parsed_done = 0;
+	fd_loaded(NULL, fd);
+}
+
 /* REPLACES the whole document source with str and re-renders: used by
  * the QuickJS fallback search to show a clean results page instead of
  * appending below the (multi-page) original content. */
