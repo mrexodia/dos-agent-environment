@@ -424,3 +424,19 @@ https://vinden.belastingdienst.nl/api/v2/search {"q":...} -> JSON
 milestone for the search bar. QEMU networking reaches the site fine
 (TLS 1.3 + SNI via slirp); use DOSCTL_QEMU_ACCEL=tcg (KVM QMP startup
 flaky in current environment).
+
+## SESSION 2026-09-06 (cont): fetch()/XHR milestone COMPLETE
+
+- fetch() and XMLHttpRequest now work in LINKSQJS: blocking HTTP(S)
+  transport (qjs_http_request in wolfssl_links_glue.c) on Watt-32 +
+  Links' TLS context; Response/URL/URLSearchParams in JS; promise
+  resolution pumped synchronously (JS_ExecutePendingJob NOTE:
+  takes JSContext**).
+- REAL setTimeout (Links install_timer + JS callback) - deferred page
+  scripts now run.
+- Verified live: belastingdienst.nl zoeken page JS fetches
+  cci-content/zoeken/nl/zoeken.json over TLS 1.3 (FETCH-OK
+  status=200). Tests: scripts/fetch-test.py, webroot/xhrtest.html.
+- Remaining for visible search results: form-submit event dispatch
+  (handleSearchByTerm -> POST vinden.belastingdienst.nl
+  api/v2/search) + rendering results into the text-mode DOM.
