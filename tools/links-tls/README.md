@@ -590,3 +590,24 @@ the backoff should cover it - needs hardware retest.
 
 Also: full TLS regression after the SP_INT_BITS rebuild: conformance
 20/20, belastingdienst.nl homepage + search flow OK.
+
+## SESSION 2026-09-06 (cont8): 'Javascript staat uit' REALLY fixed
+
+Hardware retest showed the message remained. Root causes (2):
+1. belastingdienst.js noHTML5() probes
+   document.createElement("canvas").getContext - our fake elements had
+   none, so the site took the NO-HTML5 branch and never removed
+   #bld-nosupport. Fixed: canvas getContext/toDataURL stubs in elem().
+   (Verified in-guest via webroot/canvastest.html: noHTML5=false.)
+2. Even on the good path the removal never landed: at the moment the
+   site called removeChild, the page was still STREAMING and the
+   bld-nosupport div (near the end of a ~150KB document) had not
+   arrived in js->src yet -> the id search found nothing and gave up.
+   Fixed: js_upcall_document_remove_element2 now RETRIES every 300ms
+   (bounded) until the element appears, then removes + re-renders.
+   Deferred fire while js->active (load in progress) also kept.
+Verified live: REMOVE-ELEM id=bld-nosupport fires; the message is gone
+from the page END (footer now shows Cookies/Copyright/Toegankelijkheid).
+Conformance 20/20; fixture search flow OK (vinden 187KB).
+Note: earlier 'verified' was a bad test (checked only page 1, where the
+message never appears - it lives at the document end).

@@ -930,23 +930,40 @@ static long js_upcall_get_frame_id(void *data)
  * re-renders: lets page scripts (e.g. belastingdienst.js
  * jshtml5supported removing #bld-nosupport) actually take effect in
  * the rendered text page. Simple nesting-aware tag matching. */
-void js_upcall_document_remove_element(void *p, const char *id)
+struct qjs_deferred_removal {
+	struct f_data_c *fd;
+	char id[64];
+	int attempts;
+	struct timer *tm;   /* pending retry timer, NULL if direct call */
+};
+
+static void qjs_deferred_remove_fire(struct qjs_deferred_removal *d)
+{
+	d->tm = NULL;
+	js_upcall_document_remove_element2(d->fd, d->id, d);
+}
+
+/* internal: removes id from the page source + re-render; d carries the
+ * retry state (NULL for a direct one-shot call). Retries while the
+ * page is still streaming and the element has not appeared yet. */
+void js_upcall_document_remove_element2(void *p, const char *id,
+					struct qjs_deferred_removal *d)
 {
 	struct f_data_c *fd = p;
 	struct js_state *js = fd->js;
 	unsigned char *src;
 	long len, i, start = -1, end = -1, pos;
-	const char *tagopen = "<div";
 	char tag[16];
 	size_t taglen = 0;
+	int direct = (d == NULL);
 
-	if (!js || !id || !*id) return;
-	if (!fd->f_data || !fd->rq) return;
+	if (!js || !id || !*id) goto out;
+	if (!fd->f_data || !fd->rq) goto out;
 	if (!js->src) {
 		size_t len0;
 		unsigned char *s0;
-		if (get_file(fd->rq, &s0, &len0)) return;
-		if (len0 > MAXINT) return;
+		if (get_file(fd->rq, &s0, &len0)) goto out;
+		if (len0 > MAXINT) goto out;
 		js->src = memacpy(s0, len0);
 		js->srclen = len0;
 	}
@@ -967,7 +984,6 @@ void js_upcall_document_remove_element(void *p, const char *id)
 			tag[tl] = 0;
 			taglen = tl;
 		}
-		/* scan attributes within the opening tag */
 		while (j < len && src[j] != '>') {
 			if (j + 4 < len && !strncasecmp(cast_const_char(src + j), " id=", 4)) {
 				char q = src[j + 4];
@@ -984,10 +1000,25 @@ void js_upcall_document_remove_element(void *p, const char *id)
 			j++;
 		}
 		if (start >= 0) break;
-		tagopen = cast_const_char "";  /* unused, placate compiler */
-		(void)tagopen;
 	}
-	if (start < 0) return;  /* not present: nothing to do */
+	if (start < 0) {
+		/* not present YET: page may still be streaming in.
+		 * Retry a bounded number of times. */
+		if (!d) {
+			d = mem_alloc(sizeof(struct qjs_deferred_removal));
+			if (!d) return;
+			memset(d, 0, sizeof *d);
+			d->fd = fd;
+			snprintf(d->id, sizeof d->id, "%s", id);
+			d->attempts = 60;
+			d->tm = install_timer(300, (void (*)(void *))qjs_deferred_remove_fire, d);
+		} else if (d->attempts-- > 0) {
+			d->tm = install_timer(300, (void (*)(void *))qjs_deferred_remove_fire, d);
+		} else {
+			mem_free(d);
+		}
+		return;
+	}
 
 	/* find matching close tag with nesting of the same tag name */
 	{
@@ -999,7 +1030,6 @@ void js_upcall_document_remove_element(void *p, const char *id)
 		pos = start;
 		for (;;) {
 			long nxt = -1, m;
-			/* find nearest open or close occurrence */
 			for (m = pos; m < len; m++) {
 				if (src[m] == '<') {
 					if (!strncasecmp(cast_const_char(src + m), close, strlen(close))) { nxt = m; break; }
@@ -1009,7 +1039,7 @@ void js_upcall_document_remove_element(void *p, const char *id)
 					     src[m + strlen(open_)] == '\r' || src[m + strlen(open_)] == '/')) { nxt = m; break; }
 				}
 			}
-			if (nxt < 0) return;
+			if (nxt < 0) goto out;
 			if (!strncasecmp(cast_const_char(src + nxt), close, strlen(close))) {
 				depth--;
 				if (depth == 0) {
@@ -1023,13 +1053,31 @@ void js_upcall_document_remove_element(void *p, const char *id)
 			pos = nxt + 1;
 		}
 	}
-	if (end <= start || end > len) return;
+	if (end <= start || end > len) goto out;
+	{
+		char mb2[96];
+		extern void sock_log2(const char *);
+		snprintf(mb2, sizeof mb2, "REMOVE-ELEM id=%s start=%ld len=%ld",
+			id, (long)start, (long)len);
+		sock_log2(mb2);
+	}
 	memmove(src + start, src + end, len - end);
 	js->srclen = len - (end - start);
-	js->newdata -= (end - start);
 	fd->done = 0;
 	fd->parsed_done = 0;
 	fd_loaded(NULL, fd);
+out:
+	if (direct && d) {
+		/* success (or fatal): stop retrying */
+		if (d->tm) kill_timer(d->tm);
+		mem_free(d);
+	}
+	(void)0;
+}
+
+void js_upcall_document_remove_element(void *p, const char *id)
+{
+	js_upcall_document_remove_element2(p, id, NULL);
 }
 
 /* REPLACES the whole document source with str and re-renders: used by

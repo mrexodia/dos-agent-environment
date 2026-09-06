@@ -32,7 +32,23 @@
 			getElementsByTagName: function () { return []; },
 			getElementsByClassName: function () { return []; },
 			contains: function () { return false; },
-			focus: function () {}
+			focus: function () {},
+			/* canvas stub: belastingdienst.js noHTML5() probes
+			 * createElement("canvas").getContext - without it the
+			 * site keeps the 'Javascript staat uit' block */
+			getContext: function () {
+				return {
+					fillRect: function () {}, clearRect: function () {},
+					getImageData: function () { return { data: [] }; },
+					putImageData: function () {}, drawImage: function () {},
+					measureText: function () { return { width: 0 }; },
+					beginPath: function () {}, arc: function () {},
+					fill: function () {}, stroke: function () {},
+					save: function () {}, restore: function () {},
+					translate: function () {}, scale: function () {}
+				};
+			},
+			toDataURL: function () { return "data:,"; }
 		};
 	}
 	globalThis.__qjs_elem = elem;
@@ -44,7 +60,11 @@
 		var kill = function () {
 			if (e.__id && globalThis.__linksRemoveElement && !__qjsTrackedIds[e.__id]) {
 				__qjsTrackedIds[e.__id] = 1;
-				globalThis.__linksRemoveElement(e.__id);
+				/* deferred: the C side also re-defers while the page
+				 * is still loading - belt and braces for fast hardware */
+				globalThis.setTimeout(function () {
+					globalThis.__linksRemoveElement(e.__id);
+				}, 250);
 			}
 		};
 		e.remove = kill;
