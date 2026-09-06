@@ -500,3 +500,24 @@ Findings on the Google-AI-suggested items:
    settle, 6 downs + probe, type, submit: page REPLACED with
    "Zoekresultaten voor 'IB 2026' (505 gevonden)" (p1 of 3).
    Conformance 20/20.
+
+## SESSION 2026-09-06 (cont4): clickable results + 100-per-page
+
+Hardware report: results appeared but stopped after 10 and links were
+not clickable. Root causes (both in __qjsFallbackSearch, NOT in the
+render tree):
+
+1. count: 10 in our own query body -> count: 100 (the site requests
+   100 too). Links' native text paging handles the rest: results are
+   now "p1 of 26".
+2. The renderer emitted NO <a> tags at all (titles were <b>, URLs
+   plain text) - nothing to click. The fd_loaded re-parse path was
+   always sound: with real <a href> anchors injected, they are
+   keyboard-selectable (highlighted) and Enter NAVIGATES to the real
+   page (verified: landed on "Verdragsstaten IB ingezetenen ...").
+3. The vinden API entity-encodes values (&#x2F;) and embeds <em> tags
+   in url fields: unescape numeric/named entities + strip tags before
+   building hrefs, otherwise the WAF blocks ("ongeldige karakters").
+
+Tests: live homepage search -> results page -> click result -> real
+page loads. Conformance 20/20, fixture 187KB response parsed.

@@ -287,7 +287,7 @@
 		if (!q) return;
 		var body = {
 			sort_date_facets_by_value: true, max_page_count: 100,
-			content_sample_length: 300, count: 10,
+			content_sample_length: 300, count: 100,
 			show_query_spelling_alternatives: true,
 			properties: [
 				{ formats: ["VALUE", "HTML"], name: "title" },
@@ -337,8 +337,31 @@
 				if (!url) url = res[i].id || "";
 				if (url.indexOf("http") !== 0)
 					url = "https://www.belastingdienst.nl/" + url;
-				out += "<p><b>" + (i + 1) + ". " + title + "</b><br>" +
-					desc + "<br>" + url + "</p>";
+				var esc = function (s) {
+					return String(s).replace(/&/g, "&amp;")
+						.replace(/</g, "&lt;").replace(/"/g, "&quot;");
+				};
+				/* the API entity-encodes values (&#x2F; etc.): decode first */
+				var unesc = function (s) {
+					return String(s)
+						.replace(/&#x([0-9a-f]+);/gi, function (m, h) {
+							return String.fromCharCode(parseInt(h, 16));
+						})
+						.replace(/&#([0-9]+);/g, function (m, d) {
+							return String.fromCharCode(parseInt(d, 10));
+						})
+						.replace(/&amp;/g, "&").replace(/&lt;/g, "<")
+						.replace(/&gt;/g, ">").replace(/&quot;/g, '"')
+						.replace(/&#x27;/g, "'");
+				};
+				title = unesc(title);
+				desc = unesc(desc);
+				var href = unesc(url).replace(/<[^>]*>/g, "");
+				if (href.indexOf("http") !== 0)
+					href = "https://www.belastingdienst.nl/" + href;
+				out += "<p><b>" + (i + 1) + ".</b> " +
+					'<a href="' + esc(href) + '">' + (title || esc(href)) + "</a><br>" +
+					desc + "<br>" + esc(href) + "</p>";
 			}
 			out += "<p>QJS-SEARCH-END</p>";
 			if (d.__qjsReplacePage)
