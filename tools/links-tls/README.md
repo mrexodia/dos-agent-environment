@@ -611,3 +611,20 @@ from the page END (footer now shows Cookies/Copyright/Toegankelijkheid).
 Conformance 20/20; fixture search flow OK (vinden 187KB).
 Note: earlier 'verified' was a bad test (checked only page 1, where the
 message never appears - it lives at the document end).
+
+## SESSION 2026-09-06 (cont9): mojeek ROOT CAUSE fixed (keep-alive EOF)
+
+Hardware: mojeek still SSL errors during 'Overzetten'; '/' re-requested
+endlessly. Request-head logging (http.c) showed normal requests, 4 GETs
+per logical page. Real cause: with HTTP/1.1 keep-alive, after the
+response completes the server eventually closes the idle connection
+(close_notify). Our read handler (rb->close not set, keep-alive
+expected) treated SSL_ERROR_ZERO_RETURN as an error and RETRIED THE
+WHOLE REQUEST - re-opening connections until mojeek's per-IP throttle
+kicked in and the SSL-error dialog appeared.
+FIX: ZERO_RETURN is now handled exactly like a plain socket EOF:
+rb->close = 2; rb->done(...) - the HTTP layer finishes a complete
+response normally and retries by itself only when truncated.
+Verified live: mojeek.com loads with NO dialog and only 4 GETs (was
+8+ with retry storms). Conformance 20/20, belastingdienst search OK,
+smallert.nl OK.

@@ -1108,17 +1108,20 @@ read_more:
 				  c->url, rd, err, (int)ERR_get_error(), errno);
 			  sock_log(mb); }
 #endif
-			/* SSL_ERROR_ZERO_RETURN: server closed an idle keep-alive
-			 * connection (close_notify), or throttled us: some
-			 * servers (mojeek.com) drop any new connection made
-			 * within a few seconds of the previous one. Pause briefly
-			 * and retry on a fresh connection like real browsers do,
-			 * instead of aborting with an SSL-error dialog. */
 			if (err == SSL_ERROR_ZERO_RETURN) {
-				sleep(3);
-				retry_connection(c);
+				/* clean TLS EOF (close_notify): server closed an
+				 * idle keep-alive connection after the response.
+				 * Treat EXACTLY like a plain socket EOF: hand the
+				 * buffer to the HTTP layer with close=2 - if the
+				 * response was complete it finishes normally; if
+				 * truncated, the HTTP layer retries by itself.
+				 * (Re-requesting here reloaded whole pages and
+				 * tripped per-IP throttles - mojeek.com.) */
+				rb->close = 2;
+				rb->done(c, rb);
+				return;
 			}
-			else if (!rd || err == SSL_ERROR_SYSCALL) retry_connection(c);
+			if (!rd || err == SSL_ERROR_SYSCALL) retry_connection(c);
 			else abort_connection(c);
 			return;
 		}
