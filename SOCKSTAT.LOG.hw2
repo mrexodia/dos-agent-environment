@@ -1,0 +1,89 @@
+open open=1 close=0
+close open=1 close=1
+open open=2 close=1
+open open=3 close=1
+close open=3 close=2
+open open=4 close=2
+open open=5 close=2
+open open=6 close=2
+close open=6 close=3
+open open=7 close=3
+FORMSUBMIT hook form=7349 data=q=IB+2026
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=187945
+FORMSUBMIT hook form=7349 data=q=IB+2026
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=187945
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=187945
+FORMSUBMIT hook form=7349 data=q=IB+2026
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=187945
+FORMSUBMIT hook form=7349 data=q=IB+2026
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=187945
+FORMSUBMIT hook form=5924 data=q=
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FORMSUBMIT hook form=6217 data=q=IB+2016
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=143014
+close open=20 close=17
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=143014
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=143014
+FETCH-OK https://www.belastingdienst.nl/wps/wcm/connect/cci-content/zoeken/nl/zoeken.json status=200 bytes=3134
+FETCH-OK https://vinden.belastingdienst.nl/api/v2/search status=200 bytes=143014
+open open=27 close=23
+open open=28 close=23
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-328 err=0 errno=0 open=28 close=23
+close open=28 close=24
+open open=29 close=24
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=29 close=24
+close open=29 close=25
+open open=30 close=25
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=30 close=25
+close open=30 close=26
+open open=31 close=26
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=31 close=26
+close open=31 close=27
+open open=32 close=27
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-328 err=0 errno=0 open=32 close=27
+close open=32 close=28
+open open=33 close=28
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=33 close=28
+close open=33 close=29
+open open=34 close=29
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=34 close=29
+close open=34 close=30
+open open=35 close=30
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=35 close=30
+close open=35 close=31
+open open=36 close=31
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-328 err=0 errno=0 open=36 close=31
+close open=36 close=32
+open open=37 close=32
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-110 err=0 errno=0 open=37 close=32
+close open=37 close=33
+open open=38 close=33
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=38 close=33
+close open=38 close=34
+open open=39 close=34
+SSLFAIL url=https://www.smallert.nl/ ret1=-1 ret2=-313 err=0 errno=0 open=39 close=34
+close open=39 close=35
+open open=40 close=35
+close open=40 close=36
+open open=41 close=36
+close open=41 close=37
+open open=42 close=37
+open open=43 close=37
+close open=43 close=38
+open open=44 close=38
+close open=44 close=39
+close open=44 close=40
+open open=45 close=40
+open open=46 close=40
+close open=46 close=41
+open open=47 close=41
+close open=47 close=42
+close open=47 close=43

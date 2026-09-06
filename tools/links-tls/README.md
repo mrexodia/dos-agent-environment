@@ -559,3 +559,34 @@ Fix - tracked elements with REAL source-level removal:
   (once per id; plain element no-ops unchanged)
 - verified live: message gone on homepage, results page AND clicked
   result pages; search flow + Back still work; conformance 20/20
+
+## SESSION 2026-09-06 (cont7): smallert.nl FIXED (SP_INT_BITS), mojeek diagnosis
+
+smallert.nl (First Session unsolved): SSLFAIL -328/-110/-313. Root cause
+found via DJGPP debug wolfSSL + TLSTESTD + serial capture: the site has a
+4096-bit RSA key (512-byte CertificateVerify signature). Our build
+(WOLFSSL_SP_MATH_ALL auto-enabled despite --disable-sp, no FFDHE-4096)
+defaults SP_INT_BITS=3072 -> ENCRYPT_LEN=384 -> any sig >384 bytes is
+rejected as BUFFER_ERROR in DoTls13CertificateVerify (instrumented
+marker DCVBUF-3: sz=512 remain=512 enc=384). Native builds passed only
+because configure there enabled FFDHE-4096 (SP_INT_BITS=4096).
+FIX: wolfSSL rebuilt with -DSP_INT_BITS=8192 (all Links .o recompiled
+with the new wolfdefs per the ABI rule). Verified live: smallert.nl
+renders fully, zero SSLFAIL.
+
+mojeek.com: SSL error dialog but page renders; errors repeat on
+navigation. Diagnosis (SSLRD-FAIL/MKCONN logging in connect.c): every
+connection after the first is closed by the server with close_notify
+(SSL_ERROR_ZERO_RETURN err=6); an immediate retry usually SUCCEEDS.
+Sequential TLSTESTD runs pass, but TLSTESTD fails when run right after
+a browser burst and recovers later => mojeek throttles new connections
+per IP for ~10s (lighttpd/1.4.53 front). Host curl is unaffected
+(faster pattern).
+Mitigations: ZERO_RETURN now retries with exponential backoff
+(3s/6s/9s) instead of aborting with an SSL-error dialog; DOS default
+max_connections_to_host 2 -> 1 (serialized requests). Under TCG the
+throttle still wins (every slow attempt burns the window); on hardware
+the backoff should cover it - needs hardware retest.
+
+Also: full TLS regression after the SP_INT_BITS rebuild: conformance
+20/20, belastingdienst.nl homepage + search flow OK.
