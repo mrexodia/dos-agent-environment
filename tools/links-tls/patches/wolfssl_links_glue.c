@@ -123,6 +123,14 @@ static int qjs_http_select_read(int sock, int sec)
 	return select(sock + 1, &rf, NULL, NULL, &tv);
 }
 
+static int resp_hexc(char c)
+{
+	if (c >= '0' && c <= '9') return c - '0';
+	if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+	if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+	return -1;
+}
+
 int qjs_http_request(const char *url, const char *method,
 		     const char *content_type, const char *body,
 		     const char *user_agent,
@@ -264,6 +272,45 @@ int qjs_http_request(const char *url, const char *method,
 		if (resplen > 8L * 1024 * 1024) { sock_log2("FETCH: too big"); goto out; }
 	}
 	if (!resplen) goto out;
+	/* dechunk if Transfer-Encoding: chunked (search only the header part) */
+	{
+		long hend = -1, i;
+		for (i = 0; i + 3 < resplen; i++)
+			if (resp[i] == '\r' && resp[i+1] == '\n' &&
+			    resp[i+2] == '\r' && resp[i+3] == '\n') { hend = i; break; }
+		if (hend > 0) {
+			long hs;
+			for (hs = 0; hs < hend; hs++)
+				if (!strncasecmp(resp + hs, "chunked", 7)) break;
+			if (hs < hend) {
+				/* in-place dechunk starting after the header */
+				char *body = resp + hend + 4;
+				long blen = resplen - (hend + 4), bo = 0, bi = 0;
+				while (bi < blen) {
+					long sz = -1, j;
+					/* parse hex size */
+					for (j = bi; j < blen && resp_hexc(body[j]) >= 0; j++) ;
+					if (j == bi) break;
+					sz = 0;
+					for (; bi < j; bi++) {
+						int h = resp_hexc(body[bi]);
+						if (sz > (0x7fffffffL - 15) / 16) { sz = -1; break; }
+						sz = sz * 16 + h;
+					}
+					if (sz < 0) break;
+					/* skip chunk extensions / CRLF */
+					while (bi < blen && body[bi] != '\r') bi++;
+					bi += 2;
+					if (sz == 0) break;
+					if (bi + sz > blen) sz = blen - bi;
+					memmove(body + bo, body + bi, sz);
+					bo += sz;
+					bi += sz + 2;  /* skip trailing CRLF */
+				}
+				resplen = (hend + 4) + bo;
+			}
+		}
+	}
 	/* status: "HTTP/1.x NNN ..." */
 	if (!strncmp(resp, "HTTP/", 5)) {
 		*status = atoi(resp + 9);

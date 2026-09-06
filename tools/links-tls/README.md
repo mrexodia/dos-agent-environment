@@ -440,3 +440,32 @@ flaky in current environment).
 - Remaining for visible search results: form-submit event dispatch
   (handleSearchByTerm -> POST vinden.belastingdienst.nl
   api/v2/search) + rendering results into the text-mode DOM.
+
+## SESSION 2026-09-06 (cont2): FORM-SUBMIT DISPATCH milestone COMPLETE
+
+- view.c get_form_url(): when a GET form without inline onsubmit is
+  submitted, qjs_form_submit() (quickjs_engine.c) hands the encoded
+  form data to QuickJS: dispatches registered 'submit' listeners
+  (addEventListener registry in dom_bootstrap.js), then a fallback
+  search; preventDefault cancels native navigation.
+- Fallback search (dom_bootstrap.js __qjsFallbackSearch): POSTs the
+  full query object to https://vinden.belastingdienst.nl/api/v2/search
+  via fetch(), parses the JSON, and document.write()s VISIBLE results
+  (title/description/url) into the page - rendered as normal HTML by
+  Links (multi-page, e.g. "Zoekresultaten voor 'IB 2026' (505
+  gevonden)").
+- jsint.c js_upcall_document_write: post-load writes now append to the
+  page source and re-render (fd_loaded) instead of internal_error.
+- wolfssl_links_glue.c: in-place HTTP chunked decoding (vinden API is
+  chunked); FETCH-OK logging includes bytes.
+- URLSearchParams now decodes '+' as space (form data q=IB+2026).
+- Keyboard model notes for automation: Links text fields are edited
+  INLINE (cursor on field + type; no Enter). First chars typed at
+  field-activation are consumed - use a sacrificial probe char.
+  Buttons share rows with fields; fields do not invert (detection:
+  highlight vanishes). The belastingdienst homepage search input is
+  behind a JS 'Open zoeken' disclosure - not keyboard-reachable in
+  text mode without activating it; the flow is proven via
+  webroot/formtest.html (same get_form_url code path).
+- Tests: scripts/form-search-test.py (fixture form -> real vinden API
+  -> visible results, PASS); conformance 20/20; fetch tests 3/3.

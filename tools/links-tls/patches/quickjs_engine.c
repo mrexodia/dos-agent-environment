@@ -834,6 +834,33 @@ static void register_globals(JSContext *ctx)
 	JS_FreeValue(ctx, proto);
 }
 
+/* Called from view.c get_form_url(): hand the encoded form data to the
+ * page's JS, dispatch a synthetic submit event, run the fallback search.
+ * Returns nonzero if JS called preventDefault (native submit cancelled). */
+int qjs_form_submit(struct javascript_context *c, const char *formdata)
+{
+	JSValue g, v, r;
+	int prevented = 0;
+	if (!c || !c->ctx) return 0;
+	g = JS_GetGlobalObject(c->ctx);
+	JS_SetPropertyStr(c->ctx, g, "__qjsFormRaw",
+		JS_NewString(c->ctx, formdata ? formdata : ""));
+	JS_FreeValue(c->ctx, g);
+	r = JS_Eval(c->ctx, "__qjsOnFormSubmit()", 18, "<formsubmit>",
+		JS_EVAL_TYPE_GLOBAL);
+	if (JS_IsException(r))
+		JS_FreeValue(c->ctx, JS_GetException(c->ctx));
+	else
+		JS_FreeValue(c->ctx, r);
+	qjs_pump_jobs(c);
+	g = JS_GetGlobalObject(c->ctx);
+	v = JS_GetPropertyStr(c->ctx, g, "__qjsPreventDefault");
+	if (JS_IsBool(v)) prevented = !!JS_ToBool(c->ctx, v);
+	JS_FreeValue(c->ctx, v);
+	JS_FreeValue(c->ctx, g);
+	return prevented;
+}
+
 static const char qjs_dom_bootstrap[] =
 	"/* dom_bootstrap.js — evaluated in every QuickJS context after the C\n"
 	" * register_globals(). Enriches the minimal C stubs into a \"permissive\n"
@@ -855,7 +882,11 @@ static const char qjs_dom_bootstrap[] =
 	"			cloneNode: function () { var n = elem(); n.checked = this.checked; return n; },\n"
 	"			setAttribute: function () {}, getAttribute: function () { return null; },\n"
 	"			removeAttribute: function () {},\n"
-	"			addEventListener: function () {}, removeEventListener: function () {},\n"
+	"			addEventListener: function (t, fn) {\n"
+	"				if (typeof fn === \"function\" && globalThis.__qjsAddEventListener)\n"
+	"					globalThis.__qjsAddEventListener(t, fn);\n"
+	"			},\n"
+	"			removeEventListener: function () {},\n"
 	"			classList: {\n"
 	"				add: function () {}, remove: function () {}, toggle: function () {},\n"
 	"				contains: function () { return false; }\n"
@@ -961,7 +992,8 @@ static const char qjs_dom_bootstrap[] =
 	"		if (typeof init === \"string\" && init)\n"
 	"			init.replace(/^\\?/, \"\").split(\"&\").forEach(function (kv) {\n"
 	"				var p = kv.split(\"=\");\n"
-	"				if (p[0]) m[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || \"\");\n"
+	"				var dec = function (s) { return decodeURIComponent(String(s).replace(/\\+/g, \" \")); };\n"
+	"				if (p[0]) m[dec(p[0])] = dec(p[1] || \"\");\n"
 	"			});\n"
 	"		return {\n"
 	"			get: function (k) { return k in m ? m[k] : null; },\n"
@@ -1070,6 +1102,114 @@ static const char qjs_dom_bootstrap[] =
 	"			};\n"
 	"		};\n"
 	"	}\n"
+	"\n"
+	"	/* ---------------- event dispatch + form-submit search ---------------- */\n"
+	"	globalThis.__qjsEvents = {};\n"
+	"	globalThis.__qjsAddEventListener = function (type, fn) {\n"
+	"		(globalThis.__qjsEvents[type] = globalThis.__qjsEvents[type] || []).push(fn);\n"
+	"	};\n"
+	"	if (w) {\n"
+	"		w.addEventListener = function (t, fn) { globalThis.__qjsAddEventListener(t, fn); };\n"
+	"	}\n"
+	"	if (d) {\n"
+	"		d.addEventListener = function (t, fn) { globalThis.__qjsAddEventListener(t, fn); };\n"
+	"	}\n"
+	"\n"
+	"	globalThis.__qjsOnFormSubmit = function () {\n"
+	"		var ev = {\n"
+	"			type: \"submit\", target: d ? d.body : null,\n"
+	"			defaultPrevented: false,\n"
+	"			preventDefault: function () { this.defaultPrevented = true; },\n"
+	"			stopPropagation: function () {}\n"
+	"		};\n"
+	"		var list = (globalThis.__qjsEvents[\"submit\"] || []).slice();\n"
+	"		for (var i = 0; i < list.length; i++) {\n"
+	"			try { list[i](ev); } catch (e) {}\n"
+	"		}\n"
+	"		if (ev.defaultPrevented) {\n"
+	"			globalThis.__qjsPreventDefault = true;\n"
+	"			return;\n"
+	"		}\n"
+	"		globalThis.__qjsPreventDefault = false;\n"
+	"		try {\n"
+	"			globalThis.__qjsFallbackSearch();\n"
+	"			/* the fallback search renders its own visible results:\n"
+	"			 * cancel the native GET navigation */\n"
+	"			var pp = new URLSearchParams(globalThis.__qjsFormRaw || \"\");\n"
+	"			if (pp.get(\"q\")) globalThis.__qjsPreventDefault = true;\n"
+	"		} catch (e) {\n"
+	"			try { d.write(\"<p>QJS-SUBMIT-ERR \" + e + \"</p>\"); } catch (e2) {}\n"
+	"		}\n"
+	"	};\n"
+	"\n"
+	"	/* Fallback search: renders vinden.belastingdienst.nl results as real\n"
+	"	 * document.write HTML so they are VISIBLE in Links. Only for forms\n"
+	"	 * whose encoded data contains a q= field. */\n"
+	"	globalThis.__qjsFallbackSearch = function () {\n"
+	"		var params = new URLSearchParams(globalThis.__qjsFormRaw || \"\");\n"
+	"		var q = params.get(\"q\");\n"
+	"		if (!q) return;\n"
+	"		var body = {\n"
+	"			sort_date_facets_by_value: true, max_page_count: 100,\n"
+	"			content_sample_length: 300, count: 10,\n"
+	"			show_query_spelling_alternatives: true,\n"
+	"			properties: [\n"
+	"				{ formats: [\"VALUE\", \"HTML\"], name: \"title\" },\n"
+	"				{ formats: [\"VALUE\", \"HTML\"], name: \"path\" },\n"
+	"				{ formats: [\"VALUE\", \"HTML\"], name: \"url\" },\n"
+	"				{ name: \"description\", formats: [\"VALUE\", \"HTML\"] }\n"
+	"			],\n"
+	"			paging_states: [],\n"
+	"			query_context: {\n"
+	"				app_tab_id: \"Everything\", application_id: \"Default Application\",\n"
+	"				query_id: \"qjs\" + Date.now(), prev_query_id: null,\n"
+	"				query_trigger_type: \"USER_QUERY\", query_trigger_action: \"manual_search\"\n"
+	"			},\n"
+	"			query_context_user_query: q,\n"
+	"			user: { query: { and: [{ unparsed: q, id: \"query\" }], constraints: [] } },\n"
+	"			user_context: {\n"
+	"				referer: globalThis.location ? globalThis.location.href : \"\",\n"
+	"				locale: \"nl\", service_id: \"\",\n"
+	"				utc_time_zone_differential_in_seconds: 3600\n"
+	"			}\n"
+	"		};\n"
+	"		globalThis.fetch(\"https://vinden.belastingdienst.nl/api/v2/search\", {\n"
+	"			method: \"POST\",\n"
+	"			headers: { \"Content-Type\": \"application/json; charset=utf-8\" },\n"
+	"			body: JSON.stringify(body)\n"
+	"		}).then(function (resp) {\n"
+	"			return resp.json();\n"
+	"		}).then(function (j) {\n"
+	"			var n = j.estimated_count;\n"
+	"			var res = (j.resultset && j.resultset.results) || [];\n"
+	"			var out = \"<h2>Zoekresultaten voor '\" + q + \"' (\" + n + \" gevonden)</h2>\";\n"
+	"			if (!res.length) out += \"<p>Geen resultaten.</p>\";\n"
+	"			for (var i = 0; i < res.length; i++) {\n"
+	"				var props = res[i].properties || [];\n"
+	"				var title = \"\", url = \"\", desc = \"\";\n"
+	"				for (var k = 0; k < props.length; k++) {\n"
+	"					var p = props[k];\n"
+	"					var dat = p.data && p.data[0];\n"
+	"					var txt = dat ? (dat.html != null ? dat.html :\n"
+	"						(dat.value != null ? dat.value : \"\")) : \"\";\n"
+	"					if (typeof txt === \"object\" && txt !== null)\n"
+	"						txt = txt.str != null ? txt.str : \"\";\n"
+	"					if (p.id === \"title\") title = String(txt);\n"
+	"					else if (p.id === \"url\" && !url) url = String(txt);\n"
+	"					else if (p.id === \"description\") desc = String(txt);\n"
+	"				}\n"
+	"				if (!url) url = res[i].id || \"\";\n"
+	"				if (url.indexOf(\"http\") !== 0)\n"
+	"					url = \"https://www.belastingdienst.nl/\" + url;\n"
+	"				out += \"<p><b>\" + (i + 1) + \". \" + title + \"</b><br>\" +\n"
+	"					desc + \"<br>\" + url + \"</p>\";\n"
+	"			}\n"
+	"			out += \"<p>QJS-SEARCH-END</p>\";\n"
+	"			d.write(out);\n"
+	"		}).catch(function (e) {\n"
+	"			d.write(\"<p>Zoekfout: \" + e + \"</p><p>QJS-SEARCH-END</p>\");\n"
+	"		});\n"
+	"	};\n"
 	"})();\n"
 	"\n";
 

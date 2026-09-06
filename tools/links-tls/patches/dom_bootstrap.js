@@ -18,7 +18,11 @@
 			cloneNode: function () { var n = elem(); n.checked = this.checked; return n; },
 			setAttribute: function () {}, getAttribute: function () { return null; },
 			removeAttribute: function () {},
-			addEventListener: function () {}, removeEventListener: function () {},
+			addEventListener: function (t, fn) {
+				if (typeof fn === "function" && globalThis.__qjsAddEventListener)
+					globalThis.__qjsAddEventListener(t, fn);
+			},
+			removeEventListener: function () {},
 			classList: {
 				add: function () {}, remove: function () {}, toggle: function () {},
 				contains: function () { return false; }
@@ -124,7 +128,8 @@
 		if (typeof init === "string" && init)
 			init.replace(/^\?/, "").split("&").forEach(function (kv) {
 				var p = kv.split("=");
-				if (p[0]) m[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || "");
+				var dec = function (s) { return decodeURIComponent(String(s).replace(/\+/g, " ")); };
+				if (p[0]) m[dec(p[0])] = dec(p[1] || "");
 			});
 		return {
 			get: function (k) { return k in m ? m[k] : null; },
@@ -233,4 +238,112 @@
 			};
 		};
 	}
+
+	/* ---------------- event dispatch + form-submit search ---------------- */
+	globalThis.__qjsEvents = {};
+	globalThis.__qjsAddEventListener = function (type, fn) {
+		(globalThis.__qjsEvents[type] = globalThis.__qjsEvents[type] || []).push(fn);
+	};
+	if (w) {
+		w.addEventListener = function (t, fn) { globalThis.__qjsAddEventListener(t, fn); };
+	}
+	if (d) {
+		d.addEventListener = function (t, fn) { globalThis.__qjsAddEventListener(t, fn); };
+	}
+
+	globalThis.__qjsOnFormSubmit = function () {
+		var ev = {
+			type: "submit", target: d ? d.body : null,
+			defaultPrevented: false,
+			preventDefault: function () { this.defaultPrevented = true; },
+			stopPropagation: function () {}
+		};
+		var list = (globalThis.__qjsEvents["submit"] || []).slice();
+		for (var i = 0; i < list.length; i++) {
+			try { list[i](ev); } catch (e) {}
+		}
+		if (ev.defaultPrevented) {
+			globalThis.__qjsPreventDefault = true;
+			return;
+		}
+		globalThis.__qjsPreventDefault = false;
+		try {
+			globalThis.__qjsFallbackSearch();
+			/* the fallback search renders its own visible results:
+			 * cancel the native GET navigation */
+			var pp = new URLSearchParams(globalThis.__qjsFormRaw || "");
+			if (pp.get("q")) globalThis.__qjsPreventDefault = true;
+		} catch (e) {
+			try { d.write("<p>QJS-SUBMIT-ERR " + e + "</p>"); } catch (e2) {}
+		}
+	};
+
+	/* Fallback search: renders vinden.belastingdienst.nl results as real
+	 * document.write HTML so they are VISIBLE in Links. Only for forms
+	 * whose encoded data contains a q= field. */
+	globalThis.__qjsFallbackSearch = function () {
+		var params = new URLSearchParams(globalThis.__qjsFormRaw || "");
+		var q = params.get("q");
+		if (!q) return;
+		var body = {
+			sort_date_facets_by_value: true, max_page_count: 100,
+			content_sample_length: 300, count: 10,
+			show_query_spelling_alternatives: true,
+			properties: [
+				{ formats: ["VALUE", "HTML"], name: "title" },
+				{ formats: ["VALUE", "HTML"], name: "path" },
+				{ formats: ["VALUE", "HTML"], name: "url" },
+				{ name: "description", formats: ["VALUE", "HTML"] }
+			],
+			paging_states: [],
+			query_context: {
+				app_tab_id: "Everything", application_id: "Default Application",
+				query_id: "qjs" + Date.now(), prev_query_id: null,
+				query_trigger_type: "USER_QUERY", query_trigger_action: "manual_search"
+			},
+			query_context_user_query: q,
+			user: { query: { and: [{ unparsed: q, id: "query" }], constraints: [] } },
+			user_context: {
+				referer: globalThis.location ? globalThis.location.href : "",
+				locale: "nl", service_id: "",
+				utc_time_zone_differential_in_seconds: 3600
+			}
+		};
+		globalThis.fetch("https://vinden.belastingdienst.nl/api/v2/search", {
+			method: "POST",
+			headers: { "Content-Type": "application/json; charset=utf-8" },
+			body: JSON.stringify(body)
+		}).then(function (resp) {
+			return resp.json();
+		}).then(function (j) {
+			var n = j.estimated_count;
+			var res = (j.resultset && j.resultset.results) || [];
+			var out = "<h2>Zoekresultaten voor '" + q + "' (" + n + " gevonden)</h2>";
+			if (!res.length) out += "<p>Geen resultaten.</p>";
+			for (var i = 0; i < res.length; i++) {
+				var props = res[i].properties || [];
+				var title = "", url = "", desc = "";
+				for (var k = 0; k < props.length; k++) {
+					var p = props[k];
+					var dat = p.data && p.data[0];
+					var txt = dat ? (dat.html != null ? dat.html :
+						(dat.value != null ? dat.value : "")) : "";
+					if (typeof txt === "object" && txt !== null)
+						txt = txt.str != null ? txt.str : "";
+					if (p.id === "title") title = String(txt);
+					else if (p.id === "url" && !url) url = String(txt);
+					else if (p.id === "description") desc = String(txt);
+				}
+				if (!url) url = res[i].id || "";
+				if (url.indexOf("http") !== 0)
+					url = "https://www.belastingdienst.nl/" + url;
+				out += "<p><b>" + (i + 1) + ". " + title + "</b><br>" +
+					desc + "<br>" + url + "</p>";
+			}
+			out += "<p>QJS-SEARCH-END</p>";
+			d.write(out);
+		}).catch(function (e) {
+			d.write("<p>Zoekfout: " + e + "</p><p>QJS-SEARCH-END</p>");
+		});
+	};
 })();
