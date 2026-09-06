@@ -397,3 +397,30 @@ navigator (userAgent/appName getters, appVersion, platform,
 language, cookieEnabled), global addEventListener/removeEventListener
 no-ops, and encodeURIComponent/decodeURIComponent. navtest.html
 verifies UA-OK/AEL-OK/ENC pass. 20/20 conformance retained.
+
+## SESSION 2026-09-06: belastingdienst.nl search-bar investigation (closed)
+
+Root causes found (host QuickJS replica harness /tmp/qeval2 + seqtest,
+ASAN build of build/quickjs):
+
+1. jQuery 3.6 died: Sizzle setDocument() silently no-ops without
+   document.nodeType===9 + document.documentElement -> later support
+   probes hit undefined. Fixed via dom_bootstrap.js polyfill.
+2. window was a SEPARATE object from globalThis: UMD bundles export to
+   window, later scripts read bare identifiers -> 'jQuery is not
+   defined'. Fixed: window === global object (self-ref binding "window").
+3. ASAN-documented QuickJS bug: a DUPLICATE C-level JS_SetPropertyStr of
+   the same key on the global object frees live heap (use-after-free in
+   JS_GetGlobalVar). Never re-set document/navigator on win after
+   binding them globally. JS-level assignment is safe.
+4. SyntaxError expecting '(': ESM modules (import/export) evaluated in
+   global scope; now skipped in js_execute_code + html.c (type=module).
+5. JSERROR.LOG now logs failing-script first line + stack (was blind).
+
+Status: banner gone, full script chain clean, 20/20 conformance.
+Search results are CLIENT-rendered only: POST
+https://vinden.belastingdienst.nl/api/v2/search {"q":...} -> JSON
+(estimated_count etc.). Implementing fetch()/XHR in QuickJS is the next
+milestone for the search bar. QEMU networking reaches the site fine
+(TLS 1.3 + SNI via slirp); use DOSCTL_QEMU_ACCEL=tcg (KVM QMP startup
+flaky in current environment).
