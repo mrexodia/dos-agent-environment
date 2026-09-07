@@ -712,3 +712,33 @@ Not actionable in a text browser: cloudflare.com React buttons (need
 event.target/bubbling in a real DOM), 'Just a moment' interstitials,
 hn.algolia/nowsecure SPA content (need DOM->Links render bridge).
 Conformance 20/20; belastingdienst homepage search still PASS.
+
+## SESSION 2026-09-07 (cont4): DOM->LINKS RENDER BRIDGE (milestone)
+
+A real JS DOM tree in the bootstrap so SPA frameworks actually BUILD
+structure, rendered visibly:
+- DomNode/DomText classes: appendChild/insertBefore/removeChild/
+  replaceChild/append/replaceChildren/cloneNode, setAttribute,
+  innerHTML get/set (mini HTML parser), textContent/innerText,
+  className/classList/dataset/value/id accessors, firstChild/
+  lastChild/nextSibling/previousSibling/children, getElementsByTagName,
+  getElementById, basic querySelector(tag/#id/.class),
+  getBoundingClientRect/click/...
+- document.createElement/createTextNode/... return real nodes;
+  getElementById/querySelector: JS tree first, page-source fallback
+  (trackedElem is now a REAL DomNode wired to source-level removal,
+  registered in __qjsTrackedNodes)
+- debounce: mutations mark dirty; after 700ms the tree is serialized
+  (script/style/input-aware) and, if SUBSTANTIAL (>=600 chars -
+  jQuery probe trees stay below), the page is replaced with
+  <h1>title</h1> + tree -> VISIBLE content. Both body-built trees and
+  trees built into static page containers (React <div id=root>) render.
+- requestAnimationFrame now FIRES (React scheduler); MessageChannel
+  + queueMicrotask stubs added.
+Fixes along the way: text nodes needed cloneNode (jQuery), guard
+against blanking full pages with stray trees, tracked-node cap 50.
+Tests: webroot/spatest.html + rootspa.html PASS (built trees render,
+links clickable); belastingdienst homepage untouched (no renders),
+search flow PASS; conformance 20/20.
+hn.algolia.com: bundle download alone exceeds QEMU/TCG patience -
+needs hardware validation of the React render.

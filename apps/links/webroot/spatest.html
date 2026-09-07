@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><body>
+<h1>SPA-TEST-START</h1>
+<script>
+var container = document.createElement("div");
+var h = document.createElement("h2");
+h.textContent = "SPA Content Header";
+var p = document.createElement("p");
+p.textContent = "Rendered by the DOM-to-Links bridge.";
+var link = document.createElement("a");
+link.setAttribute("href", "https://www.belastingdienst.nl/");
+link.textContent = "A clickable SPA link";
+var list = document.createElement("ul");
+["alpha", "beta", "gamma"].forEach(function (w) {
+	var li = document.createElement("li");
+	li.textContent = "item " + w;
+	list.appendChild(li);
+});
+container.appendChild(h);
+container.appendChild(p);
+container.appendChild(link);
+container.appendChild(list);
+document.body.appendChild(container);
+setTimeout(function () {
+	var p2 = document.createElement("p");
+	p2.textContent = "SPA-TEST-END updated-render";
+	document.body.appendChild(p2);
+	/* bulk so the tree passes the 2000-char substantiality guard */
+	var bulk = document.createElement("div");
+	for (var i = 0; i < 30; i++) {
+		var d = document.createElement("p");
+		d.textContent = "SPA bulk line number " + i + " with some padding text to make this a substantial tree";
+		bulk.appendChild(d);
+	}
+	document.body.appendChild(bulk);
+}, 2000);
+</script>
+</body></html>

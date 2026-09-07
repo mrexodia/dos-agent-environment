@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><body>
+<h1>ROOT-SPA-START</h1>
+<div id="root"></div>
+<script>
+/* React-like: build UI into the STATIC page #root container */
+var root = document.getElementById("root");
+var app = document.createElement("div");
+var header = document.createElement("h2");
+header.textContent = "App Header in static root";
+var search = document.createElement("input");
+search.setAttribute("placeholder", "Search Hacker News...");
+app.appendChild(header);
+app.appendChild(search);
+for (var i = 1; i <= 8; i++) {
+	var row = document.createElement("p");
+	row.textContent = "Story number " + i + ": some hacker news title with points and comments";
+	app.appendChild(row);
+}
+root.appendChild(app);
+setTimeout(function () {
+	var done = document.createElement("p");
+	done.textContent = "ROOT-SPA-END rendered-via-root";
+	root.appendChild(done);
+}, 1500);
+</script>
+</body></html>

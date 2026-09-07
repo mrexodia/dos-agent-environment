@@ -64,8 +64,9 @@
 	globalThis.__qjs_elem = elem;
 
 	var __qjsTrackedIds = {};
+	globalThis.__qjsTrackedNodes = [];
 	function trackedElem(id) {
-		var e = elem();
+		var e = globalThis.__qjsDomNode ? new globalThis.__qjsDomNode("div") : elem();
 		e.__id = id || null;
 		var kill = function () {
 			if (e.__id && globalThis.__linksRemoveElement && !__qjsTrackedIds[e.__id]) {
@@ -79,25 +80,43 @@
 		};
 		e.remove = kill;
 		e.parentNode = { removeChild: kill, appendChild: function () {} };
+		if (id && globalThis.__qjsTrackedNodes.length < 50)
+			globalThis.__qjsTrackedNodes.push(e);
 		return e;
 	}
 	var d = globalThis.document;
 	if (d) {
 		d.nodeType = 9;
-		d.documentElement = elem();
-		d.body = elem();
-		d.head = elem();
-		d.createElement = elem;
-		d.createDocumentFragment = elem;
-		d.createTextNode = function (t) { return { nodeType: 3, data: t }; };
+		d.documentElement = globalThis.__qjsDomDocel || elem();
+		d.body = globalThis.__qjsDomBody || elem();
+		d.head = globalThis.__qjsDomHead || elem();
+		if (globalThis.__qjsDomNode) {
+			d.createElement = function (t) { return new globalThis.__qjsDomNode(t); };
+			d.createDocumentFragment = function () { return new globalThis.__qjsDomNode("#fragment"); };
+			d.createTextNode = function (t) {
+				var T = function () {};  /* DomText-like */
+				return { nodeType: 3, data: String(t), childNodes: [], parentNode: null };
+			};
+		} else {
+			d.createElement = elem;
+			d.createDocumentFragment = elem;
+			d.createTextNode = function (t) { return { nodeType: 3, data: t }; };
+		}
 		d.getElementsByClassName = function () { return []; };
 		d.getElementsByName = function () { return []; };
 		d.querySelector = function (sel) {
-			/* tracked element: m[1] of '#id' selectors gets real removal */
+			/* JS tree first (SPA-built nodes), then page-source elements */
+			var hit = null;
+			try { hit = globalThis.__qjsDomBody.querySelector(sel); } catch (e) {}
+			if (hit) return hit;
 			var m = /^#([A-Za-z0-9_-]+)$/.exec(sel || "");
 			return trackedElem(m ? m[1] : null);
 		};
-		d.getElementById = function (id) { return trackedElem(id); };
+		d.getElementById = function (id) {
+			var hit = globalThis.__qjsDomBody.getElementById(id);
+			if (hit) return hit;
+			return trackedElem(id);
+		};
 		d.querySelectorAll = function () { return []; };
 		d.getElementsByTagName = function (t) {
 			var tl = (t || "").toLowerCase();
@@ -141,7 +160,9 @@
 		w.open = function () { return null; };
 		w.close = function () {};
 		w.scroll = function () {};
-		w.requestAnimationFrame = function () { return 0; };
+		/* must actually fire: React's scheduler drives renders off
+		 * rAF/MessageChannel; a never-firing rAF means SPAs never paint */
+		w.requestAnimationFrame = function (f) { return globalThis.setTimeout(function () { f(Date.now()); }, 16); };
 		w.cancelAnimationFrame = function () {};
 		w.innerWidth = 80; w.innerHeight = 25;
 		w.outerWidth = 80; w.outerHeight = 25;
@@ -590,4 +611,462 @@
 		try { globalThis.navigator = T("navigator", globalThis.navigator); } catch (e) {}
 		try { globalThis.window = T("window", globalThis); } catch (e) {}
 	})();
+
+	/* ================= DOM->LINKS RENDER BRIDGE =================
+	 * A real (small) DOM tree in JS: SPA frameworks (React etc.) build
+	 * their document via createElement/appendChild/textContent. When
+	 * such a tree actually gets content under <body>, we serialize it
+	 * and re-render the whole page (__qjsReplacePage) so the content
+	 * becomes VISIBLE in Links. Sites that only probe (jQuery) never
+	 * build a tree -> page untouched. */
+	(function () {
+		var __dirty = false, __renderTimer = null, __lastSer = null;
+
+		function DomText(t) {
+			this.nodeType = 3;
+			this.data = t || "";
+			this.parentNode = null;
+			this.childNodes = [];
+		}
+		DomText.prototype.cloneNode = function () { return new DomText(this.data); };
+		Object.defineProperty(DomText.prototype, "textContent", {
+			get: function () { return this.data; },
+			set: function (v) { this.data = String(v); markDirty(); },
+			configurable: true
+		});
+		DomText.prototype.appendChild = function () {};
+		DomText.prototype.removeChild = function () {};
+
+		function DomNode(tag) {
+			this.nodeType = 1;
+			this.tagName = String(tag || "div").toUpperCase();
+			this.childNodes = [];
+			this.parentNode = null;
+			this.attributes = {};
+			this.style = {};
+			this._listeners = [];
+			this._value = "";
+			this._innerHTML = "";
+			this._text = "";
+			this.ownerDocument = globalThis.document;
+		}
+		DomNode.prototype.appendChild = function (n) {
+			if (n && n.nodeType) {
+				if (n.parentNode) n.parentNode.removeChild(n);
+				n.parentNode = this;
+				this.childNodes.push(n);
+				markDirty();
+			}
+			return n;
+		};
+		DomNode.prototype.insertBefore = function (n, ref) {
+			if (!n || !n.nodeType) return n;
+			var i = ref ? this.childNodes.indexOf(ref) : -1;
+			if (n.parentNode) n.parentNode.removeChild(n);
+			n.parentNode = this;
+			if (i < 0) this.childNodes.push(n);
+			else this.childNodes.splice(i, 0, n);
+			markDirty();
+			return n;
+		};
+		DomNode.prototype.removeChild = function (n) {
+			var i = this.childNodes.indexOf(n);
+			if (i >= 0) {
+				this.childNodes.splice(i, 1);
+				n.parentNode = null;
+				markDirty();
+			}
+			return n;
+		};
+		DomNode.prototype.replaceChild = function (n, o) {
+			this.insertBefore(n, o);
+			if (o) this.removeChild(o);
+			return o;
+		};
+		DomNode.prototype.append = function () {
+			for (var i = 0; i < arguments.length; i++) {
+				var a = arguments[i];
+				if (a && a.nodeType) this.appendChild(a);
+				else this.appendChild(new DomText(String(a)));
+			}
+		};
+		DomNode.prototype.prepend = DomNode.prototype.append;
+		DomNode.prototype.replaceChildren = function () {
+			while (this.firstChild) this.removeChild(this.firstChild);
+			this.append.apply(this, arguments);
+		};
+		DomNode.prototype.cloneNode = function (deep) {
+			var c = new DomNode(this.tagName);
+			c.attributes = JSON.parse(JSON.stringify(this.attributes || {}));
+			c._value = this._value; c._text = this._text;
+			c._innerHTML = this._innerHTML;
+			if (deep) {
+				for (var i = 0; i < this.childNodes.length; i++)
+					c.appendChild(this.childNodes[i].cloneNode(true));
+			}
+			return c;
+		};
+		DomNode.prototype.setAttribute = function (k, v) {
+			this.attributes[k] = String(v);
+			markDirty();
+		};
+		DomNode.prototype.getAttribute = function (k) {
+			return (k in this.attributes) ? this.attributes[k] : null;
+		};
+		DomNode.prototype.removeAttribute = function (k) { delete this.attributes[k]; markDirty(); };
+		DomNode.prototype.hasAttribute = function (k) { return k in this.attributes; };
+		DomNode.prototype.addEventListener = function (t, fn) {
+			if (typeof fn === "function") {
+				this._listeners.push(fn);
+				if (globalThis.__qjsAddEventListener) globalThis.__qjsAddEventListener(t, fn);
+			}
+		};
+		DomNode.prototype.removeEventListener = function () {};
+		DomNode.prototype.getElementsByTagName = function (t) {
+			var out = [], tt = String(t).toUpperCase(), i;
+			for (i = 0; i < this.childNodes.length; i++) {
+				var c = this.childNodes[i];
+				if (c.nodeType === 1) {
+					if (tt === "*" || c.tagName === tt) out.push(c);
+					out = out.concat(c.getElementsByTagName(t));
+				}
+			}
+			return out;
+		};
+		DomNode.prototype.getElementById = function (id) {
+			var i, c;
+			for (i = 0; i < this.childNodes.length; i++) {
+				c = this.childNodes[i];
+				if (c.nodeType === 1) {
+					if (c.attributes && c.attributes.id === id) return c;
+					var r = c.getElementById(id);
+					if (r) return r;
+				}
+			}
+			return null;
+		};
+		DomNode.prototype.contains = function (n) {
+			while (n) { if (n === this) return true; n = n.parentNode; }
+			return false;
+		};
+		DomNode.prototype.closest = function () { return null; };
+		DomNode.prototype.matches = function () { return false; };
+		DomNode.prototype.focus = function () {};
+		DomNode.prototype.blur = function () {};
+		DomNode.prototype.click = function () {
+			var l = this._listeners.slice(), i;
+			for (i = 0; i < l.length; i++) { try { l[i]({type:"click",target:this}); } catch (e) {} }
+		};
+		DomNode.prototype.getContext = function () { return {}; };
+		DomNode.prototype.toDataURL = function () { return "data:,"; };
+		DomNode.prototype.getBoundingClientRect = function () {
+			return { top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0, x: 0, y: 0 };
+		};
+		DomNode.prototype.scrollIntoView = function () {};
+		DomNode.prototype.insertAdjacentHTML = function () { markDirty(); };
+		DomNode.prototype.dispatchEvent = function () { return true; };
+		DomNode.prototype.querySelector = function (sel) {
+			var all = __qjsQueryAll(this, sel);
+			return all.length ? all[0] : null;
+		};
+		DomNode.prototype.querySelectorAll = function (sel) {
+			return __qjsQueryAll(this, sel);
+		};
+
+		/* property accessors via defineProperty */
+		(function () {
+			var proto = DomNode.prototype;
+			Object.defineProperty(proto, "firstChild", {
+				get: function () { return this.childNodes[0] || null; },
+				configurable: true
+			});
+			Object.defineProperty(proto, "lastChild", {
+				get: function () { return this.childNodes[this.childNodes.length - 1] || null; },
+				configurable: true
+			});
+			Object.defineProperty(proto, "nextSibling", {
+				get: function () {
+					if (!this.parentNode) return null;
+					var i = this.parentNode.childNodes.indexOf(this);
+					return this.parentNode.childNodes[i + 1] || null;
+				},
+				configurable: true
+			});
+			Object.defineProperty(proto, "previousSibling", {
+				get: function () {
+					if (!this.parentNode) return null;
+					var i = this.parentNode.childNodes.indexOf(this);
+					return i > 0 ? this.parentNode.childNodes[i - 1] : null;
+				},
+				configurable: true
+			});
+			Object.defineProperty(proto, "children", {
+				get: function () {
+					return this.childNodes.filter(function (c) { return c.nodeType === 1; });
+				},
+				configurable: true
+			});
+			Object.defineProperty(proto, "childElementCount", {
+				get: function () { return this.children.length; },
+				configurable: true
+			});
+			Object.defineProperty(proto, "id", {
+				get: function () { return this.attributes.id || ""; },
+				set: function (v) { this.attributes.id = String(v); markDirty(); },
+				configurable: true
+			});
+			Object.defineProperty(proto, "className", {
+				get: function () { return this.attributes["class"] || ""; },
+				set: function (v) { this.attributes["class"] = String(v); markDirty(); },
+				configurable: true
+			});
+			Object.defineProperty(proto, "value", {
+				get: function () { return this._value; },
+				set: function (v) { this._value = String(v); markDirty(); },
+				configurable: true
+			});
+			Object.defineProperty(proto, "dataset", {
+				get: function () {
+					var ds = {}, k;
+					for (k in this.attributes)
+						if (k.indexOf("data-") === 0)
+							ds[k.slice(5).replace(/-([a-z])/g, function (m, c) { return c.toUpperCase(); })] = this.attributes[k];
+					return ds;
+				},
+				configurable: true
+			});
+			Object.defineProperty(proto, "classList", {
+				get: function () {
+					var self = this;
+					var list = (self.attributes["class"] || "").split(/\s+/).filter(Boolean);
+					return {
+						add: function (c) { if (list.indexOf(c) < 0) list.push(c); self.attributes["class"] = list.join(" "); markDirty(); },
+						remove: function (c) { list = list.filter(function (x) { return x !== c; }); self.attributes["class"] = list.join(" "); markDirty(); },
+						toggle: function (c) { this.add(c); },
+						contains: function (c) { return list.indexOf(c) >= 0; }
+					};
+				},
+				configurable: true
+			});
+			Object.defineProperty(proto, "textContent", {
+				get: function () {
+					var s = "", i;
+					for (i = 0; i < this.childNodes.length; i++)
+						s += (this.childNodes[i].nodeType === 3) ? this.childNodes[i].data
+							: (this.childNodes[i].textContent || "");
+					return s;
+				},
+				set: function (v) {
+					while (this.firstChild) this.removeChild(this.firstChild);
+					this.appendChild(new DomText(String(v)));
+				},
+				configurable: true
+			});
+			Object.defineProperty(proto, "innerText", {
+				get: function () { return this.textContent; },
+				set: function (v) { this.textContent = v; },
+				configurable: true
+			});
+			Object.defineProperty(proto, "innerHTML", {
+				get: function () { return this._innerHTML; },
+				set: function (v) {
+					this._innerHTML = String(v);
+					while (this.firstChild) this.removeChild(this.firstChild);
+					try { parseHTMLInto(String(v), this); } catch (e) {}
+					markDirty();
+				},
+				configurable: true
+			});
+		})();
+
+		/* tiny HTML parser for innerHTML values */
+		function parseHTMLInto(html, parent) {
+			var stack = [parent], pos = 0, m;
+			var tagRe = /<(\/)?([a-zA-Z][a-zA-Z0-9]*)((?:[^>"']|"[^"]*"|'[^']*')*?)(\/?)>/g;
+			var esc = function (s) { return s; }; /* text kept raw */
+			while ((m = tagRe.exec(html)) !== null) {
+				if (m.index > pos) {
+					var txt = html.slice(pos, m.index).replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+					if (txt.trim()) stack[stack.length - 1].appendChild(new DomText(txt));
+				}
+				var closing = m[1] === "/", name = m[2].toUpperCase(), selfc = m[4] === "/";
+				if (closing) {
+					for (var k = stack.length - 1; k > 0; k--)
+						if (stack[k].tagName === name) { stack.length = k; break; }
+				} else if (!selfc && name !== "BR" && name !== "HR" && name !== "IMG" && name !== "INPUT" && name !== "META" && name !== "LINK") {
+					var n = new DomNode(name);
+					var attrRe = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*("([^"]*)"|'([^']*)'|[^\s>]+)/g;
+					var am, attrs = m[3] || "";
+					while ((am = attrRe.exec(attrs)) !== null)
+						n.attributes[am[1]] = (am[3] !== undefined ? am[3] : (am[4] !== undefined ? am[4] : am[2]));
+					stack[stack.length - 1].appendChild(n);
+					stack.push(n);
+				} else {
+					var sn = new DomNode(name);
+					stack[stack.length - 1].appendChild(sn);
+				}
+				pos = tagRe.lastIndex;
+			}
+			if (pos < html.length) {
+				var tail = html.slice(pos).replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+				if (tail.trim()) stack[stack.length - 1].appendChild(new DomText(tail));
+			}
+		}
+
+		/* very small selector engine: "tag", "#id", ".class", "tag.cls" */
+		function __qjsQueryAll(root, sel) {
+			var out = [];
+			if (!sel) return out;
+			sel = String(sel).split(",")[0].trim();
+			var m = /^(\w+)?(?:#([\w-]+))?(?:\.([\w-]+))?$/.exec(sel);
+			function walk(n) {
+				var i, c;
+				for (i = 0; i < n.childNodes.length; i++) {
+					c = n.childNodes[i];
+					if (c.nodeType === 1) {
+						var ok = true;
+						if (m) {
+							if (m[1] && c.tagName !== m[1].toUpperCase()) ok = false;
+							if (ok && m[2] && c.attributes.id !== m[2]) ok = false;
+							if (ok && m[3] && (" " + (c.attributes["class"] || "") + " ").indexOf(" " + m[3] + " ") < 0) ok = false;
+						} else ok = false;
+						if (ok) out.push(c);
+						walk(c);
+					}
+				}
+			}
+			walk(root);
+			return out;
+		}
+
+		/* serializer: tree -> HTML for Links */
+		function escText(s) {
+			return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+		}
+		function escAttr(s) {
+			return escText(s).replace(/"/g, "&quot;");
+		}
+		function serialize(n) {
+			if (n.nodeType === 3) return escText(n.data);
+			if (n.nodeType !== 1) return "";
+			var t = n.tagName, h = "<" + t, k;
+			for (k in n.attributes)
+				if (k === "id" || k === "class" || k === "href" || k === "src" || k === "type" || k === "name")
+					h += " " + k + '="' + escAttr(n.attributes[k]) + '"';
+			h += ">";
+			if (t === "SCRIPT" || t === "STYLE" || t === "TEMPLATE") return h + "</" + t + ">";
+			if (t === "INPUT") {
+				var ph = n.attributes.placeholder || n._value || "";
+				if (ph) h += escText(ph);
+				return h + "</" + t + ">";
+			}
+			var i;
+			for (i = 0; i < n.childNodes.length; i++)
+				h += serialize(n.childNodes[i]);
+			h += "</" + t + ">";
+			return h;
+		}
+
+		function markDirty() {
+			__dirty = true;
+			if (__renderTimer || !globalThis.setTimeout) return;
+			__renderTimer = true;
+			globalThis.setTimeout(function () {
+				__renderTimer = false;
+				if (!__dirty) return;
+				__dirty = false;
+				var body = globalThis.__qjsDomBody;
+				if (!body) return;
+				var ser = serialize(body);
+				/* SPA roots: page-static containers (e.g. <div id=root>)
+				 * that scripts populated - they hang outside our body
+				 * tree, so serialize them too */
+				var tn = globalThis.__qjsTrackedNodes || [], k;
+				for (k = 0; k < tn.length; k++) {
+					var n = tn[k];
+					if (n.childElementCount === 0) continue;
+					var anc = n, inBody = false;
+					while (anc) { if (anc === body) { inBody = true; break; } anc = anc.parentNode; }
+					if (!inBody) ser += serialize(n);
+				}
+				if (!body.childElementCount && ser.length === 0) return;
+				/* only render SUBSTANTIAL trees: jQuery-driven sites
+				 * append stray probe nodes to body all the time -
+				 * replacing a full page with those blanks it */
+				if (!ser || ser.length < 600 || ser === __lastSer) return;
+				if (globalThis.__qjsTraceLog)
+					globalThis.__qjsTraceLog("DOM-RENDER len=" + ser.length);
+				__lastSer = ser;
+				var doc = globalThis.document;
+				if (doc && doc.__qjsReplacePage) {
+					doc.__qjsReplacePage(
+						"<h1>" + escText((globalThis.document && globalThis.document.title) || "") + "</h1>" + ser);
+				}
+			}, 700);
+		}
+
+		/* body/head/documentElement become real nodes; keep permissive
+		 * page-source removal for ids that are NOT in the JS tree */
+		var __body = new DomNode("body");
+		var __head = new DomNode("head");
+		var __docel = new DomNode("html");
+		__docel.appendChild(__head);
+		__docel.appendChild(__body);
+		globalThis.__qjsDomBody = __body;
+		globalThis.__qjsDomHead = __head;
+		globalThis.__qjsDomDocel = __docel;
+		globalThis.__qjsDomNode = DomNode;
+		globalThis.__qjsDomText = DomText;
+		globalThis.__qjsParseHTMLInto = parseHTMLInto;
+
+		/* re-wire document (this block runs AFTER the document setup
+		 * above, which had to fall back to the permissive stubs) */
+		if (globalThis.document) {
+			var dd = globalThis.document;
+			dd.createElement = function (t) { return new DomNode(t); };
+			dd.createDocumentFragment = function () { return new DomNode("#fragment"); };
+			dd.createTextNode = function (t) { return new (globalThis.__qjsDomText)(t); };
+			dd.body = __body;
+			dd.head = __head;
+			dd.documentElement = __docel;
+			dd.getElementById = function (id) {
+				var hit = __body.getElementById(id);
+				if (hit) return hit;
+				return trackedElem(id);
+			};
+			dd.querySelector = function (sel) {
+				var hit = null;
+				try { hit = __body.querySelector(sel); } catch (e) {}
+				if (hit) return hit;
+				var m = /^#([A-Za-z0-9_-]+)$/.exec(sel || "");
+				return trackedElem(m ? m[1] : null);
+			};
+			dd.querySelectorAll = function (sel) {
+				var r;
+				try { r = __body.querySelectorAll(sel); } catch (e) { r = []; }
+				return (r && r.length) ? r : [];
+			};
+			dd.getElementsByTagName = function (t) {
+				var r = __body.getElementsByTagName(t);
+				return (r && r.length) ? r : [];
+			};
+		}
+	})();
+
+
+	/* React scheduler primitives */
+	if (!globalThis.MessageChannel) {
+		globalThis.MessageChannel = function () {
+			var self = this;
+			this.port1 = {
+				postMessage: function (d) { globalThis.setTimeout(function () { if (self.port1.onmessage) self.port1.onmessage({ data: d }); }, 0); }
+			};
+			this.port2 = {
+				postMessage: function (d) { globalThis.setTimeout(function () { if (self.port2.onmessage) self.port2.onmessage({ data: d }); }, 0); }
+			};
+		};
+	}
+	if (!globalThis.queueMicrotask) {
+		globalThis.queueMicrotask = function (f) { Promise.resolve().then(f); };
+	}
 })();
