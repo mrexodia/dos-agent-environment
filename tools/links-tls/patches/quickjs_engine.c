@@ -20,12 +20,31 @@ static long qjs_context_counter = 0;
 #define QJS_MAX_SCRIPT_MS 20000
 static JSValue qjs_current_exception;  /* not used; keep simple */
 
+/* Script watchdog: QuickJS polls this while executing. After too many
+ * polls we abort the script - WITHOUT this a hostile/looping page
+ * (hn.algolia.com) froze the whole machine (only power-cycle helped).
+ * Pure counting: no tcp_tick() here (that corrupted watt32 state). */
+#define QJS_SCRIPT_TIME_LIMIT_MS 15000
+static uttime qjs_script_deadline;
+
 static int qjs_interrupt_handler(JSRuntime *rt, void *opaque)
 {
-	(void)rt; (void)opaque;
-	/* NOTE: pumping tcp_tick() here corrupted watt32 state when called
-	 * mid-connection-processing (marathon regression) - handler kept as
-	 * a no-op hook for future script time-caps. */
+	(void)rt;
+	(void)opaque;
+	if (!qjs_script_deadline) {
+		/* no script armed the budget yet (bootstrap eval, early
+		 * timers): arm it now instead of aborting instantly */
+		qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
+		return 0;
+	}
+	if (get_time() > qjs_script_deadline) {
+		char mb[96];
+		extern void sock_log2(const char *);
+		snprintf(mb, sizeof mb,
+			"QJS-INTERRUPT aborted runaway script (>15s)");
+		sock_log2(mb);
+		return 1;  /* abort with InternalError */
+	}
 	return 0;
 }
 
@@ -357,7 +376,9 @@ static void qjs_pump_jobs(struct javascript_context *c)
 static void qjs_timer_fire(struct qjs_timer *q)
 {
 	if (q->c && !q->c->dead && q->c->ctx) {
-		JSValue r = JS_Call(q->c->ctx, q->func, JS_UNDEFINED, 1, &q->arg);
+		JSValue r;
+		qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
+		r = JS_Call(q->c->ctx, q->func, JS_UNDEFINED, 1, &q->arg);
 		if (JS_IsException(r)) {
 			JSValue ex = JS_GetException(q->c->ctx);
 			if (q->c->logged_error < 5) {
@@ -883,11 +904,44 @@ int qjs_form_submit(struct javascript_context *c, const char *formdata)
 	JSValue g, v, r;
 	int prevented = 0;
 	if (!c || !c->ctx) return 0;
+	qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
 	g = JS_GetGlobalObject(c->ctx);
 	JS_SetPropertyStr(c->ctx, g, "__qjsFormRaw",
 		JS_NewString(c->ctx, formdata ? formdata : ""));
 	JS_FreeValue(c->ctx, g);
 	r = JS_Eval(c->ctx, "__qjsOnFormSubmit()", 18, "<formsubmit>",
+		JS_EVAL_TYPE_GLOBAL);
+	if (JS_IsException(r))
+		JS_FreeValue(c->ctx, JS_GetException(c->ctx));
+	else
+		JS_FreeValue(c->ctx, r);
+	qjs_pump_jobs(c);
+	g = JS_GetGlobalObject(c->ctx);
+	v = JS_GetPropertyStr(c->ctx, g, "__qjsPreventDefault");
+	if (JS_IsBool(v)) prevented = !!JS_ToBool(c->ctx, v);
+	JS_FreeValue(c->ctx, v);
+	JS_FreeValue(c->ctx, g);
+	return prevented;
+}
+
+/* Dispatch a DOM event (e.g. 'click') to runtime-registered JS
+ * listeners. Returns nonzero if a listener called preventDefault. */
+int qjs_dispatch_event(struct javascript_context *c, const char *type)
+{
+	JSValue g, v, r;
+	char code[64];
+	int prevented = 0;
+	if (!c || !c->ctx) return 0;
+	qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
+	{
+		char mb[96];
+		extern void sock_log2(const char *);
+		snprintf(mb, sizeof mb, "DISPATCH type=%s", type ? type : "?");
+		sock_log2(mb);
+	}
+	snprintf(code, sizeof code, "__qjsDispatch(\"%s\")",
+		 type && *type ? type : "click");
+	r = JS_Eval(c->ctx, code, strlen(code), "<dispatch>",
 		JS_EVAL_TYPE_GLOBAL);
 	if (JS_IsException(r))
 		JS_FreeValue(c->ctx, JS_GetException(c->ctx));
@@ -1211,6 +1265,24 @@ static const char qjs_dom_bootstrap[] =
 	"		d.addEventListener = function (t, fn) { globalThis.__qjsAddEventListener(t, fn); };\n"
 	"	}\n"
 	"\n"
+	"	/* generic event dispatch for runtime-registered listeners\n"
+	"	 * (click etc.) - called from C when the user activates a link or\n"
+	"	 * button. Returns defaultPrevented via __qjsPreventDefault. */\n"
+	"	globalThis.__qjsDispatch = function (type) {\n"
+	"		var ev = {\n"
+	"			type: type || \"click\",\n"
+	"			target: d ? d.body : null,\n"
+	"			defaultPrevented: false,\n"
+	"			preventDefault: function () { this.defaultPrevented = true; },\n"
+	"			stopPropagation: function () {}\n"
+	"		};\n"
+	"		var list = (globalThis.__qjsEvents[type] || []).slice();\n"
+	"		for (var i = 0; i < list.length; i++) {\n"
+	"			try { list[i](ev); } catch (e) {}\n"
+	"		}\n"
+	"		globalThis.__qjsPreventDefault = !!ev.defaultPrevented;\n"
+	"	};\n"
+	"\n"
 	"	globalThis.__qjsOnFormSubmit = function () {\n"
 	"		var ev = {\n"
 	"			type: \"submit\", target: d ? d.body : null,\n"
@@ -1371,7 +1443,15 @@ static const char qjs_dom_bootstrap[] =
 	"			\"HTMLDivElement\", \"HTMLSpanElement\", \"HTMLCanvasElement\",\n"
 	"			\"HTMLBodyElement\", \"HTMLHeadElement\", \"HTMLLinkElement\",\n"
 	"			\"HTMLStyleElement\", \"HTMLMetaElement\", \"HTMLTitleElement\",\n"
-	"			\"HTMLParagraphElement\", \"HTMLUnknownElement\", \"HTMLOptionElement\",\n"
+	"			\"HTMLParagraphElement\", \"HTMLUnknownElement\", \"HTMLTemplateElement\", \"HTMLPictureElement\",\n"
+	"			\"HTMLFieldSetElement\", \"HTMLLabelElement\", \"HTMLQuoteElement\",\n"
+	"			\"HTMLBRElement\", \"HTMLHRElement\", \"HTMLPreElement\", \"HTMLNavElement\",\n"
+	"			\"HTMLOListElement\", \"HTMLLIElement\", \"HTMLMapElement\", \"HTMLAreaElement\",\n"
+	"			\"HTMLProgressElement\", \"HTMLMeterElement\", \"HTMLDataListElement\",\n"
+	"			\"HTMLOutputElement\", \"HTMLDetailsElement\", \"HTMLSummaryElement\",\n"
+	"			\"HTMLDialogElement\", \"HTMLSlotElement\", \"HTMLEmbedElement\",\n"
+	"			\"HTMLObjectElement\", \"HTMLVideoElement\", \"HTMLAudioElement\",\n"
+	"			\"HTMLSourceElement\", \"HTMLTrackElement\", \"HTMLMarqueeElement\", \"HTMLOptionElement\",\n"
 	"			\"HTMLSelectElement\", \"HTMLTableElement\", \"HTMLUListElement\",\n"
 	"			\"SVGSVGElement\", \"SVGElement\", \"HTMLCollection\", \"NodeList\",\n"
 	"			\"NamedNodeMap\", \"DOMTokenList\", \"Screen\", \"History\", \"Location\",\n"
@@ -1496,11 +1576,24 @@ struct javascript_context *js_create_context(void *p, long id)
 	{
 		/* DOM polyfill: document.nodeType=9 + rich fake elements etc.,
 		 * required by jQuery 3.6 (Sizzle setDocument) — see dom_bootstrap.js */
-		JSValue r = JS_Eval(c->ctx, qjs_dom_bootstrap,
+		JSValue r;
+		qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
+		r = JS_Eval(c->ctx, qjs_dom_bootstrap,
 			sizeof(qjs_dom_bootstrap) - 1, "<dom_bootstrap>",
 			JS_EVAL_TYPE_GLOBAL);
-		if (JS_IsException(r))
-			JS_FreeValue(c->ctx, JS_GetException(c->ctx));
+		if (JS_IsException(r)) {
+			/* log: a silent bootstrap failure halves the DOM
+			 * surface with no diagnostic trail */
+			JSValue e = JS_GetException(c->ctx);
+			const char *es = JS_ToCString(c->ctx, e);
+			FILE *f = fopen("C:\\JSERROR.LOG", "a");
+			if (f) {
+				fprintf(f, "BOOTSTRAP-FAIL: %s\n", es ? es : "?");
+				fclose(f);
+			}
+			if (es) JS_FreeCString(c->ctx, es);
+			JS_FreeValue(c->ctx, e);
+		}
 	}
 	return c;
 }
@@ -1555,6 +1648,7 @@ void js_execute_code(struct javascript_context *c, unsigned char *code,
 		}
 	}
 
+	qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
 	result = JS_Eval(c->ctx, (const char *)z, (size_t)len, "<script>",
 			 JS_EVAL_TYPE_GLOBAL);
 	if (JS_IsException(result)) {

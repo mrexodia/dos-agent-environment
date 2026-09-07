@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html><body><h1>GUESTCHECK</h1>
+<script>
+throw new Error("GUEST dispatch=" + typeof globalThis.__qjsDispatch +
+	" submit=" + typeof globalThis.__qjsOnFormSubmit +
+	" timer=" + typeof globalThis.setTimeout +
+	" trace=" + typeof globalThis.__qjsTraceLog +
+	" fetch=" + typeof globalThis.fetch);
+</script>
+</body></html>

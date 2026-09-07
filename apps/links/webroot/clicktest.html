@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html><body>
+<h1>CLICK-TEST-START</h1>
+<script>
+document.addEventListener("click", function (e) {
+	e.preventDefault();
+	document.write("<pre>CLICKED-INLINE</pre>");
+});
+</script>
+<a href="/nowhere">HANDLED LINK</a>
+<script>
+	/* self-test the dispatch pipeline */
+	setTimeout(function () {
+		if (typeof globalThis.__qjsDispatch === "function") {
+			globalThis.__qjsDispatch("click");
+			document.write("<pre>self-dispatched, events=" +
+				JSON.stringify(Object.keys(globalThis.__qjsEvents || {})) + "</pre>");
+		} else {
+			document.write("<pre>no __qjsDispatch</pre>");
+		}
+	}, 3000);
+</script>
+<script>
+setTimeout(function () {
+	document.write("<pre>clicked=" + (window.__clicked || 0) + "</pre>");
+	document.write("<pre>CLICK-TEST-END</pre>");
+}, 3000);
+</script>
+</body></html>

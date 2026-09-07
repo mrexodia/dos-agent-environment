@@ -306,6 +306,24 @@
 		d.addEventListener = function (t, fn) { globalThis.__qjsAddEventListener(t, fn); };
 	}
 
+	/* generic event dispatch for runtime-registered listeners
+	 * (click etc.) - called from C when the user activates a link or
+	 * button. Returns defaultPrevented via __qjsPreventDefault. */
+	globalThis.__qjsDispatch = function (type) {
+		var ev = {
+			type: type || "click",
+			target: d ? d.body : null,
+			defaultPrevented: false,
+			preventDefault: function () { this.defaultPrevented = true; },
+			stopPropagation: function () {}
+		};
+		var list = (globalThis.__qjsEvents[type] || []).slice();
+		for (var i = 0; i < list.length; i++) {
+			try { list[i](ev); } catch (e) {}
+		}
+		globalThis.__qjsPreventDefault = !!ev.defaultPrevented;
+	};
+
 	globalThis.__qjsOnFormSubmit = function () {
 		var ev = {
 			type: "submit", target: d ? d.body : null,
@@ -466,7 +484,15 @@
 			"HTMLDivElement", "HTMLSpanElement", "HTMLCanvasElement",
 			"HTMLBodyElement", "HTMLHeadElement", "HTMLLinkElement",
 			"HTMLStyleElement", "HTMLMetaElement", "HTMLTitleElement",
-			"HTMLParagraphElement", "HTMLUnknownElement", "HTMLOptionElement",
+			"HTMLParagraphElement", "HTMLUnknownElement", "HTMLTemplateElement", "HTMLPictureElement",
+			"HTMLFieldSetElement", "HTMLLabelElement", "HTMLQuoteElement",
+			"HTMLBRElement", "HTMLHRElement", "HTMLPreElement", "HTMLNavElement",
+			"HTMLOListElement", "HTMLLIElement", "HTMLMapElement", "HTMLAreaElement",
+			"HTMLProgressElement", "HTMLMeterElement", "HTMLDataListElement",
+			"HTMLOutputElement", "HTMLDetailsElement", "HTMLSummaryElement",
+			"HTMLDialogElement", "HTMLSlotElement", "HTMLEmbedElement",
+			"HTMLObjectElement", "HTMLVideoElement", "HTMLAudioElement",
+			"HTMLSourceElement", "HTMLTrackElement", "HTMLMarqueeElement", "HTMLOptionElement",
 			"HTMLSelectElement", "HTMLTableElement", "HTMLUListElement",
 			"SVGSVGElement", "SVGElement", "HTMLCollection", "NodeList",
 			"NamedNodeMap", "DOMTokenList", "Screen", "History", "Location",

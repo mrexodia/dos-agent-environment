@@ -2391,6 +2391,15 @@ int enter(struct session *ses, struct f_data_c *f, int a)
 #ifdef JS
 	if (link->js_event&&link->js_event->click_code)
 		jsint_execute_code(f,link->js_event->click_code,strlen(cast_const_char link->js_event->click_code),-1,(link->type==L_BUTTON&&link->form&&link->form->type==FC_SUBMIT)?link->form->form_num:-1,-1, NULL);
+	/* runtime click listeners (addEventListener): dispatch before the
+	 * native action; preventDefault cancels navigation (SPA routers,
+	 * JS-driven buttons). No listeners registered -> no-op. */
+	if ((link->type == L_LINK || link->type == L_BUTTON)
+	    && f->js && f->js->ctx) {
+		extern int qjs_dispatch_event(void *, const char *);
+		if (qjs_dispatch_event(f->js->ctx, "click"))
+			return 0;
+	}
 #endif
 	if (link->type == L_LINK || link->type == L_BUTTON) {
 		int has_onsubmit;

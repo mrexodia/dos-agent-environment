@@ -664,3 +664,31 @@ Result: page content renders (NOWSECURE / by nodriver). Remaining
 (the challenge widget itself cannot run in a text browser) and one
 gsap ScrollTrigger 'enable' TypeError (tween internals, cosmetic).
 Conformance 20/20; belastingdienst search + XHR tests still pass.
+
+## SESSION 2026-09-07 (cont2): watchdog + click dispatch + json-block skip
+
+Hardware feedback: many sites now load with links (kpn, parool,
+volkskrant, tweakers, rome2rio, cloudflare.com); buttons dead;
+hn.algolia.com HUNG the machine; telegraaf/startpage stuck at CF
+interstitials.
+
+1. SCRIPT WATCHDOG (the hang): JS_SetInterruptHandler was a NO-OP -
+   a runaway script froze DOS (only power-cycle helped). Now: 15s
+   time budget per script/timer/dispatch (Links get_time()), logged
+   as QJS-INTERRUPT in SOCKSTAT. CRITICAL detail: the static deadline
+   starts at 0 - the handler must self-arm or it kills the DOM
+   bootstrap eval instantly (caught via new BOOTSTRAP-FAIL logging in
+   JSERROR.LOG). spin.html fixture: recovers in seconds.
+2. CLICK DISPATCH (dead buttons): Enter on L_LINK/L_BUTTON now
+   dispatches runtime 'click' listeners (__qjsDispatch); preventDefault
+   cancels native navigation (SPA routers). Verified: clicktest.html
+   (listener runs + nav cancelled).
+3. html.c: skip non-JS script types (ld+json, json, importmap,
+   template) - was filling JSERROR with SyntaxError noise.
+4. 30+ more element classes (HTMLTemplateElement was hit on kpn).
+5. hn.algolia.com: loads in seconds, no hang, zero JS errors; content
+   is React-rendered (2.6MB bundle) into our invisible DOM - visible
+   SPA content needs a real DOM->Links render bridge (future
+   milestone). telegraaf/startpage 'Just a moment' = true CF
+   interstitials (challenge solve infeasible in a text browser).
+Conformance 20/20; belastingdienst search OK.

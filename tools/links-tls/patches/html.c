@@ -1331,7 +1331,18 @@ static void html_script(unsigned char *a)
 	/* ES modules use import/export: our JS_Eval is global-scope only,
 	 * evaluating them throws SyntaxError and pollutes JSERROR.LOG.
 	 * Skip them (bldc-components.js pattern). */
-	if (ty && !strcasecmp(cast_const_char(ty), "module")) {
+	/* Skip non-executable script types: ES modules (our JS_Eval is
+	 * global-scope only) and ld+json/json/importmap/template data
+	 * blocks - NOT JavaScript; evaluating them filled JSERROR.LOG
+	 * with SyntaxError noise. */
+	if (ty) {
+		const char *t = cast_const_char(ty);
+		const char *sl = strrchr(t, '+');
+		if (!strcasecmp(t, "module") || !strcasecmp(t, "importmap")
+		    || (sl && !strcasecmp(sl, "+json"))
+		    || !strcasecmp(t, "application/json")
+		    || !strcasecmp(t, "text/json")
+		    || strstr(t, "template")) {
 		special_f(ff, SP_SCRIPT, NULL);
 		if (should_skip_script(a)) {
 			html_top.dontkill = 1;
