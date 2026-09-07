@@ -628,3 +628,39 @@ response normally and retries by itself only when truncated.
 Verified live: mojeek.com loads with NO dialog and only 4 GETs (was
 8+ with retry storms). Conformance 20/20, belastingdienst search OK,
 smallert.nl OK.
+
+## SESSION 2026-09-07: Cloudflare/Turnstile challenge-site milestone
+
+Target: https://nowsecure.nl (Cloudflare beacon + Turnstile embed +
+gsap/lenis animation bundle). Was: header only, blank body.
+
+Fixes (dom_bootstrap.js):
+- ~50 element/interface class constructors (HTMLScriptElement was the
+  first killer: ReferenceError in the Turnstile loader), incl.
+  NodeList, Image, FormData, AbortController, TextEncoder...
+- window.crypto (getRandomValues/randomUUID/subtle)
+- performance.now/timeOrigin (Date-based)
+- navigator: webdriver=false, plugins, languages, hardwareConcurrency,
+  maxTouchPoints, sendBeacon, connection, getBattery
+- document.currentScript (with dataset), scripts, contentType,
+  compatMode, activeElement
+- element: getBoundingClientRect, matches, closest, blur,
+  scrollIntoView, insertAdjacentHTML, replaceChildren
+- window: scrollTo/scrollBy/scrollX/scrollY/focus/blur/print/
+  postMessage/dispatchEvent (lenis dies on scrollTo)
+
+NEW DIAGNOSTIC: property-access tracer. document, navigator and the
+window binding are Proxy-wrapped; every FIRST property read is logged
+via __qjsTraceLog (C helper) to C:\JSTRACE.LOG. nowsecure.nl trace:
+document.currentScript, querySelectorAll, documentElement,
+createElementNS, createElement, body, addEventListener, scrollTop,
+scrollLeft, querySelector; window.addEventListener, document,
+gsapVersions, GreenSockGlobals, gsap, requestAnimationFrame, matchMedia,
+history, pageYOffset, innerHeight, innerWidth, scrollTo;
+navigator.maxTouchPoints, msMaxTouchPoints.
+
+Result: page content renders (NOWSECURE / by nodriver). Remaining
+(nono-blocking): TurnstileError 'could not find valid script tag'
+(the challenge widget itself cannot run in a text browser) and one
+gsap ScrollTrigger 'enable' TypeError (tween internals, cosmetic).
+Conformance 20/20; belastingdienst search + XHR tests still pass.

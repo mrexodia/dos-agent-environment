@@ -32,7 +32,17 @@
 			getElementsByTagName: function () { return []; },
 			getElementsByClassName: function () { return []; },
 			contains: function () { return false; },
-			focus: function () {},
+			focus: function () {}, blur: function () {},
+			getBoundingClientRect: function () {
+				return { top: 0, left: 0, right: 0, bottom: 0,
+					width: 0, height: 0, x: 0, y: 0 };
+			},
+			matches: function () { return false; },
+			closest: function () { return null; },
+			getComputedStyle: function () { return {}; },
+			scrollIntoView: function () {},
+			insertAdjacentHTML: function () {},
+			replaceChildren: function () {},
 			/* canvas stub: belastingdienst.js noHTML5() probes
 			 * createElement("canvas").getContext - without it the
 			 * site keeps the 'Javascript staat uit' block */
@@ -117,6 +127,13 @@
 	if (w) {
 		w.document = d;
 		if (w.navigator === undefined && globalThis.navigator) w.navigator = globalThis.navigator;
+		w.scrollTo = function () {};
+		w.scrollBy = function () {};
+		w.scrollX = 0; w.scrollY = 0;
+		w.focus = function () {}; w.blur = function () {};
+		w.print = function () {};
+		w.postMessage = function () {};
+		w.dispatchEvent = function () { return true; };
 		w.getComputedStyle = function () { return { getPropertyValue: function () { return ""; } }; };
 		w.matchMedia = function () { return { matches: false, addListener: function () {}, addEventListener: function () {} }; };
 		w.addEventListener = function () {};
@@ -434,5 +451,113 @@
 				}
 			}, 3000);
 		} catch (e) {}
+	})();
+
+	/* ---------------- challenge-script API surface (Cloudflare etc.) ---- */
+	(function () {
+		function illegal(name) {
+			var f = function () { throw new TypeError("Illegal constructor: " + name); };
+			f.prototype = Object.create(null);
+			return f;
+		}
+		var classes = ["HTMLElement", "HTMLScriptElement", "HTMLInputElement",
+			"HTMLFormElement", "HTMLIFrameElement", "HTMLImageElement",
+			"HTMLButtonElement", "HTMLTextAreaElement", "HTMLAnchorElement",
+			"HTMLDivElement", "HTMLSpanElement", "HTMLCanvasElement",
+			"HTMLBodyElement", "HTMLHeadElement", "HTMLLinkElement",
+			"HTMLStyleElement", "HTMLMetaElement", "HTMLTitleElement",
+			"HTMLParagraphElement", "HTMLUnknownElement", "HTMLOptionElement",
+			"HTMLSelectElement", "HTMLTableElement", "HTMLUListElement",
+			"SVGSVGElement", "SVGElement", "HTMLCollection", "NodeList",
+			"NamedNodeMap", "DOMTokenList", "Screen", "History", "Location",
+			"Storage", "XMLHttpRequest", "Image", "Option", "FormData",
+			"FileReader", "Blob", "File", "Text", "CSSStyleDeclaration",
+			"MediaQueryList", "Notification", "WebSocket", "Worker",
+			"AbortController", "AbortSignal", "ReadableStream",
+			"WritableStream", "TransformStream", "TextEncoder", "TextDecoder"];
+		for (var i = 0; i < classes.length; i++) {
+			if (!globalThis[classes[i]])
+				globalThis[classes[i]] = illegal(classes[i]);
+		}
+	})();
+
+	/* window.crypto: Turnstile reads getRandomValues */
+	if (!globalThis.crypto) {
+		globalThis.crypto = {
+			getRandomValues: function (arr) {
+				for (var i = 0; i < arr.length; i++)
+					arr[i] = Math.floor(Math.random() * 256);
+				return arr;
+			},
+			randomUUID: function () {
+				return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+					var r = Math.random() * 16 | 0;
+					return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+				});
+			},
+			subtle: {}
+		};
+	}
+
+	/* performance timing */
+	if (!globalThis.performance || !globalThis.performance.now) {
+		var __perf0 = Date.now();
+		globalThis.performance = {
+			now: function () { return Date.now() - __perf0; },
+			timeOrigin: __perf0,
+			mark: function () {}, measure: function () {},
+			getEntriesByType: function () { return []; },
+			getEntries: function () { return []; }
+		};
+	}
+
+	/* navigator extras probed by bot detection */
+	if (globalThis.navigator) {
+		var nav = globalThis.navigator;
+		if (nav.webdriver === undefined) nav.webdriver = false;
+		if (nav.plugins === undefined) nav.plugins = { length: 0, item: function () { return null; } };
+		if (nav.mimeTypes === undefined) nav.mimeTypes = { length: 0 };
+		if (nav.languages === undefined) nav.languages = ["nl", "en"];
+		if (nav.hardwareConcurrency === undefined) nav.hardwareConcurrency = 1;
+		if (nav.maxTouchPoints === undefined) nav.maxTouchPoints = 0;
+		if (nav.deviceMemory === undefined) nav.deviceMemory = 64;
+		if (nav.vendor === undefined) nav.vendor = "";
+		if (nav.product === undefined) nav.product = "Gecko";
+		if (nav.sendBeacon === undefined) nav.sendBeacon = function () { return true; };
+		if (nav.connection === undefined) nav.connection = { effectiveType: "3g", downlink: 1, rtt: 300 };
+		if (nav.getBattery === undefined) nav.getBattery = function () { return Promise.resolve({ charging: false, level: 1 }); };
+	}
+
+	/* document.currentScript (Turnstile reads .dataset on it) */
+	if (d && d.currentScript === undefined) {
+		d.currentScript = elem();
+		d.currentScript.dataset = {};
+	}
+	if (d && d.scripts === undefined) d.scripts = [];
+	if (d && d.contentType === undefined) d.contentType = "text/html";
+	if (d && d.compatMode === undefined) d.compatMode = "CSS1Compat";
+	if (d && d.activeElement === undefined) d.activeElement = d.body || elem();
+
+	/* ---------------- property-access tracer ----------------
+	 * Proxy-wrap document, navigator and the window BINDING: every
+	 * property the page reads is logged (once) via __qjsTraceLog to
+	 * C:\JSTRACE.LOG - reveals what challenge scripts probe. */
+	(function () {
+		if (!globalThis.Proxy || !globalThis.__qjsTraceLog) return;
+		var seen = {};
+		function T(name, obj) {
+			try {
+				return new Proxy(obj, {
+					get: function (t, k) {
+						var key = name + "." + String(k);
+						if (!seen[key]) { seen[key] = 1; globalThis.__qjsTraceLog(key); }
+						return t[k];
+					}
+				});
+			} catch (e) { return obj; }
+		}
+		try { globalThis.document = T("document", globalThis.document); } catch (e) {}
+		try { globalThis.navigator = T("navigator", globalThis.navigator); } catch (e) {}
+		try { globalThis.window = T("window", globalThis); } catch (e) {}
 	})();
 })();
