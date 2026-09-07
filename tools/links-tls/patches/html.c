@@ -1338,7 +1338,8 @@ static void html_script(unsigned char *a)
 	if (ty) {
 		const char *t = cast_const_char(ty);
 		const char *sl = strrchr(t, '+');
-		if (!strcasecmp(t, "module") || !strcasecmp(t, "importmap")
+		if (!strcasecmp(t, "module") || strstr(t, "importmap")
+		    || strstr(t, "systemjs")
 		    || (sl && !strcasecmp(sl, "+json"))
 		    || !strcasecmp(t, "application/json")
 		    || !strcasecmp(t, "text/json")

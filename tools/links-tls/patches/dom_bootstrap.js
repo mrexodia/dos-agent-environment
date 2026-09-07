@@ -451,6 +451,10 @@
 	(function () {
 		try {
 			if (!globalThis.location || !globalThis.setTimeout) return;
+			var host = globalThis.location.hostname || "";
+			if (!/(^|\.)belastingdienst\.nl$/.test(host)) return;
+			/* kpn.com etc. also use /zoeken paths - NEVER run the
+			 * vinden fallback outside belastingdienst.nl */
 			var p = globalThis.location.pathname || "";
 			if (p.indexOf("zoeken") < 0) return;
 			var sp = new URLSearchParams(globalThis.location.search || "");

@@ -692,3 +692,23 @@ interstitials.
    milestone). telegraaf/startpage 'Just a moment' = true CF
    interstitials (challenge solve infeasible in a text browser).
 Conformance 20/20; belastingdienst search OK.
+
+## SESSION 2026-09-07 (cont3): kpn search hijack + watchdog scaling
+
+Hardware feedback analysis (logs *.hw3):
+1. KPN SEARCH SHOWED BELASTINGDIENST RESULTS: the auto-search timer
+   gates only on pathname containing "zoeken" - kpn.com's search path
+   contains "zoeken" too! Now also gated on hostname ending in
+   belastingdienst.nl. Other sites' native search navigates normally.
+2. QJS-INTERRUPT x4 on hardware: the flat 15s budget aborted legit
+   multi-MB webpack bundles mid-init (rome2rio likely regressed to
+   'Just a moment' because their app died). Budget now scales with
+   script size: 20s + 10s per 100KB (cap 220s).
+3. importmap/systemjs script types now skipped via substring match
+   (kpn uses "systemjs-importmap" which the exact match missed).
+4. TLSGLUE.TXT is normal diagnostic output (install_io + read_select
+   lines), not an error.
+Not actionable in a text browser: cloudflare.com React buttons (need
+event.target/bubbling in a real DOM), 'Just a moment' interstitials,
+hn.algolia/nowsecure SPA content (need DOM->Links render bridge).
+Conformance 20/20; belastingdienst homepage search still PASS.

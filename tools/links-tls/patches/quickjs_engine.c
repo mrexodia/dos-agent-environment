@@ -24,8 +24,18 @@ static JSValue qjs_current_exception;  /* not used; keep simple */
  * polls we abort the script - WITHOUT this a hostile/looping page
  * (hn.algolia.com) froze the whole machine (only power-cycle helped).
  * Pure counting: no tcp_tick() here (that corrupted watt32 state). */
-#define QJS_SCRIPT_TIME_LIMIT_MS 15000
+/* Base 20s plus 10s per 100KB of script: legit heavy bundles
+ * (rome2rio/hn webpack, 2.6MB) need minutes on DOS hardware; a true
+ * infinite loop still dies at the scaled cap. */
+#define QJS_SCRIPT_TIME_LIMIT_MS 20000
 static uttime qjs_script_deadline;
+
+static uttime qjs_script_budget(int len)
+{
+	long extra = (long)len / 100000L;   /* per 100KB */
+	if (extra > 20) extra = 20;         /* cap: 20s + 200s */
+	return QJS_SCRIPT_TIME_LIMIT_MS + (uttime)extra * 10000;
+}
 
 static int qjs_interrupt_handler(JSRuntime *rt, void *opaque)
 {
@@ -377,7 +387,7 @@ static void qjs_timer_fire(struct qjs_timer *q)
 {
 	if (q->c && !q->c->dead && q->c->ctx) {
 		JSValue r;
-		qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
+		qjs_script_deadline = get_time() + qjs_script_budget(100000);
 		r = JS_Call(q->c->ctx, q->func, JS_UNDEFINED, 1, &q->arg);
 		if (JS_IsException(r)) {
 			JSValue ex = JS_GetException(q->c->ctx);
@@ -1410,6 +1420,10 @@ static const char qjs_dom_bootstrap[] =
 	"	(function () {\n"
 	"		try {\n"
 	"			if (!globalThis.location || !globalThis.setTimeout) return;\n"
+	"			var host = globalThis.location.hostname || \"\";\n"
+	"			if (!/(^|\\.)belastingdienst\\.nl$/.test(host)) return;\n"
+	"			/* kpn.com etc. also use /zoeken paths - NEVER run the\n"
+	"			 * vinden fallback outside belastingdienst.nl */\n"
 	"			var p = globalThis.location.pathname || \"\";\n"
 	"			if (p.indexOf(\"zoeken\") < 0) return;\n"
 	"			var sp = new URLSearchParams(globalThis.location.search || \"\");\n"
@@ -1577,7 +1591,8 @@ struct javascript_context *js_create_context(void *p, long id)
 		/* DOM polyfill: document.nodeType=9 + rich fake elements etc.,
 		 * required by jQuery 3.6 (Sizzle setDocument) — see dom_bootstrap.js */
 		JSValue r;
-		qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
+		qjs_script_deadline = get_time() + qjs_script_budget(
+			(int)(sizeof(qjs_dom_bootstrap) - 1));
 		r = JS_Eval(c->ctx, qjs_dom_bootstrap,
 			sizeof(qjs_dom_bootstrap) - 1, "<dom_bootstrap>",
 			JS_EVAL_TYPE_GLOBAL);
@@ -1648,7 +1663,7 @@ void js_execute_code(struct javascript_context *c, unsigned char *code,
 		}
 	}
 
-	qjs_script_deadline = get_time() + QJS_SCRIPT_TIME_LIMIT_MS;
+	qjs_script_deadline = get_time() + qjs_script_budget(len);
 	result = JS_Eval(c->ctx, (const char *)z, (size_t)len, "<script>",
 			 JS_EVAL_TYPE_GLOBAL);
 	if (JS_IsException(result)) {
