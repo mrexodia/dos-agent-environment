@@ -742,3 +742,21 @@ links clickable); belastingdienst homepage untouched (no renders),
 search flow PASS; conformance 20/20.
 hn.algolia.com: bundle download alone exceeds QEMU/TCG patience -
 needs hardware validation of the React render.
+
+## SESSION 2026-09-08: hn.algolia hardware result + watchdog budget
+
+Hardware: hn.algolia.com = 8 MINUTES transfer (2.6MB bundle on DOS
+hardware), then still header-only. Logs (archived *.hw4) show the
+cause: QJS-INTERRUPT + 'InternalError: interrupted' on the webpack
+bundle - the 220s eval cap was too small after an 8-minute download.
+Budget raised: 30s base + 20s per 100KB, cap 900s (15 min).
+spin.html watchdog fixture still recovers; conformance 20/20;
+rootspa.html (React-pattern render bridge) still PASS.
+
+Defender false positive on LINKSQJS.EXE (Trojan:Win32/Bearfoos.B!ml):
+machine-learning heuristic on the unsigned, unusual go32 DOS extender
+executable - a known pattern for DJGPP builds, NOT an actual
+infection. Mitigations: add an exclusion for the DOSCTTY folder
+(Windows Security > Virus & threat protection > Manage settings >
+Exclusions) or restore the file from quarantine; the hash changes
+every rebuild.

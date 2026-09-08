@@ -24,17 +24,18 @@ static JSValue qjs_current_exception;  /* not used; keep simple */
  * polls we abort the script - WITHOUT this a hostile/looping page
  * (hn.algolia.com) froze the whole machine (only power-cycle helped).
  * Pure counting: no tcp_tick() here (that corrupted watt32 state). */
-/* Base 20s plus 10s per 100KB of script: legit heavy bundles
- * (rome2rio/hn webpack, 2.6MB) need minutes on DOS hardware; a true
- * infinite loop still dies at the scaled cap. */
-#define QJS_SCRIPT_TIME_LIMIT_MS 20000
+/* Base 30s plus 20s per 100KB of script: hardware measurement showed
+ * a 2.6MB webpack bundle needs >220s just to EVALUATE on DOS hardware
+ * (the download alone took 8 minutes). Cap 900s (15 min); a true
+ * infinite loop still dies at the cap. */
+#define QJS_SCRIPT_TIME_LIMIT_MS 30000
 static uttime qjs_script_deadline;
 
 static uttime qjs_script_budget(int len)
 {
 	long extra = (long)len / 100000L;   /* per 100KB */
-	if (extra > 20) extra = 20;         /* cap: 20s + 200s */
-	return QJS_SCRIPT_TIME_LIMIT_MS + (uttime)extra * 10000;
+	if (extra > 43) extra = 43;         /* cap: 30s + 870s */
+	return QJS_SCRIPT_TIME_LIMIT_MS + (uttime)extra * 20000;
 }
 
 static int qjs_interrupt_handler(JSRuntime *rt, void *opaque)
@@ -51,7 +52,7 @@ static int qjs_interrupt_handler(JSRuntime *rt, void *opaque)
 		char mb[96];
 		extern void sock_log2(const char *);
 		snprintf(mb, sizeof mb,
-			"QJS-INTERRUPT aborted runaway script (>15s)");
+			"QJS-INTERRUPT aborted runaway script (budget exceeded)");
 		sock_log2(mb);
 		return 1;  /* abort with InternalError */
 	}
