@@ -779,3 +779,20 @@ qjs_http_request hardening (wolfssl_links_glue.c):
   (qjs_script_deadline now shared, non-static)
 Regressions: conformance 20/20, fetch tests 3/3, rootspa render
 bridge PASS, belastingdienst fixture search PASS.
+
+## SESSION 2026-09-08 (cont2): 'No swap space!' = giant-bundle guard
+
+Hardware: after ~15min at 'Verzoek verzonden' the process died with
+DJGPP's 'No swap space!' (DPMI virtual memory exhausted) - the 2.6MB
+hn.algolia webpack bundle needs 10-25x its source size in QuickJS
+parse memory; DOS swap cannot supply that, and the DPMI server kills
+the program.
+
+Fix: js_execute_code now SKIPS scripts > 1MB (QJS-SKIP-TOOBIG in
+SOCKSTAT). Such SPAs cannot run on DOS-class memory; the browser now
+stays alive and responsive instead of dying. Verified with
+webroot/bigtest.html (1.9MB script: skipped, following scripts run,
+Esc works). Also added requestIdleCallback stub (traced missing).
+Conclusion for hn.algolia.com: header-only is the honest maximum on
+this hardware; the render bridge itself is proven (rootspa.html).
+Conformance 20/20; belastingdienst search PASS.

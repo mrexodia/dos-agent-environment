@@ -2036,6 +2036,14 @@ static const char qjs_dom_bootstrap[] =
 	"			};\n"
 	"		};\n"
 	"	}\n"
+	"	if (!globalThis.requestIdleCallback) {\n"
+	"		globalThis.requestIdleCallback = function (f) {\n"
+	"			return globalThis.setTimeout(function () {\n"
+	"				f({ didTimeout: false, timeRemaining: function () { return 50; } });\n"
+	"			}, 50);\n"
+	"		};\n"
+	"		globalThis.cancelIdleCallback = function () {};\n"
+	"	}\n"
 	"	if (!globalThis.queueMicrotask) {\n"
 	"		globalThis.queueMicrotask = function (f) { Promise.resolve().then(f); };\n"
 	"	}\n"
@@ -2116,6 +2124,20 @@ void js_execute_code(struct javascript_context *c, unsigned char *code,
 		if (done) done(c ? c->ptr : NULL);
 		return;
 	}
+	/* Giant bundles (hn.algolia 2.6MB webpack): parsing needs 10-25x
+	 * the source size in QuickJS memory - that exhausts DPMI swap and
+	 * KILLS the whole process ("No swap space!"). Skip them and stay
+	 * alive; such SPAs cannot run on DOS-class memory anyway. */
+	if (len > 1000000) {
+		char mb[96];
+		extern void sock_log2(const char *);
+		snprintf(mb, sizeof mb,
+			"QJS-SKIP-TOOBIG len=%d (DOS memory guard)", len);
+		sock_log2(mb);
+		if (done) done(c->ptr);
+		return;
+	}
+
 	z = mem_alloc((size_t)len + 1);
 	if (!z) {
 		if (done) done(c->ptr);

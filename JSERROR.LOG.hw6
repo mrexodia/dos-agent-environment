@@ -1,0 +1,4 @@
+TypeError: cannot read property 'parentNode' of undefined | first-line=var ALGOLIA_INSIGHTS_SRC = "https://cdn.jsdelivr.net/npm/sea
+    at <anonymous> (<script>:7:53)
+    at <eval> (<script>:8:6)
+
