@@ -1,0 +1,8 @@
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316

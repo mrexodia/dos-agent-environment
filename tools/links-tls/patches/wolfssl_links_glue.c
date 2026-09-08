@@ -109,8 +109,15 @@ void wolfssl_links_install_io(WOLFSSL_CTX *ctx)
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <signal.h>
+#include <setjmp.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
 
-#define QJS_HTTP_TIMEOUT_SEC 45
+#define QJS_HTTP_TIMEOUT_SEC 20
+/* engine script deadline: fetches abort when the owning script's
+ * budget is spent (prevents unbounded total fetch time) */
+extern uttime qjs_script_deadline;
 
 static int qjs_http_select_read(int sock, int sec)
 {
@@ -129,6 +136,40 @@ static int resp_hexc(char c)
 	if (c >= 'a' && c <= 'f') return c - 'a' + 10;
 	if (c >= 'A' && c <= 'F') return c - 'A' + 10;
 	return -1;
+}
+
+static sigjmp_buf qjs_dns_jmp;
+static volatile int qjs_dns_armed;
+
+static void qjs_dns_alarm(int sig)
+{
+	(void)sig;
+	if (qjs_dns_armed) {
+		qjs_dns_armed = 0;
+		siglongjmp(qjs_dns_jmp, 1);
+	}
+}
+
+/* resolve with a hard 20s cap: watt32 gethostbyname can hang for
+ * many minutes on unresponsive resolvers - freezing the browser */
+static struct hostent *qjs_dns_timeout(const char *host)
+{
+	struct hostent *he;
+	void (*oldh)(int);
+	if (sigsetjmp(qjs_dns_jmp, 1)) {
+		signal(SIGALRM, oldh);
+		alarm(0);
+		sock_log2("FETCH: dns timeout");
+		return NULL;
+	}
+	qjs_dns_armed = 1;
+	oldh = signal(SIGALRM, qjs_dns_alarm);
+	alarm(20);
+	he = gethostbyname(host);
+	alarm(0);
+	signal(SIGALRM, oldh);
+	qjs_dns_armed = 0;
+	return he;
 }
 
 int qjs_http_request(const char *url, const char *method,
@@ -176,7 +217,7 @@ int qjs_http_request(const char *url, const char *method,
 	path = (*p == '/') ? p : "/";
 	if (!*p) path = "/";
 
-	he = gethostbyname(host);
+	he = qjs_dns_timeout(host);
 	if (!he || he->h_addrtype != AF_INET) {
 		sock_log2("FETCH: dns fail");
 		return -1;
@@ -189,9 +230,28 @@ int qjs_http_request(const char *url, const char *method,
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0) { sock_log2("FETCH: socket fail"); return -1; }
 	sock_open_count++;
-	if (connect(sock, (struct sockaddr *)&sa, sizeof sa) < 0) {
-		sock_log2("FETCH: connect fail");
-		goto out;
+	{
+		/* non-blocking connect + 15s wait: a blocking connect() to a
+		 * blackholed IP freezes the whole browser for minutes */
+		int one = 1, cres;
+		fd_set wf;
+		struct timeval tv;
+		unsigned long nb = 1;
+		ioctlsocket(sock, FIONBIO, &nb);
+		cres = connect(sock, (struct sockaddr *)&sa, sizeof sa);
+		if (cres < 0) {
+			FD_ZERO(&wf);
+			FD_SET(sock, &wf);
+			tv.tv_sec = 15;
+			tv.tv_usec = 0;
+			if (select(sock + 1, NULL, &wf, NULL, &tv) <= 0) {
+				sock_log2("FETCH: connect timeout");
+				goto out;
+			}
+		}
+		nb = 0;
+		ioctlsocket(sock, FIONBIO, &nb);
+		(void)one;
 	}
 
 	if (https) {
@@ -250,6 +310,10 @@ int qjs_http_request(const char *url, const char *method,
 	for (;;) {
 		char buf[4096];
 		int n;
+		if (qjs_script_deadline && get_time() > qjs_script_deadline) {
+			sock_log2("FETCH: script budget exceeded");
+			goto out;
+		}
 		if (qjs_http_select_read(sock, QJS_HTTP_TIMEOUT_SEC) <= 0) {
 			sock_log2("FETCH: timeout");
 			goto out;

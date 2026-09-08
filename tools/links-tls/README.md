@@ -760,3 +760,22 @@ infection. Mitigations: add an exclusion for the DOSCTTY folder
 (Windows Security > Virus & threat protection > Manage settings >
 Exclusions) or restore the file from quarantine; the hash changes
 every rebuild.
+
+## SESSION 2026-09-08 (cont): fetch transport hardening (freeze fix)
+
+Hardware: hn.algolia.com froze completely at 'Verzoek verzonden' for
+15+ min (Esc dead, power-cycle needed). Logs identical both runs; last
+line = FETCH-OK telemetry.algolia.com. Diagnosis: a SECOND page-script
+fetch hung in gethostbyname() or blocking connect() - both unbounded,
+and a blocking C call freezes the whole browser INCLUDING the keyboard
+(the watchdog only covers JS execution).
+
+qjs_http_request hardening (wolfssl_links_glue.c):
+- DNS: alarm(20) + sigsetjmp/siglongjmp guard around gethostbyname
+- connect: non-blocking + 15s select timeout (was: blocking connect,
+  minutes on a blackholed IP)
+- per-read select timeout 45s -> 20s
+- fetches abort when the owning script's budget deadline expires
+  (qjs_script_deadline now shared, non-static)
+Regressions: conformance 20/20, fetch tests 3/3, rootspa render
+bridge PASS, belastingdienst fixture search PASS.

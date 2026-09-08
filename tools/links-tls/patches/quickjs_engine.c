@@ -29,7 +29,7 @@ static JSValue qjs_current_exception;  /* not used; keep simple */
  * (the download alone took 8 minutes). Cap 900s (15 min); a true
  * infinite loop still dies at the cap. */
 #define QJS_SCRIPT_TIME_LIMIT_MS 30000
-static uttime qjs_script_deadline;
+uttime qjs_script_deadline; /* shared with wolfssl_links_glue fetch guard */
 
 static uttime qjs_script_budget(int len)
 {
