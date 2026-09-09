@@ -2081,8 +2081,8 @@ static void qjs_mem_log(unsigned long used)
  * UNCHECKED allocation paths inside QuickJS's shape/property code
  * (GPF at JS_DefineProperty+0xae - disassembled and confirmed).
  * Only past the hard limit (grace exhausted) do we return NULL. */
-#define QJS_SOFT_LIMIT (420UL << 20)
-#define QJS_HARD_LIMIT (468UL << 20)
+#define QJS_SOFT_LIMIT (60UL << 20)
+#define QJS_HARD_LIMIT (96UL << 20)
 
 static void qjs_trip_watchdog(void)
 {
@@ -2194,10 +2194,8 @@ struct javascript_context *js_create_context(void *p, long id)
 	}
 	c->rt = JS_NewRuntime2(&qjs_jm_funcs, NULL);
 	if (!c->rt) { mem_free(c); return NULL; }
-	/* QJS-BIGTEST v5: 450MB (user request) - just under the measured
-	 * ~472MB hardware commit ceiling; enforced INSIDE the hooks via
-	 * s->malloc_limit, mirroring js_def_malloc semantics */
-	JS_SetMemoryLimit(c->rt, 450L * 1024 * 1024);
+	/* hooks enforce soft/hard limits (see qjs_jm_malloc) */
+	JS_SetMemoryLimit(c->rt, 60L * 1024 * 1024);
 	JS_SetGCThreshold(c->rt, 256 * 1024);
 	JS_SetMaxStackSize(c->rt, 512 * 1024);
 	c->ctx = JS_NewContext(c->rt);
@@ -2258,13 +2256,14 @@ void js_execute_code(struct javascript_context *c, unsigned char *code,
 	 * the source size in QuickJS memory - that exhausts DPMI swap and
 	 * KILLS the whole process ("No swap space!"). Skip them and stay
 	 * alive; such SPAs cannot run on DOS-class memory anyway. */
-	/* QJS-BIGTEST: giant-script guard DISABLED for this test build */
 	if (len > 1000000) {
 		char mb[96];
 		extern void sock_log2(const char *);
 		snprintf(mb, sizeof mb,
-			"QJS-BIGTEST attempting giant script len=%d", len);
+			"QJS-SKIP-TOOBIG len=%d (DOS memory guard)", len);
 		sock_log2(mb);
+		if (done) done(c->ptr);
+		return;
 	}
 
 	z = mem_alloc((size_t)len + 1);

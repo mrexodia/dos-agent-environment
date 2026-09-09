@@ -863,3 +863,24 @@ watchdog is tripped -> the eval aborts CLEANLY at the next opcode poll
 (InternalError: interrupted). Hard NULL only at 468MB (just under the
 measured ~472MB hardware commit ceiling).
 Conformance 20/20. Hardware retest pending.
+
+## SESSION 2026-09-09 (cont5): hn.algolia FINAL VERDICT + production hardening
+
+The soft limit performed perfectly on hardware: memory climbed to
+416MB, the script watchdog tripped CLEANLY (QJS-INTERRUPT +
+catchable InternalError: interrupted with stack), 'OK' reached,
+browser stable, NO GPF, NO reboot.
+DEFINITIVE ANSWER: the 2.6MB webpack parse needs >420MB; even with
+4GB DPMI address space the machine COMMITS ~472MB max, and React
+runtime+rendering would need more still. hn.algolia.com cannot run
+end-to-end on this hardware - the production 1MB script guard is the
+correct policy.
+Ctrl-R reload death ('Formatting document' -> 'No swap space'): the
+old page's 420MB JS context + re-downloaded 2.6MB doc + Links
+formatting together exceed the commit ceiling - BIGTEST-only issue
+(production skips the bundle, reload safe).
+PRODUCTION LINKSQJS.EXE now carries the soft-limit allocator too
+(soft 60MB / hard 96MB) on top of the 1MB script guard: ANY JS memory
+runaway now aborts the script cleanly instead of risking DPMI death.
+Regressions: conformance 20/20, belastingdienst search PASS, bigskip
+PASS.
