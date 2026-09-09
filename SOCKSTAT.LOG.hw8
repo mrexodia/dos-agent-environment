@@ -1,0 +1,336 @@
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+QJS-MEM ctx-create dpmi_total=4190208KB largest=4175936KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=4155200KB
+QJS-MEM used=24MB dpmi_largest_free=4145728KB
+QJS-MEM used=32MB dpmi_largest_free=4137024KB
+QJS-MEM used=40MB dpmi_largest_free=4127808KB
+QJS-MEM used=48MB dpmi_largest_free=4118592KB
+QJS-MEM used=56MB dpmi_largest_free=4109376KB
+QJS-MEM used=64MB dpmi_largest_free=4099136KB
+QJS-MEM used=72MB dpmi_largest_free=4090944KB
+QJS-MEM used=80MB dpmi_largest_free=4080704KB
+QJS-MEM used=88MB dpmi_largest_free=4072512KB
+QJS-MEM used=96MB dpmi_largest_free=4062272KB
+QJS-MEM used=104MB dpmi_largest_free=4054080KB
+QJS-MEM used=112MB dpmi_largest_free=4043840KB
+QJS-MEM used=120MB dpmi_largest_free=4035648KB
+QJS-MEM used=128MB dpmi_largest_free=4027456KB
+QJS-MEM used=136MB dpmi_largest_free=4015168KB
+QJS-MEM used=144MB dpmi_largest_free=4006976KB
+QJS-MEM used=152MB dpmi_largest_free=3998784KB
+QJS-MEM used=160MB dpmi_largest_free=3990592KB
+QJS-MEM used=168MB dpmi_largest_free=3978304KB
+QJS-MEM used=176MB dpmi_largest_free=3970112KB
+QJS-MEM used=184MB dpmi_largest_free=3961920KB
+QJS-MEM used=192MB dpmi_largest_free=3953728KB
+QJS-MEM used=200MB dpmi_largest_free=3941440KB
+QJS-MEM used=208MB dpmi_largest_free=3933248KB
+QJS-MEM used=216MB dpmi_largest_free=3925056KB
+QJS-MEM used=224MB dpmi_largest_free=3916864KB
+QJS-MEM used=232MB dpmi_largest_free=3908672KB
+QJS-MEM used=240MB dpmi_largest_free=3892288KB
+QJS-MEM used=248MB dpmi_largest_free=3884096KB
+QJS-MEM used=256MB dpmi_largest_free=3875904KB
+QJS-MEM used=264MB dpmi_largest_free=3867712KB
+QJS-MEM used=272MB dpmi_largest_free=3859520KB
+QJS-MEM used=280MB dpmi_largest_free=3851328KB
+QJS-MEM used=288MB dpmi_largest_free=3843136KB
+QJS-MEM used=296MB dpmi_largest_free=3834944KB
+QJS-MEM used=304MB dpmi_largest_free=3826752KB
+QJS-MEM used=312MB dpmi_largest_free=3810368KB
+QJS-MEM used=320MB dpmi_largest_free=3802176KB
+QJS-MEM used=328MB dpmi_largest_free=3793984KB
+QJS-MEM used=336MB dpmi_largest_free=3785792KB
+QJS-MEM used=344MB dpmi_largest_free=3777600KB
+QJS-MEM used=352MB dpmi_largest_free=3769408KB
+QJS-MEM used=360MB dpmi_largest_free=3761216KB
+QJS-MEM used=368MB dpmi_largest_free=3753024KB
+QJS-MEM used=376MB dpmi_largest_free=3736640KB
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+QJS-MEM ctx-create dpmi_total=4190208KB largest=4175936KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=4155200KB
+QJS-MEM used=24MB dpmi_largest_free=4145728KB
+QJS-MEM used=32MB dpmi_largest_free=4137024KB
+QJS-MEM used=40MB dpmi_largest_free=4127808KB
+QJS-MEM used=48MB dpmi_largest_free=4118592KB
+QJS-MEM used=56MB dpmi_largest_free=4109376KB
+QJS-MEM used=64MB dpmi_largest_free=4099136KB
+QJS-MEM used=72MB dpmi_largest_free=4090944KB
+QJS-MEM used=80MB dpmi_largest_free=4080704KB
+QJS-MEM used=88MB dpmi_largest_free=4072512KB
+QJS-MEM used=96MB dpmi_largest_free=4062272KB
+QJS-MEM used=104MB dpmi_largest_free=4054080KB
+QJS-MEM used=112MB dpmi_largest_free=4043840KB
+QJS-MEM used=120MB dpmi_largest_free=4035648KB
+QJS-MEM used=128MB dpmi_largest_free=4027456KB
+QJS-MEM used=136MB dpmi_largest_free=4015168KB
+QJS-MEM used=144MB dpmi_largest_free=4006976KB
+QJS-MEM used=152MB dpmi_largest_free=3998784KB
+QJS-MEM used=160MB dpmi_largest_free=3990592KB
+QJS-MEM used=168MB dpmi_largest_free=3978304KB
+QJS-MEM used=176MB dpmi_largest_free=3970112KB
+QJS-MEM used=184MB dpmi_largest_free=3961920KB
+QJS-MEM used=192MB dpmi_largest_free=3953728KB
+QJS-MEM used=200MB dpmi_largest_free=3941440KB
+QJS-MEM used=208MB dpmi_largest_free=3933248KB
+QJS-MEM used=216MB dpmi_largest_free=3925056KB
+QJS-MEM used=224MB dpmi_largest_free=3916864KB
+QJS-MEM used=232MB dpmi_largest_free=3908672KB
+QJS-MEM used=240MB dpmi_largest_free=3892288KB
+QJS-MEM used=248MB dpmi_largest_free=3884096KB
+QJS-MEM used=256MB dpmi_largest_free=3875904KB
+QJS-MEM used=264MB dpmi_largest_free=3867712KB
+QJS-MEM used=272MB dpmi_largest_free=3859520KB
+QJS-MEM used=280MB dpmi_largest_free=3851328KB
+QJS-MEM used=288MB dpmi_largest_free=3843136KB
+QJS-MEM used=296MB dpmi_largest_free=3834944KB
+QJS-MEM used=304MB dpmi_largest_free=3826752KB
+QJS-MEM used=312MB dpmi_largest_free=3810368KB
+QJS-MEM used=320MB dpmi_largest_free=3802176KB
+QJS-MEM used=328MB dpmi_largest_free=3793984KB
+QJS-MEM used=336MB dpmi_largest_free=3785792KB
+QJS-MEM used=344MB dpmi_largest_free=3777600KB
+QJS-MEM used=352MB dpmi_largest_free=3769408KB
+QJS-MEM used=360MB dpmi_largest_free=3761216KB
+QJS-MEM used=368MB dpmi_largest_free=3753024KB
+QJS-MEM used=376MB dpmi_largest_free=3736640KB
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+QJS-MEM ctx-create dpmi_total=4190208KB largest=4175936KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=4155200KB
+QJS-MEM used=24MB dpmi_largest_free=4145728KB
+QJS-MEM used=32MB dpmi_largest_free=4137024KB
+QJS-MEM used=40MB dpmi_largest_free=4127808KB
+QJS-MEM used=48MB dpmi_largest_free=4118592KB
+QJS-MEM used=56MB dpmi_largest_free=4109376KB
+QJS-MEM used=64MB dpmi_largest_free=4099136KB
+QJS-MEM used=72MB dpmi_largest_free=4090944KB
+QJS-MEM used=80MB dpmi_largest_free=4080704KB
+QJS-MEM used=88MB dpmi_largest_free=4072512KB
+QJS-MEM used=96MB dpmi_largest_free=4062272KB
+QJS-MEM used=104MB dpmi_largest_free=4054080KB
+QJS-MEM used=112MB dpmi_largest_free=4043840KB
+QJS-MEM used=120MB dpmi_largest_free=4035648KB
+QJS-MEM used=128MB dpmi_largest_free=4027456KB
+QJS-MEM used=136MB dpmi_largest_free=4015168KB
+QJS-MEM used=144MB dpmi_largest_free=4006976KB
+QJS-MEM used=152MB dpmi_largest_free=3998784KB
+QJS-MEM used=160MB dpmi_largest_free=3990592KB
+QJS-MEM used=168MB dpmi_largest_free=3978304KB
+QJS-MEM used=176MB dpmi_largest_free=3970112KB
+QJS-MEM used=184MB dpmi_largest_free=3961920KB
+QJS-MEM used=192MB dpmi_largest_free=3953728KB
+QJS-MEM used=200MB dpmi_largest_free=3941440KB
+QJS-MEM used=208MB dpmi_largest_free=3933248KB
+QJS-MEM used=216MB dpmi_largest_free=3925056KB
+QJS-MEM used=224MB dpmi_largest_free=3916864KB
+QJS-MEM used=232MB dpmi_largest_free=3908672KB
+QJS-MEM used=240MB dpmi_largest_free=3892288KB
+QJS-MEM used=248MB dpmi_largest_free=3884096KB
+QJS-MEM used=256MB dpmi_largest_free=3875904KB
+QJS-MEM used=264MB dpmi_largest_free=3867712KB
+QJS-MEM used=272MB dpmi_largest_free=3859520KB
+QJS-MEM used=280MB dpmi_largest_free=3851328KB
+QJS-MEM used=288MB dpmi_largest_free=3843136KB
+QJS-MEM used=296MB dpmi_largest_free=3834944KB
+QJS-MEM used=304MB dpmi_largest_free=3826752KB
+QJS-MEM used=312MB dpmi_largest_free=3810368KB
+QJS-MEM used=320MB dpmi_largest_free=3802176KB
+QJS-MEM used=328MB dpmi_largest_free=3793984KB
+QJS-MEM used=336MB dpmi_largest_free=3785792KB
+QJS-MEM used=344MB dpmi_largest_free=3777600KB
+QJS-MEM used=352MB dpmi_largest_free=3769408KB
+QJS-MEM used=360MB dpmi_largest_free=3761216KB
+QJS-MEM used=368MB dpmi_largest_free=3753024KB
+QJS-MEM used=376MB dpmi_largest_free=3736640KB
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+QJS-MEM ctx-create dpmi_total=4190208KB largest=4175936KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=4155072KB
+QJS-MEM used=24MB dpmi_largest_free=4146112KB
+QJS-MEM used=32MB dpmi_largest_free=4136896KB
+QJS-MEM used=40MB dpmi_largest_free=4127680KB
+QJS-MEM used=48MB dpmi_largest_free=4118464KB
+QJS-MEM used=56MB dpmi_largest_free=4109248KB
+QJS-MEM used=64MB dpmi_largest_free=4099008KB
+QJS-MEM used=72MB dpmi_largest_free=4090816KB
+QJS-MEM used=80MB dpmi_largest_free=4080576KB
+QJS-MEM used=88MB dpmi_largest_free=4072384KB
+QJS-MEM used=96MB dpmi_largest_free=4062144KB
+QJS-MEM used=104MB dpmi_largest_free=4053952KB
+QJS-MEM used=112MB dpmi_largest_free=4045760KB
+QJS-MEM used=120MB dpmi_largest_free=4035520KB
+QJS-MEM used=128MB dpmi_largest_free=4027328KB
+QJS-MEM used=136MB dpmi_largest_free=4015040KB
+QJS-MEM used=144MB dpmi_largest_free=4006848KB
+QJS-MEM used=152MB dpmi_largest_free=3998656KB
+QJS-MEM used=160MB dpmi_largest_free=3990464KB
+QJS-MEM used=168MB dpmi_largest_free=3978176KB
+QJS-MEM used=176MB dpmi_largest_free=3969984KB
+QJS-MEM used=184MB dpmi_largest_free=3961792KB
+QJS-MEM used=192MB dpmi_largest_free=3953600KB
+QJS-MEM used=200MB dpmi_largest_free=3945408KB
+QJS-MEM used=208MB dpmi_largest_free=3933120KB
+QJS-MEM used=216MB dpmi_largest_free=3924928KB
+QJS-MEM used=224MB dpmi_largest_free=3916736KB
+QJS-MEM used=232MB dpmi_largest_free=3908544KB
+QJS-MEM used=240MB dpmi_largest_free=3892160KB
+QJS-MEM used=248MB dpmi_largest_free=3883968KB
+QJS-MEM used=256MB dpmi_largest_free=3875776KB
+QJS-MEM used=264MB dpmi_largest_free=3867584KB
+QJS-MEM used=272MB dpmi_largest_free=3859392KB
+QJS-MEM used=280MB dpmi_largest_free=3851200KB
+QJS-MEM used=288MB dpmi_largest_free=3843008KB
+QJS-MEM used=296MB dpmi_largest_free=3834816KB
+QJS-MEM used=304MB dpmi_largest_free=3826624KB
+QJS-MEM used=312MB dpmi_largest_free=3810240KB
+QJS-MEM used=320MB dpmi_largest_free=3802048KB
+QJS-MEM used=328MB dpmi_largest_free=3793856KB
+QJS-MEM used=336MB dpmi_largest_free=3785664KB
+QJS-MEM used=344MB dpmi_largest_free=3777472KB
+QJS-MEM used=352MB dpmi_largest_free=3769280KB
+QJS-MEM used=360MB dpmi_largest_free=3761088KB
+QJS-MEM used=368MB dpmi_largest_free=3752896KB
+QJS-MEM used=376MB dpmi_largest_free=3744704KB
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+QJS-MEM ctx-create dpmi_total=4190208KB largest=4175936KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=4155200KB
+QJS-MEM used=24MB dpmi_largest_free=4145728KB
+QJS-MEM used=32MB dpmi_largest_free=4137024KB
+QJS-MEM used=40MB dpmi_largest_free=4127808KB
+QJS-MEM used=48MB dpmi_largest_free=4118592KB
+QJS-MEM used=56MB dpmi_largest_free=4109376KB
+QJS-MEM used=64MB dpmi_largest_free=4099136KB
+QJS-MEM used=72MB dpmi_largest_free=4090944KB
+QJS-MEM used=80MB dpmi_largest_free=4080704KB
+QJS-MEM used=88MB dpmi_largest_free=4072512KB
+QJS-MEM used=96MB dpmi_largest_free=4062272KB
+QJS-MEM used=104MB dpmi_largest_free=4054080KB
+QJS-MEM used=112MB dpmi_largest_free=4043840KB
+QJS-MEM used=120MB dpmi_largest_free=4035648KB
+QJS-MEM used=128MB dpmi_largest_free=4027456KB
+QJS-MEM used=136MB dpmi_largest_free=4015168KB
+QJS-MEM used=144MB dpmi_largest_free=4006976KB
+QJS-MEM used=152MB dpmi_largest_free=3998784KB
+QJS-MEM used=160MB dpmi_largest_free=3990592KB
+QJS-MEM used=168MB dpmi_largest_free=3978304KB
+QJS-MEM used=176MB dpmi_largest_free=3970112KB
+QJS-MEM used=184MB dpmi_largest_free=3961920KB
+QJS-MEM used=192MB dpmi_largest_free=3953728KB
+QJS-MEM used=200MB dpmi_largest_free=3941440KB
+QJS-MEM used=208MB dpmi_largest_free=3933248KB
+QJS-MEM used=216MB dpmi_largest_free=3925056KB
+QJS-MEM used=224MB dpmi_largest_free=3916864KB
+QJS-MEM used=232MB dpmi_largest_free=3908672KB
+QJS-MEM used=240MB dpmi_largest_free=3892288KB
+QJS-MEM used=248MB dpmi_largest_free=3884096KB
+QJS-MEM used=256MB dpmi_largest_free=3875904KB
+QJS-MEM used=264MB dpmi_largest_free=3867712KB
+QJS-MEM used=272MB dpmi_largest_free=3859520KB
+QJS-MEM used=280MB dpmi_largest_free=3851328KB
+QJS-MEM used=288MB dpmi_largest_free=3843136KB
+QJS-MEM used=296MB dpmi_largest_free=3834944KB
+QJS-MEM used=304MB dpmi_largest_free=3826752KB
+QJS-MEM used=312MB dpmi_largest_free=3810368KB
+QJS-MEM used=320MB dpmi_largest_free=3802176KB
+QJS-MEM used=328MB dpmi_largest_free=3793984KB
+QJS-MEM used=336MB dpmi_largest_free=3785792KB
+QJS-MEM used=344MB dpmi_largest_free=3777600KB
+QJS-MEM used=352MB dpmi_largest_free=3769408KB
+QJS-MEM used=360MB dpmi_largest_free=3761216KB
+QJS-MEM used=368MB dpmi_largest_free=3753024KB
+QJS-MEM used=376MB dpmi_largest_free=3736640KB
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+QJS-MEM ctx-create dpmi_total=4190208KB largest=4175936KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=4155200KB
+QJS-MEM used=24MB dpmi_largest_free=4145728KB
+QJS-MEM used=32MB dpmi_largest_free=4137024KB
+QJS-MEM used=40MB dpmi_largest_free=4127808KB
+QJS-MEM used=48MB dpmi_largest_free=4118592KB
+QJS-MEM used=56MB dpmi_largest_free=4109376KB
+QJS-MEM used=64MB dpmi_largest_free=4099136KB
+QJS-MEM used=72MB dpmi_largest_free=4090944KB
+QJS-MEM used=80MB dpmi_largest_free=4080704KB
+QJS-MEM used=88MB dpmi_largest_free=4072512KB
+QJS-MEM used=96MB dpmi_largest_free=4062272KB
+QJS-MEM used=104MB dpmi_largest_free=4054080KB
+QJS-MEM used=112MB dpmi_largest_free=4043840KB
+QJS-MEM used=120MB dpmi_largest_free=4035648KB
+QJS-MEM used=128MB dpmi_largest_free=4027456KB
+QJS-MEM used=136MB dpmi_largest_free=4015168KB
+QJS-MEM used=144MB dpmi_largest_free=4006976KB
+QJS-MEM used=152MB dpmi_largest_free=3998784KB
+QJS-MEM used=160MB dpmi_largest_free=3990592KB
+QJS-MEM used=168MB dpmi_largest_free=3978304KB
+QJS-MEM used=176MB dpmi_largest_free=3970112KB
+QJS-MEM used=184MB dpmi_largest_free=3961920KB
+QJS-MEM used=192MB dpmi_largest_free=3953728KB
+QJS-MEM used=200MB dpmi_largest_free=3941440KB
+QJS-MEM used=208MB dpmi_largest_free=3933248KB
+QJS-MEM used=216MB dpmi_largest_free=3925056KB
+QJS-MEM used=224MB dpmi_largest_free=3916864KB
+QJS-MEM used=232MB dpmi_largest_free=3908672KB
+QJS-MEM used=240MB dpmi_largest_free=3892288KB
+QJS-MEM used=248MB dpmi_largest_free=3884096KB
+QJS-MEM used=256MB dpmi_largest_free=3875904KB
+QJS-MEM used=264MB dpmi_largest_free=3867712KB
+QJS-MEM used=272MB dpmi_largest_free=3859520KB
+QJS-MEM used=280MB dpmi_largest_free=3851328KB
+QJS-MEM used=288MB dpmi_largest_free=3843136KB
+QJS-MEM used=296MB dpmi_largest_free=3834944KB
+QJS-MEM used=304MB dpmi_largest_free=3826752KB
+QJS-MEM used=312MB dpmi_largest_free=3810368KB
+QJS-MEM used=320MB dpmi_largest_free=3802176KB
+QJS-MEM used=328MB dpmi_largest_free=3793984KB
+QJS-MEM used=336MB dpmi_largest_free=3785792KB
+QJS-MEM used=344MB dpmi_largest_free=3777600KB
+QJS-MEM used=352MB dpmi_largest_free=3769408KB
+QJS-MEM used=360MB dpmi_largest_free=3761216KB
+QJS-MEM used=368MB dpmi_largest_free=3753024KB
+QJS-MEM used=376MB dpmi_largest_free=3736640KB

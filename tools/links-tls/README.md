@@ -816,3 +816,13 @@ memory) instead of the DPMI host killing the process. Hard limit 384MB
 (safely under the measured 472MB commit ceiling). Verified in QEMU
 with webroot/oomtest.html: InternalError caught in JS, browser alive.
 Conformance 20/20.
+
+## SESSION 2026-09-09 (cont): BIGTEST v4 - clean MemoryError path
+
+v3's hook-level NULL return hit an UNCHECKED QuickJS parse allocation
+path -> General Protection Fault at 376MB. v4: hooks do exact
+accounting ONLY (8-byte header wrap); the 384MB limit is enforced by
+QuickJS's own tested JS_SetMemoryLimit path (js_malloc checks
+malloc_size vs memory_limit before calling the hook and throws a
+clean MemoryError). QEMU: conformance 20/20, oomtest graceful.
+Hardware retest of LNKSQJSB.EXE pending.

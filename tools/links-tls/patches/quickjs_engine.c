@@ -2069,22 +2069,17 @@ static void qjs_mem_log(unsigned long used)
 	sock_log2(mb);
 }
 
-/* Heap limit enforced THROUGH the JSMallocState counters: when the
- * hooks return NULL, QuickJS throws a graceful InternalError (out of
- * memory) instead of the DPMI host killing the process with 'No swap
- * space!' (hardware: death at the ~472MB commit ceiling). */
-static size_t qjs_hard_heap_limit = 384UL << 20;
-
-/* DJGPP's malloc_usable_size is a no-op shim (returns 0), so NO heap
- * limit ever worked on DJGPP - not even the original 4MB one. We wrap
- * every allocation with an 8-byte size header for exact accounting. */
+/* Hooks maintain EXACT accounting (8-byte size-header wrap); the LIMIT
+ * itself is enforced by QuickJS's own tested JS_SetMemoryLimit path
+ * (js_malloc checks malloc_size vs memory_limit BEFORE calling the
+ * hook and throws a clean MemoryError). Returning NULL from the hooks
+ * directly (v3) hit unchecked parse paths -> General Protection Fault.
+ */
 #define QJS_HDR 8
 
 static void *qjs_jm_malloc(JSMallocState *s, size_t n)
 {
 	char *p;
-	if (s->malloc_size + n > qjs_hard_heap_limit)
-		return NULL;   /* graceful JS out-of-memory */
 	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
 	p = (char *)malloc(n + QJS_HDR);
 	if (p) {
@@ -2117,8 +2112,6 @@ static void *qjs_jm_realloc(JSMallocState *s, void *vp, size_t n)
 	char *p = (char *)vp, *q;
 	size_t ou = 0;
 	if (p) memcpy(&ou, p - QJS_HDR, sizeof ou);
-	if (s->malloc_size - ou + n > qjs_hard_heap_limit)
-		return NULL;
 	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
 	q = (char *)realloc(p ? p - QJS_HDR : NULL, n + QJS_HDR);
 	if (q) {
@@ -2164,9 +2157,9 @@ struct javascript_context *js_create_context(void *p, long id)
 	}
 	c->rt = JS_NewRuntime2(&qjs_jm_funcs, NULL);
 	if (!c->rt) { mem_free(c); return NULL; }
-	/* QJS-BIGTEST: JS heap cap raised 4MB -> 256MB for the giant-
-	 * bundle test (requires CWSDPMI with large page tables + XMS) */
-	JS_SetMemoryLimit(c->rt, 256L * 1024 * 1024);
+	/* QJS-BIGTEST v4: 384MB - under the measured 472MB hardware
+	 * commit ceiling; enforced by QuickJS's own clean-exthrow path */
+	JS_SetMemoryLimit(c->rt, 384L * 1024 * 1024);
 	JS_SetGCThreshold(c->rt, 256 * 1024);
 	JS_SetMaxStackSize(c->rt, 512 * 1024);
 	c->ctx = JS_NewContext(c->rt);
