@@ -2050,6 +2050,92 @@ static const char qjs_dom_bootstrap[] =
 	"})();\n"
 	"\n";
 
+/* QJS-BIGTEST v2: instrument QuickJS heap usage to learn how much
+ * the 2.6MB bundle parse actually needs, and what DPMI provides. */
+#include <dpmi.h>
+static unsigned long qjs_mem_used, qjs_mem_next_log = 16UL * 1024 * 1024;
+
+static void qjs_mem_log(unsigned long used)
+{
+	char mb[128];
+	__dpmi_free_mem_info mi;
+	unsigned long dpmi_free = 0;
+	extern void sock_log2(const char *);
+	if (__dpmi_get_free_memory_information(&mi) == 0)
+		dpmi_free = (unsigned long)mi.largest_available_free_block_in_bytes;
+	snprintf(mb, sizeof mb,
+		"QJS-MEM used=%luMB dpmi_largest_free=%luKB",
+		used >> 20, dpmi_free >> 10);
+	sock_log2(mb);
+}
+
+/* Heap limit enforced THROUGH the JSMallocState counters: when the
+ * hooks return NULL, QuickJS throws a graceful InternalError (out of
+ * memory) instead of the DPMI host killing the process with 'No swap
+ * space!' (hardware: death at the ~472MB commit ceiling). */
+static size_t qjs_hard_heap_limit = 384UL << 20;
+
+/* DJGPP's malloc_usable_size is a no-op shim (returns 0), so NO heap
+ * limit ever worked on DJGPP - not even the original 4MB one. We wrap
+ * every allocation with an 8-byte size header for exact accounting. */
+#define QJS_HDR 8
+
+static void *qjs_jm_malloc(JSMallocState *s, size_t n)
+{
+	char *p;
+	if (s->malloc_size + n > qjs_hard_heap_limit)
+		return NULL;   /* graceful JS out-of-memory */
+	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
+	p = (char *)malloc(n + QJS_HDR);
+	if (p) {
+		memcpy(p, &n, sizeof n);
+		s->malloc_count++;
+		s->malloc_size += n;
+		qjs_mem_used = s->malloc_size;
+		if (qjs_mem_used >= qjs_mem_next_log) {
+			qjs_mem_log(qjs_mem_used);
+			qjs_mem_next_log += 8UL * 1024 * 1024;
+		}
+		return p + QJS_HDR;
+	}
+	return NULL;
+}
+static void qjs_jm_free(JSMallocState *s, void *vp)
+{
+	char *p = (char *)vp;
+	if (p) {
+		size_t n;
+		memcpy(&n, p - QJS_HDR, sizeof n);
+		s->malloc_count--;
+		s->malloc_size -= n;
+		qjs_mem_used = s->malloc_size;
+		free(p - QJS_HDR);
+	}
+}
+static void *qjs_jm_realloc(JSMallocState *s, void *vp, size_t n)
+{
+	char *p = (char *)vp, *q;
+	size_t ou = 0;
+	if (p) memcpy(&ou, p - QJS_HDR, sizeof ou);
+	if (s->malloc_size - ou + n > qjs_hard_heap_limit)
+		return NULL;
+	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
+	q = (char *)realloc(p ? p - QJS_HDR : NULL, n + QJS_HDR);
+	if (q) {
+		memcpy(q, &n, sizeof n);
+		if (!p) s->malloc_count++;
+		s->malloc_size += n;
+		s->malloc_size -= ou;
+		qjs_mem_used = s->malloc_size;
+		return q + QJS_HDR;
+	}
+	return NULL;
+}
+
+static const JSMallocFunctions qjs_jm_funcs = {
+	qjs_jm_malloc, qjs_jm_free, qjs_jm_realloc
+};
+
 /* ---------------- engine interface ---------------- */
 
 struct javascript_context *js_create_context(void *p, long id)
@@ -2064,10 +2150,23 @@ struct javascript_context *js_create_context(void *p, long id)
 	c->id = id;
 	c->js_id = ++qjs_context_counter;
 
-	c->rt = JS_NewRuntime();
+	{
+		__dpmi_free_mem_info mi;
+		char mb[128];
+		extern void sock_log2(const char *);
+		if (__dpmi_get_free_memory_information(&mi) == 0) {
+			snprintf(mb, sizeof mb,
+				"QJS-MEM ctx-create dpmi_total=%luKB largest=%luKB",
+				(unsigned long)mi.total_number_of_physical_pages * 4UL,
+				(unsigned long)mi.largest_available_free_block_in_bytes >> 10);
+			sock_log2(mb);
+		}
+	}
+	c->rt = JS_NewRuntime2(&qjs_jm_funcs, NULL);
 	if (!c->rt) { mem_free(c); return NULL; }
-	/* keep the DJGPP heap sane: cap the JS heap, force eager GC */
-	JS_SetMemoryLimit(c->rt, 4 * 1024 * 1024);
+	/* QJS-BIGTEST: JS heap cap raised 4MB -> 256MB for the giant-
+	 * bundle test (requires CWSDPMI with large page tables + XMS) */
+	JS_SetMemoryLimit(c->rt, 256L * 1024 * 1024);
 	JS_SetGCThreshold(c->rt, 256 * 1024);
 	JS_SetMaxStackSize(c->rt, 512 * 1024);
 	c->ctx = JS_NewContext(c->rt);
@@ -2128,14 +2227,13 @@ void js_execute_code(struct javascript_context *c, unsigned char *code,
 	 * the source size in QuickJS memory - that exhausts DPMI swap and
 	 * KILLS the whole process ("No swap space!"). Skip them and stay
 	 * alive; such SPAs cannot run on DOS-class memory anyway. */
+	/* QJS-BIGTEST: giant-script guard DISABLED for this test build */
 	if (len > 1000000) {
 		char mb[96];
 		extern void sock_log2(const char *);
 		snprintf(mb, sizeof mb,
-			"QJS-SKIP-TOOBIG len=%d (DOS memory guard)", len);
+			"QJS-BIGTEST attempting giant script len=%d", len);
 		sock_log2(mb);
-		if (done) done(c->ptr);
-		return;
 	}
 
 	z = mem_alloc((size_t)len + 1);

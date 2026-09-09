@@ -796,3 +796,23 @@ Esc works). Also added requestIdleCallback stub (traced missing).
 Conclusion for hn.algolia.com: header-only is the honest maximum on
 this hardware; the render bridge itself is proven (rootspa.html).
 Conformance 20/20; belastingdienst search PASS.
+
+## SESSION 2026-09-09: XMS/CWSPARAM results + REAL heap limiting
+
+Hardware now provides ~4GB DPMI ADDRESS SPACE (CWSPARAM worked). But
+the hn.algolia parse died at exactly 472MB every run - that is the
+machine's COMMIT ceiling (address space != backed pages; CWSDPMI must
+back every touched page). Parse needs more than that.
+
+DISCOVERY: DJGPP's malloc_usable_size is a no-op shim (returns 0) -
+so NO JS heap limit ever actually worked on DJGPP, not even the
+original 4MB cap. The instrumented malloc hooks (BIGTEST v2) also
+bypassed JS_SetMemoryLimit by not maintaining JSMallocState counters.
+
+FIX (BIGTEST v3 = LNKSQJSB.EXE): custom allocator with an 8-byte
+size-header wrap for exact accounting; limits enforced by returning
+NULL from the hooks -> QuickJS throws graceful InternalError (out of
+memory) instead of the DPMI host killing the process. Hard limit 384MB
+(safely under the measured 472MB commit ceiling). Verified in QEMU
+with webroot/oomtest.html: InternalError caught in JS, browser alive.
+Conformance 20/20.

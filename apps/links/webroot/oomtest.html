@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><body>
+<h1>OOM-TEST-START</h1>
+<script>
+var keep = [], i = 0;
+try {
+	for (;;) {
+		keep.push(new Array(524288).fill("x"));  /* ~4MB */
+		i++;
+	}
+} catch (e) {
+	document.write("<pre>OOM-CAUGHT name=" + (e && e.name ? e.name : "?") +
+		" msg=" + (e && e.message ? String(e.message).slice(0, 40) : "?") +
+		" chunks4MB=" + i + "</pre>");
+}
+document.write("<pre>OOM-TEST-END browser-alive</pre>");
+</script>
+</body></html>
