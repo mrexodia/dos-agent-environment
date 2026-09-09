@@ -849,3 +849,17 @@ member - js_malloc_usable_size - that we left NULL. QuickJS calls it
 in property-define paths -> call through NULL -> GPF.
 Fix: qjs_jm_usable_size reads the size from our 8-byte header.
 LNKSQJSB v6: conformance 20/20. Hardware retest pending.
+
+## SESSION 2026-09-09 (cont4): soft-limit strategy (GPF path avoided)
+
+Disassembly of the GPF (eip 0x1e874e = JS_DefineProperty+0xae):
+`mov (%eax,%edx,4)` - reading the shape property-hash with a WILD
+mask: an allocation failure during shape resizing leaves QuickJS
+internal state inconsistent (unchecked NULL assumption deep in the
+property code - never exercised on memory-rich machines). Patching
+QuickJS internals is not viable, so LNKSQJSB v7 never triggers it:
+SOFT LIMIT: at 420MB, allocations still SUCCEED (grace) but the script
+watchdog is tripped -> the eval aborts CLEANLY at the next opcode poll
+(InternalError: interrupted). Hard NULL only at 468MB (just under the
+measured ~472MB hardware commit ceiling).
+Conformance 20/20. Hardware retest pending.

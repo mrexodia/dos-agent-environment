@@ -2075,12 +2075,29 @@ static void qjs_mem_log(unsigned long used)
  * for exact accounting on DJGPP where malloc_usable_size is a no-op. */
 #define QJS_HDR 8
 
+/* Soft limit: at QJS_SOFT_LIMIT bytes, allocation still SUCCEEDS but
+ * the script watchdog is tripped - the eval aborts cleanly at the
+ * next opcode poll (tested path). Returning NULL mid-parse walks into
+ * UNCHECKED allocation paths inside QuickJS's shape/property code
+ * (GPF at JS_DefineProperty+0xae - disassembled and confirmed).
+ * Only past the hard limit (grace exhausted) do we return NULL. */
+#define QJS_SOFT_LIMIT (420UL << 20)
+#define QJS_HARD_LIMIT (468UL << 20)
+
+static void qjs_trip_watchdog(void)
+{
+	if (qjs_script_deadline == 0 || qjs_script_deadline > 1)
+		qjs_script_deadline = 1;   /* expired: abort at next poll */
+}
+
 static void *qjs_jm_malloc(JSMallocState *s, size_t n)
 {
 	char *p;
 	if (n == 0) n = 1;
-	if (s->malloc_size + n > s->malloc_limit)
+	if (s->malloc_size + n > QJS_HARD_LIMIT)
 		return NULL;
+	if (s->malloc_size + n > QJS_SOFT_LIMIT)
+		qjs_trip_watchdog();
 	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
 	p = (char *)malloc(n + QJS_HDR);
 	if (!p) return NULL;
@@ -2121,8 +2138,10 @@ static void *qjs_jm_realloc(JSMallocState *s, void *vp, size_t n)
 		return NULL;
 	}
 	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
-	if (s->malloc_size + n - ou > s->malloc_limit)
+	if (s->malloc_size + n - ou > QJS_HARD_LIMIT)
 		return NULL;
+	if (s->malloc_size + n - ou > QJS_SOFT_LIMIT)
+		qjs_trip_watchdog();
 	q = (char *)realloc(p - QJS_HDR, n + QJS_HDR);
 	if (!q) return NULL;
 	memcpy(q, &n, sizeof n);
