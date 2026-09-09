@@ -2069,36 +2069,36 @@ static void qjs_mem_log(unsigned long used)
 	sock_log2(mb);
 }
 
-/* Hooks maintain EXACT accounting (8-byte size-header wrap); the LIMIT
- * itself is enforced by QuickJS's own tested JS_SetMemoryLimit path
- * (js_malloc checks malloc_size vs memory_limit BEFORE calling the
- * hook and throws a clean MemoryError). Returning NULL from the hooks
- * directly (v3) hit unchecked parse paths -> General Protection Fault.
- */
+/* v5: mirror js_def_malloc/js_def_free/js_def_realloc EXACTLY
+ * (limit checks against s->malloc_limit as set by JS_SetMemoryLimit,
+ * same n==0 and NULL semantics), but with an 8-byte size-header wrap
+ * for exact accounting on DJGPP where malloc_usable_size is a no-op. */
 #define QJS_HDR 8
 
 static void *qjs_jm_malloc(JSMallocState *s, size_t n)
 {
 	char *p;
+	if (n == 0) n = 1;
+	if (s->malloc_size + n > s->malloc_limit)
+		return NULL;
 	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
 	p = (char *)malloc(n + QJS_HDR);
-	if (p) {
-		memcpy(p, &n, sizeof n);
-		s->malloc_count++;
-		s->malloc_size += n;
-		qjs_mem_used = s->malloc_size;
-		if (qjs_mem_used >= qjs_mem_next_log) {
-			qjs_mem_log(qjs_mem_used);
-			qjs_mem_next_log += 8UL * 1024 * 1024;
-		}
-		return p + QJS_HDR;
+	if (!p) return NULL;
+	memcpy(p, &n, sizeof n);
+	s->malloc_count++;
+	s->malloc_size += n;
+	qjs_mem_used = s->malloc_size;
+	if (qjs_mem_used >= qjs_mem_next_log) {
+		qjs_mem_log(qjs_mem_used);
+		qjs_mem_next_log += 8UL * 1024 * 1024;
 	}
-	return NULL;
+	return p + QJS_HDR;
 }
 static void qjs_jm_free(JSMallocState *s, void *vp)
 {
 	char *p = (char *)vp;
-	if (p) {
+	if (!p) return;
+	{
 		size_t n;
 		memcpy(&n, p - QJS_HDR, sizeof n);
 		s->malloc_count--;
@@ -2111,18 +2111,25 @@ static void *qjs_jm_realloc(JSMallocState *s, void *vp, size_t n)
 {
 	char *p = (char *)vp, *q;
 	size_t ou = 0;
-	if (p) memcpy(&ou, p - QJS_HDR, sizeof ou);
-	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
-	q = (char *)realloc(p ? p - QJS_HDR : NULL, n + QJS_HDR);
-	if (q) {
-		memcpy(q, &n, sizeof n);
-		if (!p) s->malloc_count++;
-		s->malloc_size += n;
-		s->malloc_size -= ou;
-		qjs_mem_used = s->malloc_size;
-		return q + QJS_HDR;
+	if (!p) {
+		if (n == 0) return NULL;
+		return qjs_jm_malloc(s, n);
 	}
-	return NULL;
+	memcpy(&ou, p - QJS_HDR, sizeof ou);
+	if (n == 0) {
+		qjs_jm_free(s, vp);
+		return NULL;
+	}
+	if (n > (size_t)-1 - QJS_HDR - 16) return NULL;
+	if (s->malloc_size + n - ou > s->malloc_limit)
+		return NULL;
+	q = (char *)realloc(p - QJS_HDR, n + QJS_HDR);
+	if (!q) return NULL;
+	memcpy(q, &n, sizeof n);
+	s->malloc_size += n;
+	s->malloc_size -= ou;
+	qjs_mem_used = s->malloc_size;
+	return q + QJS_HDR;
 }
 
 static const JSMallocFunctions qjs_jm_funcs = {
@@ -2157,9 +2164,10 @@ struct javascript_context *js_create_context(void *p, long id)
 	}
 	c->rt = JS_NewRuntime2(&qjs_jm_funcs, NULL);
 	if (!c->rt) { mem_free(c); return NULL; }
-	/* QJS-BIGTEST v4: 384MB - under the measured 472MB hardware
-	 * commit ceiling; enforced by QuickJS's own clean-exthrow path */
-	JS_SetMemoryLimit(c->rt, 384L * 1024 * 1024);
+	/* QJS-BIGTEST v5: 450MB (user request) - just under the measured
+	 * ~472MB hardware commit ceiling; enforced INSIDE the hooks via
+	 * s->malloc_limit, mirroring js_def_malloc semantics */
+	JS_SetMemoryLimit(c->rt, 450L * 1024 * 1024);
 	JS_SetGCThreshold(c->rt, 256 * 1024);
 	JS_SetMaxStackSize(c->rt, 512 * 1024);
 	c->ctx = JS_NewContext(c->rt);

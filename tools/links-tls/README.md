@@ -826,3 +826,16 @@ QuickJS's own tested JS_SetMemoryLimit path (js_malloc checks
 malloc_size vs memory_limit before calling the hook and throws a
 clean MemoryError). QEMU: conformance 20/20, oomtest graceful.
 Hardware retest of LNKSQJSB.EXE pending.
+
+## SESSION 2026-09-09 (cont2): BIGTEST v5 - 450MB, correct enforcement point
+
+v4 finding: in QuickJS 2025-04-26 the LIMIT CHECK LIVES IN THE DEFAULT
+ALLOCATOR (js_def_malloc checks s->malloc_limit); js_malloc_rt calls
+the hook DIRECTLY - custom hooks must implement the check themselves.
+v4 (accounting-only) was therefore UNLIMITED -> DPMI death at ~416MB.
+v5: hooks mirror js_def_malloc/free/realloc exactly (limit via
+s->malloc_limit, identical n==0/NULL semantics) with the header-wrap
+accounting; JS_SetMemoryLimit 450MB (user request, just under the
+~472MB commit ceiling). Conformance 20/20; graceful NULL behavior
+verified in QEMU (4MB alloc failing in tight DOS memory -> clean
+InternalError).
