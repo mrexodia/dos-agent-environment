@@ -839,3 +839,13 @@ accounting; JS_SetMemoryLimit 450MB (user request, just under the
 ~472MB commit ceiling). Conformance 20/20; graceful NULL behavior
 verified in QEMU (4MB alloc failing in tight DOS memory -> clean
 InternalError).
+
+## SESSION 2026-09-09 (cont3): GPF root cause = NULL 4th malloc hook
+
+The recurring 'General Protection Fault' at the memory limit (eips
+0x1e873e/0x1e874e, both resolving into JS_DefineProperty territory
+per the linker map) was caused by JSMallocFunctions having a FOURTH
+member - js_malloc_usable_size - that we left NULL. QuickJS calls it
+in property-define paths -> call through NULL -> GPF.
+Fix: qjs_jm_usable_size reads the size from our 8-byte header.
+LNKSQJSB v6: conformance 20/20. Hardware retest pending.

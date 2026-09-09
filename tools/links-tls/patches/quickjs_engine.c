@@ -2132,8 +2132,19 @@ static void *qjs_jm_realloc(JSMallocState *s, void *vp, size_t n)
 	return q + QJS_HDR;
 }
 
+/* CRITICAL: JSMallocFunctions has a FOURTH member,
+ * js_malloc_usable_size - leaving it NULL made QuickJS call through
+ * a NULL pointer in property-define paths (the recurring
+ * 'General Protection Fault' at the memory limit). */
+static size_t qjs_jm_usable_size(const void *ptr)
+{
+	size_t n = 0;
+	if (ptr) memcpy(&n, (const char *)ptr - QJS_HDR, sizeof n);
+	return n;
+}
+
 static const JSMallocFunctions qjs_jm_funcs = {
-	qjs_jm_malloc, qjs_jm_free, qjs_jm_realloc
+	qjs_jm_malloc, qjs_jm_free, qjs_jm_realloc, qjs_jm_usable_size
 };
 
 /* ---------------- engine interface ---------------- */
