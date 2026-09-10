@@ -1,0 +1,145 @@
+MKCONN url=http://hn.algolia.com/ tries=0
+open open=1 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+MKCONN url=https://hn.algolia.com:443/ tries=0
+open open=2 close=0
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+GET /public/main-6e634771f729331a3c3c.js HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Referer: https://hn.algolia.com:443/|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x
+QJS-MEM ctx-create dpmi_total=3404352KB largest=3386676KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=3366836KB
+QJS-MEM used=24MB dpmi_largest_free=3358388KB
+QJS-MEM used=32MB dpmi_largest_free=3350196KB
+QJS-MEM used=40MB dpmi_largest_free=3341492KB
+QJS-MEM used=48MB dpmi_largest_free=3333300KB
+QJS-MEM used=56MB dpmi_largest_free=3325108KB
+QJS-MEM used=64MB dpmi_largest_free=3315888KB
+QJS-MEM used=72MB dpmi_largest_free=3307696KB
+QJS-MEM used=80MB dpmi_largest_free=3299504KB
+QJS-MEM used=88MB dpmi_largest_free=3291312KB
+QJS-MEM used=96MB dpmi_largest_free=3283120KB
+QJS-MEM used=104MB dpmi_largest_free=3274928KB
+QJS-MEM used=112MB dpmi_largest_free=3266736KB
+QJS-MEM used=120MB dpmi_largest_free=3258544KB
+QJS-MEM used=128MB dpmi_largest_free=3246256KB
+QJS-MEM used=136MB dpmi_largest_free=3238064KB
+QJS-MEM used=144MB dpmi_largest_free=3229872KB
+QJS-MEM used=152MB dpmi_largest_free=3221680KB
+QJS-MEM used=160MB dpmi_largest_free=3213488KB
+QJS-MEM used=168MB dpmi_largest_free=3205296KB
+QJS-MEM used=176MB dpmi_largest_free=3197104KB
+QJS-MEM used=184MB dpmi_largest_free=3188912KB
+QJS-MEM used=192MB dpmi_largest_free=3180720KB
+QJS-MEM used=200MB dpmi_largest_free=3172528KB
+QJS-MEM used=208MB dpmi_largest_free=3164336KB
+QJS-MEM used=216MB dpmi_largest_free=3156144KB
+QJS-MEM used=224MB dpmi_largest_free=3147952KB
+QJS-MEM used=232MB dpmi_largest_free=3139760KB
+QJS-MEM used=240MB dpmi_largest_free=3131568KB
+QJS-MEM used=248MB dpmi_largest_free=3123376KB
+QJS-MEM used=256MB dpmi_largest_free=3111088KB
+QJS-MEM used=264MB dpmi_largest_free=3102896KB
+QJS-MEM used=272MB dpmi_largest_free=3094704KB
+QJS-MEM used=280MB dpmi_largest_free=3086512KB
+QJS-MEM used=288MB dpmi_largest_free=3078320KB
+QJS-MEM used=296MB dpmi_largest_free=3070128KB
+QJS-MEM used=304MB dpmi_largest_free=3061936KB
+QJS-MEM used=312MB dpmi_largest_free=3053744KB
+QJS-MEM used=320MB dpmi_largest_free=3045552KB
+QJS-MEM used=328MB dpmi_largest_free=3037360KB
+QJS-MEM used=336MB dpmi_largest_free=3029168KB
+QJS-MEM used=344MB dpmi_largest_free=3020976KB
+QJS-MEM used=352MB dpmi_largest_free=3012784KB
+QJS-MEM used=360MB dpmi_largest_free=3004592KB
+QJS-MEM used=368MB dpmi_largest_free=2996400KB
+QJS-MEM used=376MB dpmi_largest_free=2988208KB
+QJS-MEM used=384MB dpmi_largest_free=2980016KB
+QJS-MEM used=392MB dpmi_largest_free=2971824KB
+QJS-MEM used=400MB dpmi_largest_free=2963632KB
+QJS-MEM used=408MB dpmi_largest_free=2955440KB
+QJS-MEM used=416MB dpmi_largest_free=2947248KB
+QJS-MEM used=424MB dpmi_largest_free=2939056KB
+QJS-MEM used=432MB dpmi_largest_free=2930864KB
+QJS-MEM used=440MB dpmi_largest_free=2922672KB
+QJS-MEM used=448MB dpmi_largest_free=2914480KB
+QJS-MEM used=456MB dpmi_largest_free=2906288KB
+QJS-MEM used=464MB dpmi_largest_free=2898096KB
+QJS-MEM used=472MB dpmi_largest_free=2889904KB
+QJS-MEM used=480MB dpmi_largest_free=2881708KB
+QJS-MEM used=488MB dpmi_largest_free=2873516KB
+QJS-MEM used=496MB dpmi_largest_free=2865324KB
+QJS-MEM used=504MB dpmi_largest_free=2857132KB
+QJS-MEM used=512MB dpmi_largest_free=2848940KB
+QJS-MEM used=520MB dpmi_largest_free=2840748KB
+QJS-MEM used=528MB dpmi_largest_free=2832556KB
+QJS-MEM used=536MB dpmi_largest_free=2824364KB
+QJS-MEM used=544MB dpmi_largest_free=2816172KB
+QJS-MEM used=552MB dpmi_largest_free=2807980KB
+QJS-MEM used=560MB dpmi_largest_free=2799788KB
+QJS-MEM used=568MB dpmi_largest_free=2791596KB
+QJS-MEM used=576MB dpmi_largest_free=2783404KB
+QJS-MEM used=584MB dpmi_largest_free=2775212KB
+QJS-MEM used=592MB dpmi_largest_free=2758828KB
+QJS-MEM used=600MB dpmi_largest_free=2750636KB
+QJS-MEM used=608MB dpmi_largest_free=2742444KB
+QJS-MEM used=616MB dpmi_largest_free=2734252KB
+QJS-MEM used=624MB dpmi_largest_free=2726060KB
+QJS-MEM used=632MB dpmi_largest_free=2717868KB
+QJS-MEM used=640MB dpmi_largest_free=2709676KB
+QJS-MEM used=648MB dpmi_largest_free=2701484KB
+QJS-MEM used=656MB dpmi_largest_free=2693292KB
+QJS-MEM used=664MB dpmi_largest_free=2685100KB
+QJS-MEM used=672MB dpmi_largest_free=2676908KB
+QJS-MEM used=680MB dpmi_largest_free=2668716KB
+QJS-MEM used=688MB dpmi_largest_free=2660524KB
+QJS-MEM used=696MB dpmi_largest_free=2652332KB
+QJS-MEM used=704MB dpmi_largest_free=2644140KB
+QJS-MEM used=712MB dpmi_largest_free=2635948KB
+QJS-MEM used=720MB dpmi_largest_free=2627756KB
+QJS-MEM used=728MB dpmi_largest_free=2619564KB
+QJS-MEM used=736MB dpmi_largest_free=2611372KB
+QJS-MEM used=744MB dpmi_largest_free=2603180KB
+QJS-MEM used=752MB dpmi_largest_free=2594988KB
+QJS-MEM used=760MB dpmi_largest_free=2586796KB
+QJS-MEM used=768MB dpmi_largest_free=2578604KB
+QJS-MEM used=776MB dpmi_largest_free=2570412KB
+QJS-MEM used=784MB dpmi_largest_free=2562220KB
+QJS-MEM used=792MB dpmi_largest_free=2554028KB
+QJS-MEM used=800MB dpmi_largest_free=2545836KB
+QJS-MEM used=808MB dpmi_largest_free=2537644KB
+QJS-MEM used=816MB dpmi_largest_free=2529452KB
+QJS-MEM used=824MB dpmi_largest_free=2521260KB
+QJS-MEM used=832MB dpmi_largest_free=2513068KB
+QJS-MEM used=840MB dpmi_largest_free=2504876KB
+QJS-MEM used=848MB dpmi_largest_free=2496684KB
+QJS-MEM used=856MB dpmi_largest_free=2488492KB
+QJS-MEM used=864MB dpmi_largest_free=2480300KB
+QJS-MEM used=872MB dpmi_largest_free=2472108KB
+QJS-MEM used=880MB dpmi_largest_free=2463916KB
+QJS-MEM used=888MB dpmi_largest_free=2455724KB
+QJS-MEM used=896MB dpmi_largest_free=2447532KB
+QJS-MEM used=904MB dpmi_largest_free=2439340KB
+QJS-MEM used=912MB dpmi_largest_free=2431148KB
+QJS-MEM used=920MB dpmi_largest_free=2422956KB
+QJS-MEM used=928MB dpmi_largest_free=2414764KB
+QJS-MEM used=936MB dpmi_largest_free=2406572KB
+QJS-MEM used=944MB dpmi_largest_free=2398380KB
+QJS-MEM used=952MB dpmi_largest_free=2390188KB
+QJS-MEM used=960MB dpmi_largest_free=2381996KB
+QJS-MEM used=968MB dpmi_largest_free=2373804KB
+QJS-MEM used=976MB dpmi_largest_free=2365612KB
+QJS-MEM used=984MB dpmi_largest_free=2357420KB
+QJS-MEM used=992MB dpmi_largest_free=2349228KB
+QJS-MEM used=1000MB dpmi_largest_free=2341036KB
+QJS-MEM used=1008MB dpmi_largest_free=2332844KB
+QJS-MEM used=1016MB dpmi_largest_free=2324652KB
+QJS-MEM used=1024MB dpmi_largest_free=2316460KB
+QJS-INTERRUPT aborted runaway script (budget exceeded)
+QJS-INTERRUPT aborted runaway script (budget exceeded)
+GET / HTTP/1.1|Host: hn.algolia.com|User-Agent: Links (2.30; MS-DOS 7 i786; GNU C 5.2; text)|Accept: */*|Accept-Language: nl,en;q=0.2,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connection
+QJS-MEM ctx-create dpmi_total=3404352KB largest=2308268KB
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-INTERRUPT aborted runaway script (budget exceeded)
+QJS-INTERRUPT aborted runaway script (budget exceeded)

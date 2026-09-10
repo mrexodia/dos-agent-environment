@@ -902,3 +902,10 @@ Production LINKSQJS.EXE unchanged (guard + 60/96MB limits).
 v8 hardware result: parse STILL allocating at 600MB (clean soft-limit
 abort, no crash - HDPMI32 holds). v9: soft 1024MB / hard 1400MB.
 Conformance 20/20 (QEMU). Production unchanged.
+
+## SESSION 2026-09-10 (cont2): BIGTEST v10 - 1536MB under HDPMI32
+
+v9 hardware: parse hit the 1024MB SOFT limit (the interrupt came from
+the memory trip, not the time budget - 42s of ~550s budget used).
+Fully stable, no crashes, Ctrl-R fine. v10: soft 1536MB / hard 1792MB.
+Conformance 20/20 (QEMU). Production unchanged.
