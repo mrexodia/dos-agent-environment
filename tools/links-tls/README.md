@@ -884,3 +884,15 @@ PRODUCTION LINKSQJS.EXE now carries the soft-limit allocator too
 runaway now aborts the script cleanly instead of risking DPMI death.
 Regressions: conformance 20/20, belastingdienst search PASS, bigskip
 PASS.
+
+## SESSION 2026-09-10: HDPMI32 as DPMI provider
+
+User switched the DPMI host to HDPMI32 (TOOLS/HDPMI/, started plain in
+the batch before LNKSQJSB.EXE). Results: Ctrl-R reload now WORKS
+(Formatting document -> OK) - HDPMI32 commits FAR more than CWSDPMI
+(the old 416MB JS context + fresh download + formatting coexist).
+Soft-limit abort remained clean (interrupt at 416MB, no GPF).
+BIGTEST v8 (LNKSQJSB.EXE) built for the follow-up experiment:
+script guard disabled, soft limit 600MB / hard 900MB - to find the
+parse's true requirement under HDPMI32. Conformance 20/20 (QEMU).
+Production LINKSQJS.EXE unchanged (guard + 60/96MB limits).
