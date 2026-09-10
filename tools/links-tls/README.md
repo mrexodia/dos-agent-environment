@@ -933,3 +933,15 @@ render bridge PASS.
 Remaining question for hn.algolia: WHY does the boot spin (likely a
 polling scheduler keyed on something we stub wrong). Next session:
 log the first exception inside the storm.
+
+## SESSION 2026-09-10 (cont4): QEMU verification limits
+
+Full local-bundle run with the storm-breaker build under QEMU/TCG
+(-m 1024, HDPMI32): memory STILL grew to 600MB - but the abort was
+the TIME budget (TCG ~50x slower; 550s budget expires before the
+200k-job storm cap is reached). Telemetry mock again never triggered
+(0 FETCH-MOCK lines). QEMU cannot reach the storm cap in practical
+wall time; the definitive test is HARDWARE (fast: 42s wall << budget)
+where the 200k-job cap should trip within ~100MB and log
+QJS-MICROTASK-STORM. Binary LNKSQJSB.EXE deployed; awaiting hardware
+run.
