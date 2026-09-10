@@ -161,7 +161,7 @@ class DosVM:
                 "-machine",
                 f"accel={os.environ.get('DOSCTL_QEMU_ACCEL', _default_accel())}",
                 "-m",
-                "64",
+                os.environ.get("DOSCTL_QEMU_MEM", "64"),
                 "-boot",
                 "order=c",
                 "-drive",

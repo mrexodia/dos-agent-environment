@@ -909,3 +909,27 @@ v9 hardware: parse hit the 1024MB SOFT limit (the interrupt came from
 the memory trip, not the time budget - 42s of ~550s budget used).
 Fully stable, no crashes, Ctrl-R fine. v10: soft 1536MB / hard 1792MB.
 Conformance 20/20 (QEMU). Production unchanged.
+
+## SESSION 2026-09-10 (cont3): ROOT CAUSE of the GB growth = microtask storm
+
+QEMU self-test setup (user request): HDPMI32 in payload/BIN, QEMU -m
+overridable via DOSCTL_QEMU_MEM (1024 works; 2048 breaks NE2000
+DHCP), real 2.6MB bundle served locally (webroot/main-bundle.js +
+hnlocal.html, scripts/hn-local-test.py). Binary renamed LNKSQJSB.EXE
+(8.3!). Local run: memory grows LINEARLY past 600MB even with forced
+GC every 5s => LIVE data. Telemetry mock never triggered => telemetry
+theory DEAD.
+SMOKING GUN (hardware JSERROR stacks): the interrupt fired at
+<script>:1:2608182 of 2608202 = THE LAST STATEMENT - the bundle
+parses and initializes FINE, then an endless then ->
+queueMicrotask(bootstrap:1078) -> then chain spins: a self-
+rescheduling microtask loop allocating one live promise per cycle =>
+unbounded heap. Our qjs_pump_jobs looped forever on it.
+FIX: microtask-storm breaker - qjs_pump_jobs caps consecutive jobs
+(production 50k, BIGTEST 200k), logs QJS-MICROTASK-STORM, breaks.
+Both binaries rebuilt (payload: LINKSQJS.EXE + LNKSQJSB.EXE).
+Regressions: conformance 20/20, belastingdienst search PASS, rootspa
+render bridge PASS.
+Remaining question for hn.algolia: WHY does the boot spin (likely a
+polling scheduler keyed on something we stub wrong). Next session:
+log the first exception inside the storm.

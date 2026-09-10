@@ -362,11 +362,26 @@ struct qjs_timer {
 	JSValue arg;
 };
 
+#define QJS_MAX_JOBS_PER_PUMP 50000
+
 static void qjs_pump_jobs(struct javascript_context *c)
 {
+	long jobs = 0;
 	for (;;) {
 		JSContext *pc = c->ctx;
-		int jr = JS_ExecutePendingJob(c->rt, &pc);
+		int jr;
+		if (++jobs > QJS_MAX_JOBS_PER_PUMP) {
+			/* microtask storm: a self-rescheduling queueMicrotask/
+			 * promise loop (hn.algolia bundle boot) allocates a live
+			 * promise per cycle -> unbounded heap growth. Break it. */
+			char mb[96];
+			extern void sock_log2(const char *);
+			snprintf(mb, sizeof mb,
+				"QJS-MICROTASK-STORM aborted after %ld jobs", jobs);
+			sock_log2(mb);
+			break;
+		}
+		jr = JS_ExecutePendingJob(c->rt, &pc);
 		if (jr == 0) break;
 		if (jr < 0) {
 			if (c->logged_error < 5) {
