@@ -896,3 +896,9 @@ BIGTEST v8 (LNKSQJSB.EXE) built for the follow-up experiment:
 script guard disabled, soft limit 600MB / hard 900MB - to find the
 parse's true requirement under HDPMI32. Conformance 20/20 (QEMU).
 Production LINKSQJS.EXE unchanged (guard + 60/96MB limits).
+
+## SESSION 2026-09-10 (cont): BIGTEST v9 - 1024MB under HDPMI32
+
+v8 hardware result: parse STILL allocating at 600MB (clean soft-limit
+abort, no crash - HDPMI32 holds). v9: soft 1024MB / hard 1400MB.
+Conformance 20/20 (QEMU). Production unchanged.
