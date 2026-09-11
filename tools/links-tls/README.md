@@ -1001,3 +1001,15 @@ deep then->queueMicrotask stacks).
 New probe in LNKSQJSB (md5 22c0c08a...): queueMicrotask wrapper logs
 the callback's SOURCE CODE (first 3 + every 5000th) as QMT# lines to
 JSTRACE.LOG - identifies the looping code directly. Conformance 20/20.
+
+## SESSION 2026-09-11 (cont5): loop identified = core-js Promise polyfill
+
+QMT probe verdict: the 125k+ microtasks are core-js's promise
+'m notify'/'callReaction' internals - the bundle ships core-js which
+REPLACED QuickJS's native Promise. The loop is an infinite promise-
+reaction chain; the ~15.8KB retained strings match growing
+error.stack captures (each retry nests deeper).
+New probe in LNKSQJSB (md5 003519c2...): JS_SetHostPromiseRejection
+Tracker logs the first 8 unhandled rejections as PROMISE-REJECT lines
+to JSERROR.LOG - reveals the per-iteration error of the retry loop
+(QuickJS silently drops them by default). Conformance 20/20.
