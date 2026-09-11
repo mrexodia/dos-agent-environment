@@ -1027,3 +1027,14 @@ bootstrap time (before core-js loads) and uses __nativePromise for
 scheduling. LNKSQJSB md5 81f9f59e. Conformance 20/20. If the theory
 holds, the next hardware run: heap stays SMALL, QMT count finite,
 maybe even DOM-RENDER.
+
+## SESSION 2026-09-11 (cont7): recursion fixed! 11s, 80MB, strings flat
+
+The native-Promise capture in queueMicrotask WORKED: hn.algolia now
+loads in 11-12s (was 95s), heap 80MB (was 2000MB), strings FLAT at
+1018. Storm breaker fires 3x200k jobs - an app-level core-js promise
+loop remains but now accumulates only small objects (obj=747k,
+props=2.7M). Still header-only (no DOM-RENDER).
+New probe (md5 6b353a67): after 2s, Promise.prototype.then is hooked
+(core-js's installed version) - logs the app callback source + stack
+(THEN# lines, first 6 + every 50k) to JSTRACE.LOG. Conformance 20/20.
