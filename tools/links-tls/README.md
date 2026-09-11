@@ -969,3 +969,13 @@ per-page counters: QJS-JOBS total (log every 64k, abort 2M),
 QJS-TIMERS total (log every 1k, suppress at 50k fires). Next hardware
 run will show the exact ratio of the storm AND bound it.
 Conformance 20/20.
+
+## SESSION 2026-09-11 (cont2): logging had a per-pump blind spot
+
+2GB hardware run: NO QJS-JOBS/QJS-TIMERS lines - but the jobs log
+threshold was per-PUMP (jobs&0xFFFF within one pump), blind to many
+small pumps. Also: the 82s abort was the SOFT LIMIT trip (not time).
+Fixed: job logging now keys on the GLOBAL counter (every 16k total),
+timer logging every 512. New md5 0ac50cf3... Rebuild + conformance
+20/20. Next hardware run will show the true job/timer counts (or
+prove the growth is direct eval allocation with <16k jobs).
