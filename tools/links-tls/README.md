@@ -989,3 +989,15 @@ eval. New probe in LNKSQJSB (md5 e99d88df...): every 5s the interrupt
 handler dumps JS_ComputeMemoryUsage as QJS-ANATOMY (atoms, strings,
 objects, props, shapes, funcs, arrays, binary objects). The next
 hardware run shows WHICH structure explodes. Conformance 20/20.
+
+## SESSION 2026-09-11 (cont4): ANATOMY VERDICT - strings
+
+QJS-ANATOMY hardware series: atoms/funcs/shapes/arrays FLAT; strings
+= 99% of heap, +8500 strings/5s at ~15.8KB average each, all RETAINED
+(str_count grows monotonically). Objects/props grow in lockstep.
+Diagnosis: an ever-growing collection of large strings - almost
+certainly error/stack captures in an async retry loop (matching the
+deep then->queueMicrotask stacks).
+New probe in LNKSQJSB (md5 22c0c08a...): queueMicrotask wrapper logs
+the callback's SOURCE CODE (first 3 + every 5000th) as QMT# lines to
+JSTRACE.LOG - identifies the looping code directly. Conformance 20/20.
