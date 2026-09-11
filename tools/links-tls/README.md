@@ -1013,3 +1013,17 @@ New probe in LNKSQJSB (md5 003519c2...): JS_SetHostPromiseRejection
 Tracker logs the first 8 unhandled rejections as PROMISE-REJECT lines
 to JSERROR.LOG - reveals the per-iteration error of the retry loop
 (QuickJS silently drops them by default). Conformance 20/20.
+
+## SESSION 2026-09-11 (cont6): zero rejections -> mutual recursion theory
+
+PROMISE-REJECT: ZERO lines - the chain never rejects. New theory (the
+strongest yet): OUR queueMicrotask used Promise.resolve().then(f) with
+the GLOBAL Promise - which core-js REPLACED. core-js's notify calls
+queueMicrotask (ours) -> our wrapper creates a NEW core-js promise ->
+its notify calls queueMicrotask -> ... MUTUAL RECURSION between our
+wrapper and core-js, each cycle allocating (the 15.8KB strings).
+FIX (both binaries): queueMicrotask captures the NATIVE Promise at
+bootstrap time (before core-js loads) and uses __nativePromise for
+scheduling. LNKSQJSB md5 81f9f59e. Conformance 20/20. If the theory
+holds, the next hardware run: heap stays SMALL, QMT count finite,
+maybe even DOM-RENDER.
