@@ -945,3 +945,15 @@ wall time; the definitive test is HARDWARE (fast: 42s wall << budget)
 where the 200k-job cap should trip within ~100MB and log
 QJS-MICROTASK-STORM. Binary LNKSQJSB.EXE deployed; awaiting hardware
 run.
+
+## SESSION 2026-09-11: the 600MB cap explained (stale source) + rebuild
+
+User hardware run: max 600MB, OK in 21s, no MICROTASK-STORM. Cause
+found: the deployed LNKSQJSB was built from a STALE /tmp source with
+soft limit 600MB (my v10/v11 limit edits went to different file
+paths - /tmp/quickjs_engine_bigtest.c was never bumped past 600).
+So the 600MB cap was the soft-limit watchdog, not the storm breaker.
+Rebuilt correctly: soft 2000MB / hard 2200MB + storm cap 200k +
+telemetry mock + forced GC. Conformance 20/20. The binary IS new
+(contains QJS-MICROTASK-STORM string; the 23:03 timestamp was the
+build - overnight tests only wrote logs).
