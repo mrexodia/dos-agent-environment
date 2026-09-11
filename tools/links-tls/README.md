@@ -957,3 +957,15 @@ Rebuilt correctly: soft 2000MB / hard 2200MB + storm cap 200k +
 telemetry mock + forced GC. Conformance 20/20. The binary IS new
 (contains QJS-MICROTASK-STORM string; the 23:03 timestamp was the
 build - overnight tests only wrote logs).
+
+## SESSION 2026-09-11 (cont): 2GB run analysis -> global storm counters
+
+Correct 2000MB build on hardware: 82s to OK, heap 2GB, NO storm line,
+interrupt at the soft limit. Stack: then->queueMicrotask(1078) chain.
+Conclusion: the per-pump 200k cap never trips because the loop is a
+TIMER<->microtask ping-pong - each timer tick opens a fresh pump with
+a small job batch (counter resets). LNKSQJSB rebuilt with GLOBAL
+per-page counters: QJS-JOBS total (log every 64k, abort 2M),
+QJS-TIMERS total (log every 1k, suppress at 50k fires). Next hardware
+run will show the exact ratio of the storm AND bound it.
+Conformance 20/20.
