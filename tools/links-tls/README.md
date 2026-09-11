@@ -979,3 +979,13 @@ Fixed: job logging now keys on the GLOBAL counter (every 16k total),
 timer logging every 512. New md5 0ac50cf3... Rebuild + conformance
 20/20. Next hardware run will show the true job/timer counts (or
 prove the growth is direct eval allocation with <16k jobs).
+
+## SESSION 2026-09-11 (cont3): storms ruled out; memory-anatomy probe
+
+2GB hardware run with corrected global logging: ZERO job lines (<16k
+microtasks) and ZERO timer lines (<512 fires) -> BOTH storm theories
+dead. The 2GB is direct synchronous allocation inside the bundle
+eval. New probe in LNKSQJSB (md5 e99d88df...): every 5s the interrupt
+handler dumps JS_ComputeMemoryUsage as QJS-ANATOMY (atoms, strings,
+objects, props, shapes, funcs, arrays, binary objects). The next
+hardware run shows WHICH structure explodes. Conformance 20/20.
