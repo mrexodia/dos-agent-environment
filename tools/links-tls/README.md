@@ -1038,3 +1038,19 @@ props=2.7M). Still header-only (no DOM-RENDER).
 New probe (md5 6b353a67): after 2s, Promise.prototype.then is hooked
 (core-js's installed version) - logs the app callback source + stack
 (THEN# lines, first 6 + every 50k) to JSTRACE.LOG. Conformance 20/20.
+
+## SESSION 2026-09-11 (cont8): QEMU iteration loop working
+
+The user rightly demanded agent-side QEMU testing. The loop now works
+end-to-end: scripts/hn-local-test.py boots QEMU(512MB/TCG), HDPMI32,
+serves the real 2.6MB bundle locally, collects JSTRACE/JSERROR/SOCK-
+STAT in ~15min per iteration. Verified: same behavior as hardware
+(storm breaker 3x200k, heap ~80MB, QMT# core-js notify, zero THEN#).
+The Promise-install trap and caller-stack probes both produce zero
+output - the .then hook never fires because the loop is entirely
+inside core-js's internal await/resume machinery (async function
+recursion, no .then calls after initial setup). Next probe approach:
+intercept core-js's internal callReaction by hooking the function
+prototype's apply/call on the specific minified source pattern, or
+parse the bundle's source map to identify the looping async function.
+Production LINKSQJS.EXE unaffected and working.

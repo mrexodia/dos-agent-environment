@@ -1,0 +1,29 @@
+MKCONN url=http://10.0.2.2:8080/hnlocal.html tries=0
+open open=1 close=0
+GET /hnlocal.html HTTP/1.1|Host: 10.0.2.2:8080|User-Agent: Links (2.30; MS-DOS 7 i686; GNU C 5.2; text)|Accept: */*|Accept-Language: en,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,koi8-u,koi8-ru,TCVN-5712,VISCII,utf-8|Connecti
+close open=1 close=1
+MKCONN url=http://10.0.2.2:8080/main-bundle.js tries=0
+open open=2 close=1
+GET /main-bundle.js HTTP/1.1|Host: 10.0.2.2:8080|User-Agent: Links (2.30; MS-DOS 7 i686; GNU C 5.2; text)|Referer: http://10.0.2.2:8080/hnlocal.html|Accept: */*|Accept-Language: en,*;q=0.1|Accept-Charset: us-ascii,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,ISO-8859-16,windows-1250,windows-1251,windows-1252,windows-1256,windows-1257,cp437,cp737,cp850,cp852,cp866,x-cp866-u,x-mac,x-mac-ce,x-kam-cs,koi8-r,k
+close open=2 close=2
+QJS-MEM ctx-create dpmi_total=523068KB largest=510308KB
+QJS-ANATOMY used=0MB atoms=1078 str=75(0MB) obj=222 props=1006 shapes=62 funcs=270 arr=1(0 elems) bins=0(0MB)
+QJS-BIGTEST attempting giant script len=2608202
+FETCH-OK https://telemetry.algolia.com/1/settings?applications=UJ5WYC0L7X status=400 bytes=316
+QJS-MEM used=16MB dpmi_largest_free=480484KB
+QJS-ANATOMY used=16MB atoms=5069 str=1019(0MB) obj=128436 props=470441 shapes=550 funcs=1984 arr=187(421 elems) bins=0(0MB)
+QJS-MEM used=24MB dpmi_largest_free=465124KB
+QJS-MEM used=32MB dpmi_largest_free=448740KB
+QJS-MICROTASK-STORM aborted after 200002 jobs
+QJS-ANATOMY used=28MB atoms=5069 str=1019(0MB) obj=303990 props=1114145 shapes=549 funcs=1984 arr=187(421 elems) bins=0(0MB)
+QJS-MEM used=40MB dpmi_largest_free=438500KB
+QJS-ANATOMY used=41MB atoms=5069 str=1019(0MB) obj=481318 props=1764338 shapes=550 funcs=1984 arr=187(421 elems) bins=0(0MB)
+QJS-MEM used=48MB dpmi_largest_free=423140KB
+QJS-MEM used=56MB dpmi_largest_free=406756KB
+QJS-MICROTASK-STORM aborted after 200002 jobs
+QJS-ANATOMY used=53MB atoms=5069 str=1019(0MB) obj=660399 props=2420969 shapes=550 funcs=1984 arr=187(421 elems) bins=0(0MB)
+QJS-MEM used=64MB dpmi_largest_free=392420KB
+QJS-MEM used=72MB dpmi_largest_free=376036KB
+QJS-ANATOMY used=66MB atoms=5069 str=1019(0MB) obj=836837 props=3067918 shapes=549 funcs=1984 arr=187(421 elems) bins=0(0MB)
+QJS-MEM used=80MB dpmi_largest_free=359652KB
+QJS-MICROTASK-STORM aborted after 200002 jobs
