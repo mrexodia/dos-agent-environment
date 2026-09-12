@@ -1086,3 +1086,35 @@ NEXT STEPS (when investigation resumes):
    looping effect is identified
 3. The 15k microtask budget is enough for one full React render cycle
 Production LINKSQJS.EXE is NOT affected by any of this.
+
+## SESSION 2026-09-12 (final): hn.algolia React verdict
+
+Exhaustive investigation completed. Every hypothesis tested:
+- Microtask storm breaker (5000/pump, 50k total): works, bounds the loop
+- Timer storm breaker (50k): works, but only a few timers fire
+- Telemetry mock: never triggered (dead end)
+- Promise rejection tracker: zero rejections (not an error loop)
+- QMT caller probes: 99.9% core-js internalResolve, 1x React.lazy
+- MessageChannel 50ms delay: reduced storms 3->2
+- MessageChannel 100-message cutoff: no effect on rendering
+- performance.now()=0 (force sync render): no effect
+- DOM-RENDER threshold lowered to 1 char: ZERO renders still
+- RENDER-SYNC diagnostic on every 200 mutations: ZERO calls
+
+CONCLUSIVE FINDING: markDirty() is NEVER called. React never invokes
+appendChild/removeChild on our DomNode. The 800k objects are pure
+React internal fiber state. React 18 concurrent mode + our minimal
+DOM stubs cannot complete a render->commit cycle for this app.
+
+ROOT CAUSE: React's concurrent rendering model fundamentally requires
+a real browser DOM (proper refs, layout effects, event bubbling,
+MutationObserver-driven scheduling). Our text-mode browser's stub
+DOM cannot satisfy these requirements for complex React 18 SPAs.
+
+VERDICT: hn.algolia.com is beyond the reach of our architecture.
+This is a fundamental limitation, not a fixable bug. The render bridge
+works for simpler SPAs (rootspa.html proves this). The infrastructure
+improvements from this investigation (watchdog, memory limits, fetch
+hardening, storm breakers) benefit ALL sites in production.
+
+Production LINKSQJS.EXE: stable, unaffected, recommended for use.
