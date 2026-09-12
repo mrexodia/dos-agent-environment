@@ -1054,3 +1054,35 @@ intercept core-js's internal callReaction by hooking the function
 prototype's apply/call on the specific minified source pattern, or
 parse the bundle's source map to identify the looping async function.
 Production LINKSQJS.EXE unaffected and working.
+
+## SESSION 2026-09-12 overnight: React fiber loop identified
+
+QEMU iteration with pump cap 5000: storms at 5002 (3x = 15k microtasks
+total), heap ~80MB, ZERO RENDER-SYNC / DOM-RENDER lines. This means
+markDirty() is NEVER called - React never appends to our DOM tree.
+
+ANATOMY interpretation corrected: obj=800k, props=3M are NOT our
+DomNode elements - they are React INTERNAL fiber nodes. React is
+stuck in an infinite render->effect->rerender loop:
+  render() creates fibers -> useEffect fires -> setState -> render()
+again... The DOM bridge never receives content because React never
+COMMITs to the actual DOM.
+
+The 800k objects = accumulated dead fiber trees from thousands of
+aborted render passes. Each pass creates ~100-200 fibers before the
+storm breaker kills the microtask pump mid-render.
+
+ROOT CAUSE (identified but not yet fixed): React's useEffect or
+useLayoutEffect detects a change in our stubbed environment on every
+render (likely getBoundingClientRect returning all zeros, or a ref
+callback getting a new fake element each time), causing setState,
+which triggers another render. This is the classic React infinite
+effect loop.
+
+NEXT STEPS (when investigation resumes):
+1. Stub useEffect/useLayoutEffect to NO-OP (prevent effect-driven
+   re-renders entirely) - React will render once and stop
+2. If that renders content, progressively re-enable effects until the
+   looping effect is identified
+3. The 15k microtask budget is enough for one full React render cycle
+Production LINKSQJS.EXE is NOT affected by any of this.
