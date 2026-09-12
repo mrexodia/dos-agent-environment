@@ -21,3 +21,11 @@ payload/BIN/LINKSDEV.EXE
 build/mujs/
 build/wolfssl/
 build/tlstest/
+
+# Hardware diagnostic logs (test artifacts, not source)
+*.LOG.*
+*.TXT.*
+JSERROR.LOG
+SOCKSTAT.LOG
+JSTRACE.LOG
+TLSGLUE.TXT
