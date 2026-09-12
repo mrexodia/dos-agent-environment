@@ -1118,3 +1118,28 @@ improvements from this investigation (watchdog, memory limits, fetch
 hardening, storm breakers) benefit ALL sites in production.
 
 Production LINKSQJS.EXE: stable, unaffected, recommended for use.
+
+## SESSION 2026-09-12 (cont2): production regression FIXED
+
+User tested LNKSQJSB.EXE (BIGTEST - broken by experiments) thinking it
+was production. The actual production LINKSQJS.EXE also had TWO
+regressions introduced by the DOM bridge refactor:
+
+1. DomNode lacked the 'lang' property (was on old elem() stub):
+   document.documentElement.lang was undefined -> toLowerCase() threw
+   -> belastingdienst.js died before removing #bld-nosupport
+   FIX: DomNode.prototype.lang = "nl"
+
+2. document.getElementsByTagName("body") searched INSIDE body for
+   "body" tags (always empty) instead of returning [document.body]:
+   [0].getAttribute("data-pagetype") threw
+   FIX: getElementsByTagName handles body/head/html specially
+
+Verified in QEMU:
+- "Javascript staat uit": GONE (REMOVE-ELEM fires for both acj and
+  bld-nosupport)
+- Zero JS errors on belastingdienst.nl
+- Conformance: 20/20
+- Render bridge (rootspa): PASS
+- Fetch (XHR + json): PASS
+Production md5: 04587716...
