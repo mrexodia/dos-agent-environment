@@ -31,7 +31,9 @@ def test_every_declared_input_is_present_and_matches_approved_checksum():
         "mTCP_2025-01-10_upx.zip",
         "links-2.30.exe",
     }
-    assert set(expected) == required
+    # Every base-build input must be pinned; inputs/ may additionally pin
+    # optional files that only some deployments deploy (e.g. ne2000.com).
+    assert required <= set(expected)
     for name, digest in expected.items():
         path = root / "inputs" / name
         assert path.is_file(), name

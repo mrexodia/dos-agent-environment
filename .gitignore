@@ -2,9 +2,11 @@
 build/
 payload/BIN/HELLO.COM
 payload/BIN/MAKEBIN.COM
+payload/BIN/IDLE.COM
 payload/BIN/TC*.COM
 payload/BIN/TC*.EXE
 payload/BIN/DOS4GW.EXE
+payload/DRIVERS/
 
 # Python
 __pycache__/

@@ -41,6 +41,16 @@ class LaunchResult:
     screen: TextScreen | None = None
 
 
+def _default_accel() -> str:
+    """Prefer KVM when the device is usable; fall back to TCG otherwise."""
+    try:
+        if os.access("/dev/kvm", os.W_OK):
+            return "kvm:tcg"
+    except OSError:
+        pass
+    return "tcg"
+
+
 def project_root() -> Path:
     override = os.environ.get("DOSDEV_ROOT")
     return Path(override).resolve() if override else Path(__file__).resolve().parents[1]
@@ -148,10 +158,10 @@ class DosVM:
             )
             command = [
                 "qemu-system-i386",
-                "-accel",
-                "tcg",
+                "-machine",
+                f"accel={os.environ.get('DOSCTL_QEMU_ACCEL', _default_accel())}",
                 "-m",
-                "64",
+                os.environ.get("DOSCTL_QEMU_MEM", "64"),
                 "-boot",
                 "order=c",
                 "-drive",
@@ -159,7 +169,7 @@ class DosVM:
                 "-device",
                 "ide-hd,drive=dosdisk,bus=ide.0,unit=0,cyls=1024,heads=16,secs=63",
                 "-nic",
-                "user,model=pcnet",
+                os.environ.get("DOSCTL_QEMU_NIC", "user,model=pcnet,hostname=DOSBOX"),
                 "-qmp",
                 f"unix:{vm.qmp_path},server=on,wait=off",
                 "-serial",
@@ -168,6 +178,9 @@ class DosVM:
                 "none",
                 "-no-reboot",
             ]
+            # Extra whitespace-separated QEMU arguments, appended verbatim
+            # (for example DOSCTL_QEMU_ARGS="-d int -D trace.log").
+            command += os.environ.get("DOSCTL_QEMU_ARGS", "").split()
             with vm.log_path.open("wb") as log:
                 process = subprocess.Popen(
                     command,

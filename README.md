@@ -1,7 +1,8 @@
 # DOS Agent Environment
 
-A scriptable DOS 7.1 VM for coding agents. QEMU runs entirely under TCG, so the
-same devcontainer works on Apple-silicon and x86 hosts.
+A scriptable DOS 7.1 VM for coding agents. QEMU uses KVM when the host
+provides `/dev/kvm` and falls back to pure TCG otherwise, so the same
+devcontainer works on Apple-silicon and x86 hosts.
 
 See [`PLAN.md`](PLAN.md) for architecture and milestones.
 
@@ -12,6 +13,8 @@ See [`PLAN.md`](PLAN.md) for architecture and milestones.
 - disposable qcow2 overlays for every run;
 - QMP keyboard input and CP437 VGA text capture;
 - PNG screenshots with no graphical display attached;
+- an INT 28h halt TSR (IDLE.COM) so an idle guest sleeps in `HLT` instead of
+  burning a full core;
 - reliable non-interactive DOS command capture by temporarily switching CTTY to
   a private serial socket;
 - a stable `python3 -m harness.dosctl` command-line interface;
@@ -110,6 +113,48 @@ export DOSCTL_RUN_ID=my-run
 ./dosctl exec "VER"
 ./dosctl stop
 ```
+
+## VM tuning
+
+The QEMU command line is controlled by environment variables, so experiments
+need no code changes:
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `DOSCTL_QEMU_ACCEL` | `kvm:tcg` when `/dev/kvm` is writable, else `tcg` | `-machine accel=` value |
+| `DOSCTL_QEMU_MEM` | `64` | guest RAM in MiB |
+| `DOSCTL_QEMU_NIC` | `user,model=pcnet,hostname=DOSBOX` | `-nic` value |
+| `DOSCTL_QEMU_ARGS` | empty | extra QEMU arguments, appended verbatim |
+
+KVM matters for reliability, not just speed (~2 s boot instead of ~30 s):
+under TCG timing the Windows 98 real-mode interrupt reflector intermittently
+loses interrupt edges, wedging keyboard and serial input on roughly a third of
+cold boots. The race did not reproduce under KVM.
+
+The devcontainer deliberately does not request `/dev/kvm` (the `runArgs` device
+binding is not portable to Docker hosts without that device, such as Windows).
+To get KVM inside the devcontainer on a Linux host, add
+`"runArgs": ["--device=/dev/kvm"]` to `.devcontainer/devcontainer.json`
+locally, or run QEMU outside the container. Without the device the harness
+falls back to TCG automatically.
+
+### Alternate guest NIC
+
+The default PCNet NIC pairs with the PCNTPK driver baked into the base image.
+An ISA NE2000 alternative (Crynwr `ne2000.com`, pinned in `inputs/`) is
+available for experiments:
+
+```bash
+mkdir -p payload/DRIVERS
+cp inputs/ne2000.com payload/DRIVERS/NE2000.COM
+make runtime
+DOSCTL_QEMU_NIC='user,model=ne2k_isa' ./dosctl start
+```
+
+`AUTOEXEC.BAT` loads `C:\DRIVERS\NE2000.COM 0x60 9 0x300` in place of PCNTPK
+whenever the file exists, so the guest driver always matches the selected NIC.
+NE2000 is slower under TCG; it exists as a debugging alternative, not a
+default.
 
 ## Deploying a program
 

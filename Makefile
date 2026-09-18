@@ -26,6 +26,11 @@ payload/BIN/MAKEBIN.COM: apps/smoke/makebinary.asm
 	mkdir -p payload/BIN
 	nasm -f bin -o $@ $<
 
+payload/BIN/IDLE.COM: apps/idle/idle.asm
+	mkdir -p payload/BIN
+	nasm -f bin -o $@ $<
+
+payload: payload/BIN/HELLO.COM payload/BIN/MAKEBIN.COM payload/BIN/LINKS.EXE payload/BIN/IDLE.COM
 payload/BIN/LINKS.EXE: inputs/links-2.30.exe
 	mkdir -p payload/BIN
 	cp $< $@

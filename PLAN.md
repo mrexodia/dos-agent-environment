@@ -169,7 +169,6 @@ Maintain a checked-in `inputs/README.md` containing:
 - expected filename;
 - upstream/source URL;
 - expected SHA-256 supplied or approved by the human;
-- licensing/distribution note.
 
 The build validates all expected checksums before doing any work and prints a
 clear missing-input error.
@@ -320,12 +319,12 @@ Representative invocation:
 
 ```bash
 qemu-system-i386 \
-  -accel tcg \
+  -machine accel=kvm:tcg \
   -m 64 \
   -boot order=c \
   -drive file="$run_disk",format=qcow2,if=none,id=dosdisk \
   -device ide-hd,drive=dosdisk,bus=ide.0,unit=0,cyls=1024,heads=16,secs=63 \
-  -nic user,model=pcnet \
+  -nic user,model=pcnet,hostname=DOSBOX \
   -qmp unix:"$run_dir/qmp.sock",server=on,wait=off \
   -serial unix:"$run_dir/serial.sock",server=on,wait=off \
   -display none \
@@ -574,8 +573,7 @@ port.
 
 ## Non-negotiable rules
 
-1. `inputs/` is read-only and generated Microsoft-containing images are never
-   distributed.
+1. `inputs/` is read-only
 2. Deployment goes through `guest/`, `payload/`, and a rebuild—not hand edits.
 3. The canonical qcow2 is never used as a writable test disk.
 4. No mtools access to a live writable VM disk.
